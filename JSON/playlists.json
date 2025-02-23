@@ -1,16 +1,16 @@
 [
     {
-        "id": "UUID",
+        "id": "39a48119-e368-40a9-9d4e-c10139338e7c",
         "title": "my epid playlist",
         "author": "Davis Breci",
         "description": "this is my le epic playlist",
-        "songs": ["UUID","UUID","UUID"]
+        "songs": ["8a8e7e25-b701-479d-867c-54cab7eccb92","97355262-9242-4325-9d4e-4a7c3757977a"]
     },
     {
-        "id": "UUID",
+        "id": "039a23f6-317b-4577-a78b-a9d8005adcd9",
         "title": "ryan's boring playlist",
         "author": "Brendan Skrzyniarz",
         "description": "green day and creed nightcore",
-        "songs": ["UUID","UUID","UUID","UUID"]
+        "songs": ["97355262-9242-4325-9d4e-4a7c3757977a","8a8e7e25-b701-479d-867c-54cab7eccb92"]
     }
 ]

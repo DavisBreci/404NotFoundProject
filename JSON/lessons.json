@@ -1,0 +1,12 @@
+[
+    {
+        "id": "5c82419b-4246-40b9-9897-9e7ac9aa49bb",
+        "songs": ["8a8e7e25-b701-479d-867c-54cab7eccb92"],
+        "title": "baby's first music lesson"
+    },
+    {
+        "id": "UUID",
+        "songs": ["8a8e7e25-b701-479d-867c-54cab7eccb92", "97355262-9242-4325-9d4e-4a7c3757977a"],
+        "title": "cool ahh lesson"
+    }
+]
