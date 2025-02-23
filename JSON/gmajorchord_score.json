@@ -1,0 +1,95 @@
+{
+    "id": "3a6c83d2-2235-4fff-84dc-7ad6ec2dabf8",
+    "instrument": "guitar",
+    "tempo": "120",
+    "measures":[
+        {
+            "instrument": "guitar",
+            "timeSignature": "4/4",
+            "chords": {
+                "0/1": {
+                    "value": "Whole",
+                    "duration": "1",
+                    "dotted": "false",
+                    "noteCount": "6",
+                    "notes": [ 
+                        {
+                            "value": "Whole",
+                            "pitch": "G",
+                            "duration": "1",
+                            "dotted": "true",
+                            "instrument": "guitar",
+                            "string": "1",
+                            "fret": "3",
+                            "octave": "2",
+                            "frontTie": "null",
+                            "backTie": "null"
+                        }, 
+                        {
+                            "value": "Whole",
+                            "pitch": "B",
+                            "duration": "1",
+                            "dotted": "false",
+                            "instrument": "guitar",
+                            "string": "2",
+                            "fret": "2",
+                            "octave": "2",
+                            "frontTie": "null",
+                            "backTie": "null"
+                        }, 
+                        {
+                            "value": "Whole",
+                            "pitch": "D",
+                            "duration": "1",
+                            "dotted": "false",
+                            "instrument": "guitar",
+                            "string": "3",
+                            "fret": "0",
+                            "octave": "3",
+                            "frontTie": "null",
+                            "backTie": "null"
+                        }, 
+                        {
+                            "value": "Whole",
+                            "pitch": "G",
+                            "duration": "1",
+                            "dotted": "false",
+                            "instrument": "guitar",
+                            "string": "4",
+                            "fret": "0",
+                            "octave": "3",
+                            "frontTie": "null",
+                            "backTie": "null"
+                        }, 
+                        {
+                            "value": "Whole",
+                            "pitch": "B",
+                            "duration": "1",
+                            "dotted": "false",
+                            "instrument": "guitar",
+                            "string": "5",
+                            "fret": "0",
+                            "octave": "3",
+                            "frontTie": "null",
+                            "backTie": "null"
+                        }, 
+                        {
+                            "value": "Whole",
+                            "pitch": "E",
+                            "duration": "1",
+                            "dotted": "false",
+                            "instrument": "guitar",
+                            "string": "6",
+                            "fret": "3",
+                            "octave": "4",
+                            "frontTie": "null",
+                            "backTie": "null"
+                        }
+                    ]
+                }
+            },
+            "rests": {}
+        }
+    ]
+    
+}
