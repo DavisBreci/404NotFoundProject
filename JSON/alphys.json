@@ -1,0 +1,289 @@
+{
+    "id": "a42d710f-afcb-4bce-bfd7-ecb43e6a5a89",
+    "instrument": "guitar",
+    "tempo": "120",
+    "measures":[
+        {
+            "instrument": "guitar",
+            "timeSignature": "3/4",
+            "chords": {
+                "0/1": {
+                    "value": "EIGHTH",
+                    "duration": "1/8",
+                    "dotted": "false",
+                    "noteCount": "1",
+                    "notes": [ 
+                        "null", 
+                        "null", 
+                        {
+                            "value": "EIGHTH",
+                            "pitch": "G",
+                            "duration": "1/8",
+                            "dotted": "false",
+                            "instrument": "guitar",
+                            "string": "3",
+                            "fret": "5",
+                            "octave": "4",
+                            "frontTie": "null",
+                            "backTie": "null"
+                        }, 
+                        "null", 
+                        "null", 
+                        "null"
+                    ]
+                },
+                "1/4":{
+                    "value": "EIGHTH",
+                    "duration": "1/8",
+                    "dotted": "false",
+                    "noteCount": "1",
+                    "notes": [ 
+                        "null", 
+                        "null", 
+                        {
+                            "value": "EIGHTH",
+                            "pitch": "A",
+                            "duration": "1/8",
+                            "dotted": "false",
+                            "instrument": "guitar",
+                            "string": "3",
+                            "fret": "7",
+                            "octave": "4",
+                            "frontTie": "null",
+                            "backTie": "null"
+                        }, 
+                        "null", 
+                        "null", 
+                        "null"
+                    ]
+                },
+                "1/2":{
+                    "value": "SIXTEENTH",
+                    "duration": "1/16",
+                    "dotted": "false",
+                    "noteCount": "1",
+                    "notes": [
+                        "null",
+                        "null",
+                        {
+                            "value": "SIXTEENTH",
+                            "pitch": "B",
+                            "duration": "1/16",
+                            "dotted": "false",
+                            "instrument": "guitar",
+                            "string": "3",
+                            "fret": "9",
+                            "octave": "4",
+                            "frontTie": "null",
+                            "backTie": "null"
+                        }, 
+                        "null", 
+                        "null",
+                        "null"
+                    ]
+                },
+                "3/4":{
+                    "value": "SIXTEENTH",
+                    "duration": "1/16",
+                    "dotted": "false",
+                    "noteCount": "1",
+                    "notes": [ 
+                        "null", 
+                        "null", 
+                        "null",
+                        {
+                            "value": "SIXTEENTH",
+                            "pitch": "C",
+                            "duration": "1/16",
+                            "dotted": "false",
+                            "instrument": "guitar",
+                            "string": "4",
+                            "fret": "5",
+                            "octave": "5",
+                            "frontTie": "null",
+                            "backTie": "null"
+                        }, 
+                        "null", 
+                        "null"
+                    ]
+                }
+            },
+            "rests": {}
+        },
+
+        {
+            "instrument": "guitar",
+            "timeSignature": "3/4",
+            "chords": {
+                "0/1": {
+                    "value": "HALF",
+                    "duration": "3/4",
+                    "dotted": "true",
+                    "noteCount": "1",
+                    "notes": [ 
+                        "null", 
+                        "null", 
+                        {
+                            "value": "HALF",
+                            "pitch": "D",
+                            "duration": "3/4",
+                            "dotted": "true",
+                            "instrument": "guitar",
+                            "string": "4",
+                            "fret": "7",
+                            "octave": "5",
+                            "frontTie": "null",
+                            "backTie": "null"
+                        }, 
+                        "null", 
+                        "null", 
+                        "null"
+                    ]
+                }
+            },
+            "rests": {}
+        },
+        
+        {
+            "instrument": "guitar",
+            "timeSignature": "3/4",
+            "chords": {
+                "0/1": {
+                    "value": "EIGHTH",
+                    "duration": "1/8",
+                    "dotted": "false",
+                    "noteCount": "1",
+                    "notes": [ 
+                        "null", 
+                        "null", 
+                        {
+                            "value": "EIGHTH",
+                            "pitch": "A",
+                            "duration": "1/8",
+                            "dotted": "false",
+                            "instrument": "guitar",
+                            "string": "3",
+                            "fret": "7",
+                            "octave": "4",
+                            "frontTie": "null",
+                            "backTie": "null"
+                        }, 
+                        "null", 
+                        "null", 
+                        "null"
+                    ]
+                },
+                "1/4":{                
+                    "value": "EIGHTH",
+                    "duration": "1/8",
+                    "dotted": "false",
+                    "noteCount": "1",
+                    "notes": [ 
+                        "null", 
+                        "null", 
+                        {
+                            "value": "EIGHTH",
+                            "pitch": "B",
+                            "duration": "1/8",
+                            "dotted": "false",
+                            "instrument": "guitar",
+                            "string": "3",
+                            "fret": "9",
+                            "octave": "4",
+                            "frontTie": "null",
+                            "backTie": "null"
+                        }, 
+                        "null", 
+                        "null", 
+                        "null"
+                    ]
+                },
+                "1/2":{
+                    "value": "SIXTEENTH",
+                    "duration": "1/16",
+                    "dotted": "false",
+                    "noteCount": "1",
+                    "notes": [
+                        "null",
+                        "null",
+                        {
+                            "value": "SIXTEENTH",
+                            "pitch": "Db",
+                            "duration": "1/16",
+                            "dotted": "false",
+                            "instrument": "guitar",
+                            "string": "3",
+                            "fret": "11",
+                            "octave": "4",
+                            "frontTie": "null",
+                            "backTie": "null"
+                        }, 
+                        "null", 
+                        "null",
+                        "null"
+                    ]
+                },
+                "3/4":{
+                    "value": "SIXTEENTH",
+                    "duration": "1/16",
+                    "dotted": "false",
+                    "noteCount": "1",
+                    "notes": [ 
+                        "null", 
+                        "null", 
+                        "null",
+                        {
+                            "value": "SIXTEENTH",
+                            "pitch": "D",
+                            "duration": "1/16",
+                            "dotted": "false",
+                            "instrument": "guitar",
+                            "string": "4",
+                            "fret": "7",
+                            "octave": "5",
+                            "frontTie": "null",
+                            "backTie": "null"
+                        }, 
+                        "null", 
+                        "null"
+                    ]
+                }
+            },
+            "rests": {}
+        },
+
+        {
+            "instrument": "guitar",
+            "timeSignature": "3/4",
+            "chords": {
+                "0/1": {
+                    "value": "HALF",
+                    "duration": "3/4",
+                    "dotted": "true",
+                    "noteCount": "1",
+                    "notes": [ 
+                        "null", 
+                        "null", 
+                        {
+                            "value": "HALF",
+                            "pitch": "E",
+                            "duration": "3/4",
+                            "dotted": "true",
+                            "instrument": "guitar",
+                            "string": "4",
+                            "fret": "9",
+                            "octave": "5",
+                            "frontTie": "null",
+                            "backTie": "null"
+                        }, 
+                        "null", 
+                        "null", 
+                        "null"
+                    ]
+                }
+            },
+            "rests": {}
+        }
+    ]
+    
+}
