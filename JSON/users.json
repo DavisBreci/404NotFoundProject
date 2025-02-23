@@ -1,0 +1,54 @@
+[
+    {
+        "id": "UUID",
+        "username": "dbreci",
+        "password": "404nf",
+        "email": "dbreci@email.sc.edu",
+        "firstName": "Davis",
+        "lastName": "Breci",
+        "streak": 10,
+        "songsPlayed": 1,
+        "assignedLessons": [
+            {
+                "id": "UUID"
+            },
+            {
+                "id": "UUID"
+            },
+            {
+                "id": "UUID"
+            }
+        ],
+        "playlists": [
+            {
+                "id": "UUID"
+            }
+        ]
+    },
+    {
+        "id": "UUID",
+        "username": "ctferg",
+        "password": "247sucks",
+        "email": "CTF2@email.sc.edu",
+        "firstName": "Christopher",
+        "lastName": "Ferguson",
+        "streak": 1,
+        "songsPlayed": 13,
+        "assignedLessons": [
+            {
+                "id": "UUID"
+            },
+            {
+                "id": "UUID"
+            },
+            {
+                "id": "UUID"
+            }
+        ],
+        "playlists": [
+            {
+                "id": "UUID"
+            }
+        ]
+    }
+]

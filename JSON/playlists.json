@@ -1,0 +1,16 @@
+[
+    {
+        "id": "UUID",
+        "title": "my epid playlist",
+        "author": "Davis Breci",
+        "description": "this is my le epic playlist",
+        "songs": ["UUID","UUID","UUID"]
+    },
+    {
+        "id": "UUID",
+        "title": "ryan's boring playlist",
+        "author": "Brendan Skrzyniarz",
+        "description": "green day and creed nightcore",
+        "songs": ["UUID","UUID","UUID","UUID"]
+    }
+]
