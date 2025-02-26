@@ -14,13 +14,15 @@ public class Note extends BarObj {
         this.string = 0;
         this.fret = 0;
         this.instrument = instrument;
-        this.dotted = dotted;
         this.pitchClass = pitchClass;
         setOctave(octave);
     }
 
     public Note(PitchClass pitchClass, int octave){ // For situations where pitch content is all that matters
         super(NoteValue.WHOLE, false);
+        this.string = 0;
+        this.fret = 0;
+        this.instrument = Instrument.GUITAR;
         this.pitchClass = pitchClass;
         setOctave(octave);
     }
@@ -57,10 +59,64 @@ public class Note extends BarObj {
             this.octave = 0;
     }
 
+    public Note getFrontTie(){
+        return frontTie;
+    }
+
+    public Note getBackTie(){
+        return backTie;
+    }
+
+    public void tieFront(Note n){
+        if(n != null){
+            n.setBackTie(this);
+            setFrontTie(n);
+        }
+    }
+
+    public void tieBack(Note n){
+        if(n != null){
+            n.setFrontTie(this);
+            setBackTie(n);
+        }
+    }
+
+    protected void setFrontTie(Note n){
+        this.frontTie = n;
+    }
+
+    protected void setBackTie(Note n){
+        this.backTie = n;
+    }
+
+    public void untieFront(){
+        if(frontTie != null){
+            frontTie.setBackTie(null);
+            setFrontTie(null);
+        }
+    }
+
+    public void untieBack(){
+        if(backTie != null){
+            backTie.setFrontTie(null);
+            setBackTie(null);
+        }
+    }
+
+    public void untie(){
+        untieFront();
+        untieBack();
+    }
+
+
     public String toString(){
         return pitchClass + (backTie == null ? "" : "-") + timingString() + (frontTie == null ? "" : "-");
     }
-
+    /**
+     * Whether two notes have the same pitch and location
+     * @param n note for comparison
+     * @return whether there's a match
+     */
     public boolean equals(Note n){
         return string == n.getString() && 
             fret == n.getFret() &&
