@@ -1,9 +1,6 @@
 package com.model;
 
-public enum PitchClass {
-    A,
-    Bb,
-    B,
+public enum PitchClass { // Ordering the notes like this makes calculating MIDI note numbers easier
     C,
     Db,
     D,
@@ -12,5 +9,8 @@ public enum PitchClass {
     F,
     Gb,
     G,
-    Ab
+    Ab,
+    A,
+    Bb,
+    B,
 }

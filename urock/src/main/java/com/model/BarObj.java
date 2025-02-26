@@ -1,5 +1,7 @@
 package com.model;
-
+/**
+ * Represents a music entity with only duration
+ */
 public abstract class BarObj implements Comparable<BarObj>{
     protected NoteValue value;
     protected Rational duration;

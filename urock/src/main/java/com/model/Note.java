@@ -58,7 +58,25 @@ public class Note extends BarObj {
         else
             this.octave = 0;
     }
-
+    
+    
+    /**
+     * Calculates which MIDI note number corresponds to this pitch
+     * @return MIDI note number
+     */
+    public int midiNoteNum(){ 
+        return 12 + pitchClass.ordinal() + 12 * octave;
+    }
+    
+    /**
+     * Calculates the number of half steps from this note to another
+     * @param n a note
+     * @return signed interval expressed in half steps
+     */
+    public int stepsTo(Note n){
+        return n.midiNoteNum() - midiNoteNum();
+    }
+    
     public Note getFrontTie(){
         return frontTie;
     }
@@ -107,7 +125,6 @@ public class Note extends BarObj {
         untieFront();
         untieBack();
     }
-
 
     public String toString(){
         return pitchClass + (backTie == null ? "" : "-") + timingString() + (frontTie == null ? "" : "-");
