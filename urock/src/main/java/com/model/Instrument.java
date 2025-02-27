@@ -1,6 +1,8 @@
 package com.model;
 import com.model.PitchClass;
-
+/**
+ * Enumeration representing a fretted instrument.
+ */
 public enum Instrument {
     GUITAR(24, 
         new Note(PitchClass.E, 2),
@@ -27,6 +29,11 @@ public enum Instrument {
 
     public final Note [] tuning; // Lowest to highest
     public final int frets;
+    /**
+     * Constructs an instrument with the specified number of frets and tuning
+     * @param frets // The number of frets the instrument has
+     * @param tuning // The array containing of the lowest note on each String
+     */
     private Instrument(int frets, Note ... tuning){
         this.frets = frets;
         this.tuning = tuning;

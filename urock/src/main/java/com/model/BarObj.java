@@ -6,13 +6,16 @@ public abstract class BarObj implements Comparable<BarObj>{
     protected NoteValue value;
     protected Rational duration;
     protected boolean dotted;
-
+    /**
+     * Creates a musical entity with a duration
+     * @param value // The base duration of the note
+     * @param dotted // Whether the note is dotted
+     */
     protected BarObj(NoteValue value, boolean dotted){
         this.value = value;
         this.duration = calcDuration(value, dotted);
         this.dotted = dotted;
     }
-
     public int compareTo(BarObj b){
         return duration.compareTo(b.duration);
     }
