@@ -11,13 +11,16 @@ public class User {
     protected String password;
     private int streak;
     private int songsPlayed;
+    private ArrayList<Playlist> playlists;
     private ArrayList<Lesson> assignedLessons;
 
-    public User(UUID id, String first, String last, String email, String user, String pass){
+    public User(UUID id, String first, String last, String email, String user, String pass, int streak,
+                int songsPlayed, ArrayList<Playlist> playlists, ArrayList<Lesson> assignedLessons){
 
     }
     public void resetPassword(String email, String newPass){
-
+        if(this.email == email)
+            this.password = newPass;
     }
     public boolean isValidUsername(String user){
         return true;
@@ -29,9 +32,9 @@ public class User {
 
     }
     public void addPlayedSong(){
-
+        ++songsPlayed;
     }
     public void assignLesson(Lesson lesson){
-
+        assignedLessons.add(lesson);
     }
 }

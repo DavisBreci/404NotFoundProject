@@ -1,4 +1,4 @@
-//stub finished
+//stub complete
 package com.model;
 import java.util.*;
 
@@ -7,9 +7,10 @@ public class Teacher extends User {
     private ArrayList<Lesson> lessons;
 
     public Teacher(UUID id, String first, String last, String email,
-                   String user, String pass, ArrayList<ArrayList<User>>
-                   classes, ArrayList<Lesson> lessons){
-        super(id, first, last, email, user, pass);
+                   String user, String pass, int streak, int songsPlayed,
+                   ArrayList<Playlist> playlists, ArrayList<Lesson> assignedLessons,
+                   ArrayList<ArrayList<User>> classes, ArrayList<Lesson> lessons){
+        super(id, first, last, email, user, pass, streak, songsPlayed, playlists, assignedLessons);
         this.classes = classes;
         this.lessons = lessons;
     }
