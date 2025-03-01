@@ -9,7 +9,7 @@ public class Note extends BarObj {
     private Note frontTie;
     private Note backTie;
 
-    public Note(Instrument instrument, NoteValue noteValue, boolean dotted, PitchClass pitchClass, int octave){
+    public Note(NoteValue noteValue, boolean dotted, Instrument instrument, PitchClass pitchClass, int octave){
         super(noteValue, dotted);
         this.string = 0;
         this.fret = 0;
