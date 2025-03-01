@@ -7,7 +7,7 @@ import org.jfugue.player.Player;
 
 public class ChristopherTester {
     public static void main(String[] args) {
-        Chord gmaj = new Chord(NoteValue.WHOLE, false, Instrument.GUITAR);
+        Chord gmaj = new Chord(NoteValue.HALF, true, Instrument.GUITAR);
         
         gmaj.put(new Note(PitchClass.G, 2), 0);
         gmaj.put(new Note(PitchClass.B, 2), 1);
@@ -17,7 +17,6 @@ public class ChristopherTester {
         gmaj.put(new Note(PitchClass.G, 4), 5);
         
         System.out.println(gmaj);
-
         for(Note n : gmaj.getNotes())
             if(n != null)
                 System.out.println(n + " @ " + "(" + n.getString() + ", "+ n.getFret() + ")");

@@ -17,6 +17,29 @@ public abstract class BarObj implements Comparable<BarObj>{
         return duration.compareTo(b.duration);
     }
 
+    public NoteValue getValue(){
+        return value;
+    }
+
+    public boolean isDotted(){
+        return dotted;
+    }
+
+    public Rational getDuration(){
+        return duration;
+    }
+
+    public void setValue(NoteValue value){
+        if (value == null) return;
+        this.value = value;
+        duration = calcDuration(value, dotted);
+    }
+
+    public void setDotted(boolean dotted){
+        this.dotted = dotted;
+        duration = calcDuration(value, dotted);
+    }
+
     public static Rational calcDuration(NoteValue value, boolean dotted){
          Rational duration = new Rational(
             (int)Math.pow(2, value.ordinal()), 
