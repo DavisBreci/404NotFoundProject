@@ -9,8 +9,8 @@ public class Note extends BarObj {
     private Note frontTie;
     private Note backTie;
 
-    public Note(NoteValue noteValue, boolean dotted, Instrument instrument, PitchClass pitchClass, int octave){
-        super(noteValue, dotted);
+    public Note(NoteValue value, boolean dotted, Instrument instrument, PitchClass pitchClass, int octave){
+        super(value, dotted);
         this.string = 0;
         this.fret = 0;
         this.instrument = instrument;
@@ -25,6 +25,14 @@ public class Note extends BarObj {
         this.instrument = Instrument.GUITAR;
         this.pitchClass = pitchClass;
         setOctave(octave);
+    }
+
+    public Note deepCopy(){
+        Note copy = new Note(value, dotted, instrument, pitchClass, octave);
+        copy.setLocation(string, fret);
+        copy.setFrontTie(frontTie);
+        copy.setBackTie(backTie);
+        return copy;
     }
 
     public boolean setLocation(int string, int fret){
