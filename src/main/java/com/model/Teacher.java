@@ -1,6 +1,7 @@
 //stub complete
 package com.model;
 import java.util.*;
+import java.time.LocalDate;
 
 public class Teacher extends User {
     private ArrayList<ArrayList<User>> classes;
@@ -8,9 +9,9 @@ public class Teacher extends User {
 
     public Teacher(UUID id, String first, String last, String email,
                    String user, String pass, int streak, int songsPlayed,
-                   ArrayList<Playlist> playlists, ArrayList<Lesson> assignedLessons,
+                   ArrayList<Playlist> playlists, ArrayList<Lesson> assignedLessons, LocalDate lastPlayed,
                    ArrayList<ArrayList<User>> classes, ArrayList<Lesson> lessons){
-        super(id, first, last, email, user, pass, streak, songsPlayed, playlists, assignedLessons);
+        super(id, first, last, email, user, pass, streak, songsPlayed, playlists, assignedLessons, lastPlayed);
         this.classes = classes;
         this.lessons = lessons;
     }
@@ -22,10 +23,8 @@ public class Teacher extends User {
         return false;
     }
     public void assignLessons(int classIndex, Lesson lesson){
-
-    }
-    public void updateStudents(ArrayList<User> classroom){
-
+        for(User student : classes.get(classIndex))
+            student.assignLesson(lesson);
     }
     public void createLesson(String lessonName){
 
