@@ -150,7 +150,25 @@ public class Note extends BarObj {
     public int midiNoteNum(){ 
         return 12 + pitchClass.ordinal() + 12 * octave;
     }
-    
+
+    /**
+     * Calculates which octave corresponds to the given MIDI note number
+     * @param noteNum a MIDI note number
+     * @return the octave number
+     */
+    private static int noteNumToOctave(int noteNum){
+        return noteNum / 12 - 1;
+    }
+
+    /**
+     * Calculates which pitch class corresponds to the given MIDI note number
+     * @param noteNum a MIDI note number
+     * @return the pitch class
+     */
+    private static PitchClass noteNumToPitchClass(int noteNum){
+        return PitchClass.values()[noteNum - 12 * (noteNum / 12)];
+    }
+
     /**
      * Calculates the number of half steps from this note to another
      * @param n a note
@@ -231,7 +249,9 @@ public class Note extends BarObj {
         untieFront();
         untieBack();
     }
-
+    /**
+     * Returns a Staccato representation of the note
+     */
     public String toString(){
         return pitchClass + (backTie == null ? "" : "-") + timingString() + (frontTie == null ? "" : "-");
     }
@@ -246,5 +266,20 @@ public class Note extends BarObj {
             octave == n.getOctave() &&
             pitchClass == n.getPitchClass();
     }
-    
+    /**
+     * Method that attempts to shift a note up or down depending on the given number of steps.
+     * Notes can only be shifted along a string, and successful transposition will affect the fret number.
+     * @param steps
+     * @return
+     */
+    public boolean transpose(int steps){
+        int newFret = fret + steps;
+        int newNoteNum = midiNoteNum() + steps;
+        if(newFret < 0 || newFret >= instrument.frets || newNoteNum < 21 || newNoteNum > 128) 
+            return false;
+        octave = noteNumToOctave(newNoteNum);
+        pitchClass = noteNumToPitchClass(newNoteNum);
+        fret = newFret;
+        return true;
+    }
 }

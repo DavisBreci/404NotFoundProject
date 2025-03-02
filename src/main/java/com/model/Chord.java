@@ -53,6 +53,18 @@ public class Chord extends BarObj{
         return notes;
     }
     /**
+     * Creates a new note object with the same state
+     * @return the copy
+     */
+    public Chord deepCopy(){
+        Chord copy = new Chord(value, dotted, instrument);
+        Note [] notes = getNotes();
+        for(Note n : notes)
+            copy.put(n, n.getString());
+        return copy;
+    }
+
+    /**
      * Attempts to place a note on the desired string. Fret assignment is automatic. 
      * If the note's duration doesn't match the chord's, it will be modified prior to inclusion. 
      * The same goes for the instrument.
@@ -87,6 +99,16 @@ public class Chord extends BarObj{
             return false;
         notes[string] = null;
         noteCount--;
+        return true;
+    }
+
+    public boolean transpose(int steps){
+        Note [] temp = getNotes();
+        for(Note n : temp)
+            if(!n.transpose(steps))
+                return false;
+        for(Note n : this.notes)
+            n.transpose(steps);
         return true;
     }
     /**
