@@ -23,13 +23,30 @@ public class Note extends BarObj {
         super(value, dotted);
         this.string = 0;
         this.fret = 0;
+        this.instrument = instrument;
+        this.pitchClass = pitchClass;
         for(int i = 0; i < instrument.tuning.length; i++){
             if(restring(i)) break;
         }
-        this.instrument = instrument;
-        this.pitchClass = pitchClass;
         setOctave(octave);
     }
+
+     /**
+     * Retrieves the instrument the note belongs to
+     * @return the fretted instrument
+     */
+    public Instrument getInstrument(){
+        return this.instrument;
+    }
+
+    /**
+     * Changes the instrument. Be careful with this because you could end up with unplayable notes.
+     * @param instrument // the new instrument
+     */
+    public void setInstrument(Instrument instrument){
+        this.instrument = instrument;
+    }
+
     /**
      * Constructs a note without specifying its duration. This is useful when pitch content is all that matters
      * @param pitchClass
@@ -82,6 +99,8 @@ public class Note extends BarObj {
         int fret = open.stepsTo(this);
         if(fret >= instrument.frets)
             return false;
+        this.string = string;
+        this.fret = fret;
         return true;
     }
     /**

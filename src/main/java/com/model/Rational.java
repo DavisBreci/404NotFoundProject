@@ -155,7 +155,7 @@ public class Rational implements Comparable<Rational>{
 		int multiple = lcm(denominator, r.getDenominator());
 		Rational temp1 = deepCopy();
         temp1.times(new Rational(multiple/denominator));
-		Rational temp2 = deepCopy();
+		Rational temp2 = r.deepCopy();
         temp2.times(new Rational(multiple/r.getDenominator()));
 		if(temp1.numerator == temp2.numerator) return 0;
 		else if(temp1.numerator < temp2.numerator) return -1;
@@ -163,7 +163,7 @@ public class Rational implements Comparable<Rational>{
 	}
 
     public String toString() {
-		return numerator + " / " + denominator;
+		return numerator + "/" + denominator;
 	}
     
     private static Rational mediant(Rational a, Rational b) {

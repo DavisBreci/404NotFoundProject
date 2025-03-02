@@ -54,7 +54,8 @@ public class Chord extends BarObj{
     }
     /**
      * Attempts to place a note on the desired string. Fret assignment is automatic. 
-     * If the note's duration doesn't match the chord's, it will be modified prior to inclusion.
+     * If the note's duration doesn't match the chord's, it will be modified prior to inclusion. 
+     * The same goes for the instrument.
      * @param note the note to be placed
      * @param string the string on which the note is to be played
      * @return whether the note was succesfully added to the chord
@@ -67,20 +68,12 @@ public class Chord extends BarObj{
                 note.setValue(value);
                 note.setDotted(dotted);
             }
+            if(instrument != note.getInstrument())
+                note.setInstrument(instrument);
             notes[string] = note;
             noteCount++;
         }   
         return true;
-        // if(string >= notes.length || notes[string] != null)
-        //     return false;
-        // Note open = instrument.tuning[string]; // The lowest note on the string
-        // int fret = open.stepsTo(note);
-        // if(fret >= instrument.frets)
-        //     return false;
-        // notes[string] = note;
-        // note.setLocation(string, fret);
-        // noteCount++;
-        // return true;
     }
     /**
      * Attempts to remove a note from the chord
