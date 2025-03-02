@@ -1,4 +1,4 @@
-// stub complete
+// class complete
 package com.model;
 import java.time.LocalDate;
 import java.util.*;
@@ -41,7 +41,7 @@ public class User {
         for( char c : user.toCharArray())
             if(c < 33)
                 return false;
-        // return !UserList.getInstance().contains(user);
+//      return !UserList.getInstance().contains(user); //re-add when UserList is written
         return true;
     }
     public boolean isValidPassword(String pass){
@@ -65,12 +65,31 @@ public class User {
         return number && capitalLetter && specialCharacter;
     }
     public void updateStreak(){
-
+//same day
+        if(lastPlayed.compareTo(LocalDate.now()) == 0){
+            ;
+//one day has passed
+        }else if(lastPlayed.plusDays(1).compareTo(LocalDate.now())==0){
+            lastPlayed = LocalDate.now();
+            ++streak;
+//reset streak
+        }else{
+            streak = 0;
+        }
     }
     public void addPlayedSong(){
         ++songsPlayed;
     }
     public void assignLesson(Lesson lesson){
         assignedLessons.add(lesson);
+    }
+    public int getStreak(){
+        return streak;
+    }
+    public int getSongsPlayed(){
+        return songsPlayed;
+    }
+    public ArrayList<Playlist> getPlaylists(){
+        return playlists;
     }
 }
