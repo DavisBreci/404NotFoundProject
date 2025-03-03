@@ -5,9 +5,19 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.jfugue.pattern.Pattern;
+import org.jfugue.player.Player;
+
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Sequencer;
 
 public class Measure {
     private Instrument instrument;
@@ -16,25 +26,59 @@ public class Measure {
     private TreeMap<Rational, Rest> rests;
 
     public static void main(String [] args){
-        Measure m = new Measure(Instrument.GUITAR, new Rational("4/4"));
-        Chord gmaj = new Chord(NoteValue.HALF, false, Instrument.GUITAR);
-        
-        gmaj.put(new Note(PitchClass.G, 2), 0);
-        gmaj.put(new Note(PitchClass.B, 2), 1);
-        gmaj.put(new Note(PitchClass.D, 3), 2);
-        gmaj.put(new Note(PitchClass.G, 3), 3);
-        gmaj.put(new Note(PitchClass.B, 3), 4);
-        gmaj.put(new Note(PitchClass.G, 4), 5);
+        Measure m = new Measure(Instrument.GUITAR, new Rational("16/4")); // We don't have a score yet 
+        Chord powerChord = new Chord(NoteValue.EIGHTH, false, Instrument.GUITAR);
+        powerChord.put(new Note(PitchClass.D, 3), 1);
+        powerChord.put(new Note(PitchClass.A, 3), 2);
+        m.put(new Rational("0/1"), powerChord.deepCopy());
+            powerChord.shiftString(1);
+            powerChord.transpose(-2);
+        m.put(new Rational("1/4"), powerChord.deepCopy());
+            powerChord.transpose(2);
+        m.put(new Rational("2/4"), powerChord.deepCopy());
+            powerChord.shiftString(-1);
+        m.put(new Rational("7/8"), powerChord.deepCopy());
+            powerChord.shiftString(1);
+            powerChord.transpose(-2);
+        m.put(new Rational("9/8"), powerChord.deepCopy());
+            powerChord.transpose(3);
+        m.put(new Rational("11/8"), powerChord.deepCopy());
+            powerChord.transpose(-1);
+        m.put(new Rational("12/8"), powerChord.deepCopy());
+            powerChord.shiftString(-1);
+        m.put(new Rational("16/8"), powerChord.deepCopy());
+            powerChord.shiftString(1);
+            powerChord.transpose(-2);
+        m.put(new Rational("18/8"), powerChord.deepCopy());
+            powerChord.transpose(2);
+        m.put(new Rational("20/8"), powerChord.deepCopy());
+            powerChord.transpose(-2);
+        m.put(new Rational("23/8"), powerChord.deepCopy());
+            powerChord.shiftString(-1);
+            powerChord.transpose(2);
+        m.put(new Rational("25/8"), powerChord.deepCopy());
 
-        Chord dmaj = gmaj.deepCopy();
-        dmaj.transpose(7);
-        System.out.println(m.put(new Rational("0/1"), gmaj.deepCopy()));
-        System.out.println(m.put(new Rational("1/2"), gmaj.deepCopy()));
-        System.out.println(m.put(new Rational("1/8"), dmaj.deepCopy()));
-        System.out.println(m);
+        Player p = new Player();
+        Pattern riff = new Pattern(m.toString());
+        riff.setTempo(114);
+        riff.setInstrument(30); // Distortion guitar
+        Sequencer sequencer;
+        try {
+            sequencer = MidiSystem.getSequencer();
+            sequencer.open();
+            sequencer.setSequence(p.getSequence(riff));
+            System.out.println("Now playing \"Smoke on the Water\" by Deep Purple");
+            System.out.println(m);
+            sequencer.start();
+        } catch (MidiUnavailableException e) {
+            e.printStackTrace();
+        } catch (InvalidMidiDataException e) {
+            e.printStackTrace();
+        }
     }
 
     public Measure(Instrument instrument, Rational timeSignature){
+        Entry.comparingByKey();
         this.instrument = instrument;
         this.timeSignature = timeSignature;
         this.chords = new TreeMap<Rational, Chord>();
@@ -90,6 +134,7 @@ public class Measure {
         }
         if(!outOfBounds(offset, chord)){
             chords.put(offset, chord);
+            updateRests();
             return true;
         }
         return false;
@@ -100,9 +145,7 @@ public class Measure {
             return true;
         Rational noteEnd = offset.deepCopy();
         noteEnd.plus(barObj.getDuration());
-        Rational barEnd = timeSignature.deepCopy();
-        barEnd.plus(new Rational(1, timeSignature.getDenominator()));
-        if(noteEnd.compareTo(barEnd)  == 1)
+        if(noteEnd.compareTo(timeSignature)  == 1)
             return true;
         return false;
     }
@@ -130,20 +173,80 @@ public class Measure {
     public void clear(){
 
     }
-
+    /**
+     * Fills gaps between notes with rests
+     */
     public void updateRests(){
+        rests.clear();
+        Rational gapStart = new Rational("0/1");
+        Rational gapEnd;
+        Iterator<Entry<Rational, Chord>> iIterator = entryIterator();
+        Entry<Rational, Chord> currentEntry;
+        while(iIterator.hasNext()){
+            currentEntry = iIterator.next();
+            gapEnd = currentEntry.getKey();
+            if(gapStart.compareTo(gapEnd) == -1){// Gap between notes
+                greedyRestFill(gapStart, gapEnd); 
+            } 
+            gapStart = gapEnd.deepCopy();
+            gapStart.plus(currentEntry.getValue().getDuration());
+        }
+        gapEnd = timeSignature;
+        if(gapStart.compareTo(gapEnd) == -1){
+            greedyRestFill(gapStart, gapEnd);
+        }
 
+    }
+    /**
+     * Greedily fills the space between the start and end with rests
+     * @param start where to begin filling
+     * @param end where to end filling
+     */
+    private void greedyRestFill(Rational start, Rational end){
+        Rational remainder = end.deepCopy();
+        Rational offset = start.deepCopy();
+        remainder.minus(start);
+        double noteIndex;
+        NoteValue value;
+        Rational dot;
+        Rational temp;
+        boolean dotted;
+        Rest rest;
+        while(!remainder.isZero()){
+            remainder.times(new Rational(64/remainder.getDenominator()));
+            noteIndex = Math.log(remainder.getNumerator()) / Math.log(2);
+            value = NoteValue.values()[
+                Math.min(NoteValue.values().length - 1, (int)noteIndex)
+            ];
+            remainder.minus(value.duration);
+            dot = new Rational(
+                value.duration.getNumerator()/2, value.duration.getDenominator()
+            );
+            temp = remainder.deepCopy();
+            temp.minus(dot);
+            if((dotted = remainder.compareTo(dot) <= 0 && temp.compareTo(new Rational("0/1")) == 1))
+                remainder = temp;
+            rest = new Rest(value, dotted);
+            offset.simplify();
+            rests.put(offset.deepCopy(), rest);
+            offset.plus(rest.getDuration());
+        }
     }
 
     public int beatOf(Rational offset){
         return 1;
     }
-
-    public boolean fill(Rational offset, Note n, boolean forward){
-        return true;
-    }
-
-    public Note bite(Rational offset, Note n){
+    /**
+     * This method places the portion of the note that will fit within the measure within it.
+     * If necessary, the method constructs the bitten portion as several notes tied together.
+     * This is useful for notes of irregular duration and notes that cross barlines.
+     * @param offset where the note begins
+     * @param pitchClass the note's pitch
+     * @param octave the note's octave
+     * @param duration the note's raw duration
+     * @return the unbitten duration and a reference to the last note bitten
+     */
+    public AbstractMap.SimpleEntry<Rational, Note> bite(Rational offset, PitchClass pitchClass, int octave, Rational duration){
         return null;
     }
 
@@ -167,8 +270,8 @@ public class Measure {
 
     private Iterator<Entry<Rational, ? extends BarObj>> barIterator(){
         TreeSet<Entry<Rational, ? extends BarObj>> ts = new TreeSet<Entry<Rational, ? extends BarObj>>(Comparator.comparing(Entry::getKey));
-        ts.addAll(chords.entrySet());
         ts.addAll(rests.entrySet());
+        ts.addAll(chords.entrySet());   
         return ts.iterator();
     }
 }

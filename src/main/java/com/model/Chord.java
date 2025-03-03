@@ -59,8 +59,9 @@ public class Chord extends BarObj{
     public Chord deepCopy(){
         Chord copy = new Chord(value, dotted, instrument);
         Note [] notes = getNotes();
-        for(Note n : notes)
-            copy.put(n, n.getString());
+        for(int i = 0; i < notes.length; i++)
+            if(notes[i] != null)
+                copy.put(notes[i], notes[i].getString());
         return copy;
     }
 
@@ -73,7 +74,7 @@ public class Chord extends BarObj{
      * @return whether the note was succesfully added to the chord
      */
     public boolean put(Note note, int string){
-        if(notes[string] != null)
+        if(note == null || notes[string] != null)
             return false;
         if(note.restring(string)){
             if(duration != note.getDuration()){
@@ -104,13 +105,37 @@ public class Chord extends BarObj{
 
     public boolean transpose(int steps){
         Note [] temp = getNotes();
-        for(Note n : temp)
-            if(!n.transpose(steps))
+        for(int i = 0; i < temp.length; i++)
+            if(temp[i] != null && !temp[i].transpose(steps))
                 return false;
-        for(Note n : this.notes)
-            n.transpose(steps);
+        for(int i = 0; i < notes.length; i++)
+            if(notes[i] != null)
+                notes[i].transpose(steps);
         return true;
     }
+
+    public boolean shiftString(int strings){
+        Note [] temp = getNotes();
+        int newString = 0;
+        Note newNote;
+        for(int i = 0; i < temp.length; i++)
+            if(temp[i] != null){
+                if((newString = i + strings) >= temp.length || newString < 0){
+                    return false;
+                }
+                newNote = instrument.tuning[newString].deepCopy();
+                newNote.transpose(temp[i].getFret());
+                temp[i] = newNote;
+            }
+        notes = new Note[notes.length];
+        for(int i = 0; i < notes.length; i++)
+            if(temp[i] != null){
+                notes[i + strings] = temp[i];
+                temp[i].setLocation(i + strings, temp[i].getFret());
+            }
+        return true;
+    }
+    
     /**
      * Retrieves a Staccato representation of the chord
      */
@@ -126,5 +151,6 @@ public class Chord extends BarObj{
         });
         return staccato.toString();
     }
+
 }
 

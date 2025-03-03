@@ -69,6 +69,7 @@ public class Note extends BarObj {
         copy.setLocation(string, fret);
         copy.setFrontTie(frontTie);
         copy.setBackTie(backTie);
+        copy.setInstrument(instrument);
         return copy;
     }
     /**
@@ -93,11 +94,11 @@ public class Note extends BarObj {
      * @return whether the change was successful
      */
     public boolean restring(int string){
-        if(string >= instrument.tuning.length)
+        if(string >= instrument.tuning.length || string < 0)
         return false;
         Note open = instrument.tuning[string]; // The lowest note on the string
         int fret = open.stepsTo(this);
-        if(fret >= instrument.frets)
+        if(fret >= instrument.frets || fret < 0)
             return false;
         this.string = string;
         this.fret = fret;
@@ -196,21 +197,23 @@ public class Note extends BarObj {
      * Attempts to tie the front of this note to the given note
      * @param n a note for tying
      */
-    public void tieFront(Note n){
+    public Note tieFront(Note n){
         if(n != null){
             n.setBackTie(this);
             setFrontTie(n);
         }
+        return this;
     }
     /**
      * Attempts to tie the back of this note to the given note
      * @param n a note for tying
      */
-    public void tieBack(Note n){
+    public Note tieBack(Note n){
         if(n != null){
             n.setFrontTie(this);
             setBackTie(n);
         }
+        return this;
     }
      /**
      * Modifies this note's front tie without checks
@@ -253,7 +256,7 @@ public class Note extends BarObj {
      * Returns a Staccato representation of the note
      */
     public String toString(){
-        return pitchClass + (backTie == null ? "" : "-") + timingString() + (frontTie == null ? "" : "-");
+        return pitchClass + "" + octave + (backTie == null ? "" : "-") + timingString() + (frontTie == null ? "" : "-");
     }
     /**
      * Whether two notes have the same pitch and location
@@ -270,13 +273,16 @@ public class Note extends BarObj {
      * Method that attempts to shift a note up or down depending on the given number of steps.
      * Notes can only be shifted along a string, and successful transposition will affect the fret number.
      * @param steps
-     * @return
+     * @return whether the transposition was successful
      */
     public boolean transpose(int steps){
         int newFret = fret + steps;
         int newNoteNum = midiNoteNum() + steps;
-        if(newFret < 0 || newFret >= instrument.frets || newNoteNum < 21 || newNoteNum > 128) 
+        if(newFret < 0 || newFret >= instrument.frets){
+            System.out.println("Failure " + fret + " " + newFret);
             return false;
+        } 
+            
         octave = noteNumToOctave(newNoteNum);
         pitchClass = noteNumToPitchClass(newNoteNum);
         fret = newFret;
