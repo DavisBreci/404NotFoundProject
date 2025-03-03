@@ -13,6 +13,12 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Sequencer;
+
 public class Measure {
     private Instrument instrument;
     private Rational timeSignature;
@@ -20,7 +26,6 @@ public class Measure {
     private TreeMap<Rational, Rest> rests;
 
     public static void main(String [] args){
-        /* Example: "953" by black midi */
         Measure m = new Measure(Instrument.GUITAR, new Rational("16/4")); // We don't have a score yet 
         Chord powerChord = new Chord(NoteValue.EIGHTH, false, Instrument.GUITAR);
         powerChord.put(new Note(PitchClass.D, 3), 1);
@@ -55,13 +60,21 @@ public class Measure {
 
         Player p = new Player();
         Pattern riff = new Pattern(m.toString());
-        riff.add("Rw");
         riff.setTempo(114);
-        riff.setInstrument(30);
-        System.out.println(m);
-        p.play(riff);
-       
-       
+        riff.setInstrument(30); // Distortion guitar
+        Sequencer sequencer;
+        try {
+            sequencer = MidiSystem.getSequencer();
+            sequencer.open();
+            sequencer.setSequence(p.getSequence(riff));
+            System.out.println("Now playing \"Smoke on the Water\" by Deep Purple");
+            System.out.println(m);
+            sequencer.start();
+        } catch (MidiUnavailableException e) {
+            e.printStackTrace();
+        } catch (InvalidMidiDataException e) {
+            e.printStackTrace();
+        }
     }
 
     public Measure(Instrument instrument, Rational timeSignature){
