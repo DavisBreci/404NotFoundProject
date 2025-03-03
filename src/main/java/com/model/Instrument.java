@@ -29,6 +29,8 @@ public enum Instrument {
     public final int frets;
     private Instrument(int frets, Note ... tuning){
         this.frets = frets;
+        for(Note n : tuning)
+            n.setInstrument(this);
         this.tuning = tuning;
     }
 }

@@ -5,6 +5,10 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.jfugue.pattern.Pattern;
+import org.jfugue.player.Player;
+
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -16,23 +20,47 @@ public class Measure {
     private TreeMap<Rational, Rest> rests;
 
     public static void main(String [] args){
-        Measure m = new Measure(Instrument.GUITAR, new Rational("4/4"));
-        Chord gmaj = new Chord(NoteValue.QUARTER, false, Instrument.GUITAR);
-        
-        gmaj.put(new Note(PitchClass.G, 2), 0);
-        gmaj.put(new Note(PitchClass.B, 2), 1);
-        gmaj.put(new Note(PitchClass.D, 3), 2);
-        gmaj.put(new Note(PitchClass.G, 3), 3);
-        gmaj.put(new Note(PitchClass.B, 3), 4);
-        gmaj.put(new Note(PitchClass.G, 4), 5);
+        /* Example: "953" by black midi */
+        Measure m = new Measure(Instrument.GUITAR, new Rational("16/4")); // We don't have a score yet 
+        Chord powerChord = new Chord(NoteValue.EIGHTH, false, Instrument.GUITAR);
+        powerChord.put(new Note(PitchClass.D, 3), 1);
+        powerChord.put(new Note(PitchClass.A, 3), 2);
+        m.put(new Rational("0/1"), powerChord.deepCopy());
+            powerChord.shiftString(1);
+            powerChord.transpose(-2);
+        m.put(new Rational("1/4"), powerChord.deepCopy());
+            powerChord.transpose(2);
+        m.put(new Rational("2/4"), powerChord.deepCopy());
+            powerChord.shiftString(-1);
+        m.put(new Rational("7/8"), powerChord.deepCopy());
+            powerChord.shiftString(1);
+            powerChord.transpose(-2);
+        m.put(new Rational("9/8"), powerChord.deepCopy());
+            powerChord.transpose(3);
+        m.put(new Rational("11/8"), powerChord.deepCopy());
+            powerChord.transpose(-1);
+        m.put(new Rational("12/8"), powerChord.deepCopy());
+            powerChord.shiftString(-1);
+        m.put(new Rational("16/8"), powerChord.deepCopy());
+            powerChord.shiftString(1);
+            powerChord.transpose(-2);
+        m.put(new Rational("18/8"), powerChord.deepCopy());
+            powerChord.transpose(2);
+        m.put(new Rational("20/8"), powerChord.deepCopy());
+            powerChord.transpose(-2);
+        m.put(new Rational("23/8"), powerChord.deepCopy());
+            powerChord.shiftString(-1);
+            powerChord.transpose(2);
+        m.put(new Rational("25/8"), powerChord.deepCopy());
 
-        Chord dmaj = gmaj.deepCopy();
-        dmaj.transpose(7);
-        System.out.println(m.put(new Rational("1/8"), gmaj.deepCopy()));
-        // System.out.println(m.put(new Rational("1/2"), gmaj.deepCopy()));
-        System.out.println(m.put(new Rational("2/4"), dmaj.deepCopy()));
-        m.updateRests();
+        Player p = new Player();
+        Pattern riff = new Pattern(m.toString());
+        riff.add("Rw");
+        riff.setTempo(114);
+        riff.setInstrument(30);
         System.out.println(m);
+        p.play(riff);
+       
        
     }
 
@@ -93,6 +121,7 @@ public class Measure {
         }
         if(!outOfBounds(offset, chord)){
             chords.put(offset, chord);
+            updateRests();
             return true;
         }
         return false;
