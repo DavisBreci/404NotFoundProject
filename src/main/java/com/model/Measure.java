@@ -167,6 +167,7 @@ public class Measure {
         double noteIndex;
         NoteValue value;
         Rational dot;
+        Rational temp;
         boolean dotted;
         Rest rest;
         while(!remainder.isZero()){
@@ -179,7 +180,7 @@ public class Measure {
             dot = new Rational(
                 value.duration.getNumerator()/2, value.duration.getDenominator()
             );
-            Rational temp = remainder.deepCopy();
+            temp = remainder.deepCopy();
             temp.minus(dot);
             if((dotted = remainder.compareTo(dot) <= 0 && temp.compareTo(new Rational("0/1")) == 1))
                 remainder = temp;
@@ -193,12 +194,17 @@ public class Measure {
     public int beatOf(Rational offset){
         return 1;
     }
-
-    public boolean fill(Rational offset, Note n, boolean forward){
-        return true;
-    }
-
-    public Note bite(Rational offset, Note n){
+    /**
+     * This method places the portion of the note that will fit within the measure within it.
+     * If necessary, the method constructs the bitten portion as several notes tied together.
+     * This is useful for notes of irregular duration and notes that cross barlines.
+     * @param offset where the note begins
+     * @param pitchClass the note's pitch
+     * @param octave the note's octave
+     * @param duration the note's raw duration
+     * @return the unbitten duration and a reference to the last note bitten
+     */
+    public AbstractMap.SimpleEntry<Rational, Note> bite(Rational offset, PitchClass pitchClass, int octave, Rational duration){
         return null;
     }
 
@@ -222,8 +228,6 @@ public class Measure {
 
     private Iterator<Entry<Rational, ? extends BarObj>> barIterator(){
         TreeSet<Entry<Rational, ? extends BarObj>> ts = new TreeSet<Entry<Rational, ? extends BarObj>>(Comparator.comparing(Entry::getKey));
-        // System.out.println("These are the rests " + rests);
-        // System.out.println("These are the chords " + chords);
         ts.addAll(rests.entrySet());
         ts.addAll(chords.entrySet());   
         return ts.iterator();

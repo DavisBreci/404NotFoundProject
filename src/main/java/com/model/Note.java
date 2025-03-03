@@ -196,21 +196,23 @@ public class Note extends BarObj {
      * Attempts to tie the front of this note to the given note
      * @param n a note for tying
      */
-    public void tieFront(Note n){
+    public Note tieFront(Note n){
         if(n != null){
             n.setBackTie(this);
             setFrontTie(n);
         }
+        return this;
     }
     /**
      * Attempts to tie the back of this note to the given note
      * @param n a note for tying
      */
-    public void tieBack(Note n){
+    public Note tieBack(Note n){
         if(n != null){
             n.setFrontTie(this);
             setBackTie(n);
         }
+        return this;
     }
      /**
      * Modifies this note's front tie without checks
