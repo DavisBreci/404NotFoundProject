@@ -17,7 +17,7 @@ public class Measure {
 
     public static void main(String [] args){
         Measure m = new Measure(Instrument.GUITAR, new Rational("4/4"));
-        Chord gmaj = new Chord(NoteValue.HALF, false, Instrument.GUITAR);
+        Chord gmaj = new Chord(NoteValue.QUARTER, false, Instrument.GUITAR);
         
         gmaj.put(new Note(PitchClass.G, 2), 0);
         gmaj.put(new Note(PitchClass.B, 2), 1);
@@ -28,13 +28,16 @@ public class Measure {
 
         Chord dmaj = gmaj.deepCopy();
         dmaj.transpose(7);
-        System.out.println(m.put(new Rational("0/1"), gmaj.deepCopy()));
-        System.out.println(m.put(new Rational("1/2"), gmaj.deepCopy()));
-        System.out.println(m.put(new Rational("1/8"), dmaj.deepCopy()));
+        System.out.println(m.put(new Rational("1/8"), gmaj.deepCopy()));
+        // System.out.println(m.put(new Rational("1/2"), gmaj.deepCopy()));
+        System.out.println(m.put(new Rational("2/4"), dmaj.deepCopy()));
+        m.updateRests();
         System.out.println(m);
+       
     }
 
     public Measure(Instrument instrument, Rational timeSignature){
+        Entry.comparingByKey();
         this.instrument = instrument;
         this.timeSignature = timeSignature;
         this.chords = new TreeMap<Rational, Chord>();
@@ -100,9 +103,7 @@ public class Measure {
             return true;
         Rational noteEnd = offset.deepCopy();
         noteEnd.plus(barObj.getDuration());
-        Rational barEnd = timeSignature.deepCopy();
-        barEnd.plus(new Rational(1, timeSignature.getDenominator()));
-        if(noteEnd.compareTo(barEnd)  == 1)
+        if(noteEnd.compareTo(timeSignature)  == 1)
             return true;
         return false;
     }
@@ -130,9 +131,63 @@ public class Measure {
     public void clear(){
 
     }
-
+    /**
+     * Fills gaps between notes with rests
+     */
     public void updateRests(){
+        rests.clear();
+        Rational gapStart = new Rational("0/1");
+        Rational gapEnd;
+        Iterator<Entry<Rational, Chord>> iIterator = entryIterator();
+        Entry<Rational, Chord> currentEntry;
+        while(iIterator.hasNext()){
+            currentEntry = iIterator.next();
+            gapEnd = currentEntry.getKey();
+            if(gapStart.compareTo(gapEnd) == -1){// Gap between notes
+                greedyRestFill(gapStart, gapEnd); 
+            } 
+            gapStart = gapEnd.deepCopy();
+            gapStart.plus(currentEntry.getValue().getDuration());
+        }
+        gapEnd = timeSignature;
+        if(gapStart.compareTo(gapEnd) == -1){
+            greedyRestFill(gapStart, gapEnd);
+        }
 
+    }
+    /**
+     * Greedily fills the space between the start and end with rests
+     * @param start where to begin filling
+     * @param end where to end filling
+     */
+    private void greedyRestFill(Rational start, Rational end){
+        Rational remainder = end.deepCopy();
+        Rational offset = start.deepCopy();
+        remainder.minus(start);
+        double noteIndex;
+        NoteValue value;
+        Rational dot;
+        boolean dotted;
+        Rest rest;
+        while(!remainder.isZero()){
+            remainder.times(new Rational(64/remainder.getDenominator()));
+            noteIndex = Math.log(remainder.getNumerator()) / Math.log(2);
+            value = NoteValue.values()[
+                Math.min(NoteValue.values().length - 1, (int)noteIndex)
+            ];
+            remainder.minus(value.duration);
+            dot = new Rational(
+                value.duration.getNumerator()/2, value.duration.getDenominator()
+            );
+            Rational temp = remainder.deepCopy();
+            temp.minus(dot);
+            if((dotted = remainder.compareTo(dot) <= 0 && temp.compareTo(new Rational("0/1")) == 1))
+                remainder = temp;
+            rest = new Rest(value, dotted);
+            offset.simplify();
+            rests.put(offset.deepCopy(), rest);
+            offset.plus(rest.getDuration());
+        }
     }
 
     public int beatOf(Rational offset){
@@ -167,8 +222,10 @@ public class Measure {
 
     private Iterator<Entry<Rational, ? extends BarObj>> barIterator(){
         TreeSet<Entry<Rational, ? extends BarObj>> ts = new TreeSet<Entry<Rational, ? extends BarObj>>(Comparator.comparing(Entry::getKey));
-        ts.addAll(chords.entrySet());
+        // System.out.println("These are the rests " + rests);
+        // System.out.println("These are the chords " + chords);
         ts.addAll(rests.entrySet());
+        ts.addAll(chords.entrySet());   
         return ts.iterator();
     }
 }

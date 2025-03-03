@@ -3,6 +3,8 @@
  */
 package com.model;
 
+import java.util.Comparator;
+
 public class Rational implements Comparable<Rational>{
     private int numerator;
     private int denominator;
@@ -190,5 +192,9 @@ public class Rational implements Comparable<Rational>{
 		}
 		return rM;
 	}
+
+    public boolean isZero(){
+        return numerator == 0 && denominator != 0;
+    }
 
 }
