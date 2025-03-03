@@ -14,10 +14,12 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
+import javax.sound.midi.Track;
 
 public class Measure {
     private Instrument instrument;
@@ -57,24 +59,23 @@ public class Measure {
             powerChord.shiftString(-1);
             powerChord.transpose(2);
         m.put(new Rational("25/8"), powerChord.deepCopy());
-
         Player p = new Player();
         Pattern riff = new Pattern(m.toString());
-        riff.setTempo(114);
+        riff.setTempo(114); // in BPM
         riff.setInstrument(30); // Distortion guitar
-        Sequencer sequencer;
-        try {
-            sequencer = MidiSystem.getSequencer();
-            sequencer.open();
-            sequencer.setSequence(p.getSequence(riff));
-            System.out.println("Now playing \"Smoke on the Water\" by Deep Purple");
-            System.out.println(m);
-            sequencer.start();
-        } catch (MidiUnavailableException e) {
-            e.printStackTrace();
-        } catch (InvalidMidiDataException e) {
-            e.printStackTrace();
-        }
+        Sequence s = p.getSequence(riff.toString());
+        Track [] tracks = s.getTracks();
+        System.out.println("Metadata for this song's JFugue-generated MIDI sequence:");
+        System.out.println("\tThe sequence contains " + tracks.length + " tracks.");
+        Track track = tracks[0];
+        MidiEvent ultimate = track.get(track.size() - 1);
+        MidiEvent penultimate = track.get(track.size() - 2);
+        // ultimate.setTick(ultimate.getTick() * 2);
+        System.out.println("\tEnd of track event occurs @ tick " + ultimate.getTick());
+        System.out.println("\tSecond to last event of track occurs @ tick " + penultimate.getTick()); // This is a problem!
+        System.out.println("Staccato Representation of measure:\n" + m);
+        System.out.println("Now playing \"Smoke on the Water\" by Deep Purple...");
+        p.play(s);
     }
 
     public Measure(Instrument instrument, Rational timeSignature){
