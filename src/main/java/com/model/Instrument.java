@@ -11,6 +11,8 @@ public enum Instrument {
         new Note(PitchClass.E, 4) 
         ),
 
+    DISTORTION_GUITAR(GUITAR),
+
     BASS(24, 
         new Note(PitchClass.E, 1),
         new Note(PitchClass.A, 1),
@@ -33,4 +35,14 @@ public enum Instrument {
             n.setInstrument(this);
         this.tuning = tuning;
     }
+
+    /**
+     * This constructor lets you create a new instrument with the same instance variables as another
+     * @param template instrument to be copied
+     */
+    private Instrument(Instrument template){
+        frets = template.frets;
+        tuning = template.tuning;
+    }
+    
 }

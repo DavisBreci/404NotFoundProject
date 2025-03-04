@@ -381,7 +381,7 @@ public class Measure {
             staccato.append(i.getValue().toString() + " ");
 
         }
-        return staccato.append("|").toString();
+        return includeBars ? staccato.append("|").toString() : staccato.toString();
     }
 
     /**
