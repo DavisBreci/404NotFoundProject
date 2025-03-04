@@ -103,6 +103,28 @@ public class Chord extends BarObj{
         return true;
     }
 
+    /**
+     * Attempts to remove a note from the chord
+     * @param string The note to be deleted
+     * @return Whether the removal was successful
+     */
+    public boolean remove(Note n){
+        if(n.getString() >= notes.length)
+            return false;
+        if(notes[n.getString()] == null)
+            return false;
+        if(!notes[n.getString()].equals(n))
+            return false;
+        notes[n.getString()] = null;
+        noteCount--;
+        return true;
+    }
+
+    /**
+     * Attempts to transpose the entire chrord
+     * @param steps the signed number of frets to transpose by
+     * @return whether the transposition was successful
+     */
     public boolean transpose(int steps){
         Note [] temp = getNotes();
         for(int i = 0; i < temp.length; i++)
@@ -114,6 +136,11 @@ public class Chord extends BarObj{
         return true;
     }
 
+    /**
+     * Attempts to move the chord shape across the fretboard
+     * @param strings the signed number of strings to shift by
+     * @return whether the shift was successful
+     */
     public boolean shiftString(int strings){
         Note [] temp = getNotes();
         int newString = 0;

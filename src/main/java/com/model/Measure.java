@@ -1,3 +1,6 @@
+/**
+ * @author Christopher Ferguson
+ */
 package com.model;
 
 import java.util.AbstractMap;
@@ -21,12 +24,15 @@ import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Track;
 
+/**
+ * Class representing a single measure of tablature
+ */
 public class Measure {
     private Instrument instrument;
     private Rational timeSignature;
     private TreeMap<Rational, Chord> chords;
     private TreeMap<Rational, Rest> rests;
-
+    
     public static void main(String [] args){
         Measure m = new Measure(Instrument.GUITAR, new Rational("16/4")); // We don't have a score yet 
         Chord powerChord = new Chord(NoteValue.EIGHTH, false, Instrument.GUITAR);
@@ -75,9 +81,16 @@ public class Measure {
         System.out.println("\tSecond to last event of track occurs @ tick " + penultimate.getTick()); // This is a problem!
         System.out.println("Staccato Representation of measure:\n" + m);
         System.out.println("Now playing \"Smoke on the Water\" by Deep Purple...");
-        p.play(s);
+        // p.play(s);
+        Measure m2 = new Measure(Instrument.UKULELE, new Rational("5/4"));
+        System.out.println(m2.beatOf(new Rational("4/16")));
     }
 
+    /**
+     * Creates an empty measure
+     * @param instrument the measure's instrument
+     * @param timeSignature the time signature the measure is in
+     */
     public Measure(Instrument instrument, Rational timeSignature){
         Entry.comparingByKey();
         this.instrument = instrument;
@@ -107,6 +120,7 @@ public class Measure {
      * @param note the note to be added
      * @return whether the addition was successful
      */
+
     public boolean put(Rational offset, Note note, int string){
         Chord container = null;
         if((container = chords.get(offset)) != null)
@@ -141,6 +155,12 @@ public class Measure {
         return false;
     }
 
+    /**
+     * Method for finding whether a musical object cannot be contained within the measure
+     * @param offset the barObj's offset
+     * @param barObj a musical object that has a duration
+     * @return whether the BarObj cannot be contained within the measure
+     */
     private boolean outOfBounds(Rational offset, BarObj barObj){
         if(offset.compareTo(new Rational("0/1")) == -1)
             return true;
@@ -151,29 +171,70 @@ public class Measure {
         return false;
     }
 
+    /**
+     * Attempts to remove a chord from the measure
+     * @param offset the chord's offset
+     * @param chord the chord for removal
+     * @return whether the removal was successful
+     */
     public boolean remove(Rational offset, Chord chord){
-        return true;
+        return chords.remove(offset, chord);
     }
 
+    /**
+     * Attempts to remove a note from the measure 
+     * @param offset the note's offset
+     * @param n the note for removal
+     * @return whether the removal was successful
+     */
+    public boolean remove(Rational offset, Note n){
+        Chord container = chords.get(offset);
+        if(container == null)
+            return false;
+        return container.remove(n);
+    }
+
+    /**
+     * Retrieves the chord at the specified offset, if it exists
+     * @return the chord
+     */
     public Chord get(Rational offset){
-        return null;
+        return chords.get(offset);
     }
 
+    /**
+     * Retrieves an entry set of chords
+     * @return the entry set
+     */
     public Set<Map.Entry<Rational, Chord>>  chordEntrySet(){
-        return null;
+        return chords.entrySet();
     }
     
+    /**
+     * Retrieves an entry set of rests
+     * @return the entry set
+     */
     public Set<Map.Entry<Rational, Rest>>  restEntrySet(){
-        return null;
+        return rests.entrySet();
     }
 
+    /**
+     * Returns true if the measure contains no notes
+     * @return whether the measure is empty
+     */
     public boolean isEmpty(){
-        return true;
+        return chords.isEmpty();
     }
-
+    
+    /**
+     * Gets rid of all the notes within a measure
+     */
     public void clear(){
-
+        chords.clear();
+        rests.clear();
+        greedyRestFill(new Rational(0, 1), timeSignature);
     }
+
     /**
      * Fills gaps between notes with rests
      */
@@ -186,7 +247,7 @@ public class Measure {
         while(iIterator.hasNext()){
             currentEntry = iIterator.next();
             gapEnd = currentEntry.getKey();
-            if(gapStart.compareTo(gapEnd) == -1){// Gap between notes
+            if(gapStart.compareTo(gapEnd) == -1){ // Gap between notes
                 greedyRestFill(gapStart, gapEnd); 
             } 
             gapStart = gapEnd.deepCopy();
@@ -196,8 +257,8 @@ public class Measure {
         if(gapStart.compareTo(gapEnd) == -1){
             greedyRestFill(gapStart, gapEnd);
         }
-
     }
+
     /**
      * Greedily fills the space between the start and end with rests
      * @param start where to begin filling
@@ -234,23 +295,33 @@ public class Measure {
         }
     }
 
+    /**
+     * Method that finds which beat of the measure a given offset falls on
+     * @param offset the distance from the start of the measure
+     * @return the 
+     */
     public int beatOf(Rational offset){
-        return 1;
+        return (offset.getNumerator() * timeSignature.getDenominator())/offset.getDenominator() + 1;
     }
+
     /**
      * This method places the portion of the note that will fit within the measure within it.
      * If necessary, the method constructs the bitten portion as several notes tied together.
      * This is useful for notes of irregular duration and notes that cross barlines.
+     * @param backTie note for the first note created by this method to be tied to
      * @param offset where the note begins
      * @param pitchClass the note's pitch
      * @param octave the note's octave
      * @param duration the note's raw duration
      * @return the unbitten duration and a reference to the last note bitten
      */
-    public AbstractMap.SimpleEntry<Rational, Note> bite(Rational offset, PitchClass pitchClass, int octave, Rational duration){
+    public AbstractMap.SimpleEntry<Rational, Note> bite(Note backTie, Rational offset, PitchClass pitchClass, int octave, Rational duration){
         return null;
     }
 
+    /**
+     * Returns a staccato representation of the note
+     */
     public String toString(){
         StringBuilder staccato = new StringBuilder();
         Iterator<Entry<Rational, ? extends BarObj>> iIterator = barIterator();
@@ -263,12 +334,37 @@ public class Measure {
         return staccato.append("|").toString();
     }
 
+    /**
+     * Version of toString() that lets the user choose whether they want barlines
+     * @param includeBars whether to append a barline to the measure's end
+     * @return the Staccato string
+     */
+    public String toString(boolean includeBars){
+        StringBuilder staccato = new StringBuilder();
+        Iterator<Entry<Rational, ? extends BarObj>> iIterator = barIterator();
+        Entry<Rational, ? extends BarObj> i;
+        while(iIterator.hasNext()){
+            i = iIterator.next();
+            staccato.append(i.getValue().toString() + " ");
+
+        }
+        return staccato.append("|").toString();
+    }
+
+    /**
+     * Retrieves an iterator that iterates over chords only
+     * @return the chord iterator
+     */
     private Iterator<Entry<Rational, Chord>> entryIterator(){
         TreeSet<Entry<Rational, Chord>> ts = new TreeSet<Entry<Rational, Chord>>(Comparator.comparing(Entry::getKey));
         ts.addAll(chords.entrySet());
         return ts.iterator();
     }
 
+    /**
+     * Retrieves an iterator that iterates over rests and chords
+     * @return the bar iterator
+     */
     private Iterator<Entry<Rational, ? extends BarObj>> barIterator(){
         TreeSet<Entry<Rational, ? extends BarObj>> ts = new TreeSet<Entry<Rational, ? extends BarObj>>(Comparator.comparing(Entry::getKey));
         ts.addAll(rests.entrySet());
