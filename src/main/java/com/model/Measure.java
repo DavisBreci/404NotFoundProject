@@ -4,25 +4,21 @@
 package com.model;
 
 import java.util.AbstractMap;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.jfugue.pattern.Pattern;
-import org.jfugue.player.Player;
-
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
-import javax.sound.midi.Sequencer;
 import javax.sound.midi.Track;
+
+import org.jfugue.pattern.Pattern;
+import org.jfugue.player.Player;
 
 /**
  * Class representing a single measure of tablature
@@ -84,6 +80,10 @@ public class Measure {
         // p.play(s);
         Measure m2 = new Measure(Instrument.UKULELE, new Rational("5/4"));
         System.out.println(m2.beatOf(new Rational("4/16")));
+        System.out.println(
+            m2.bite(null, new Rational("0/1"), PitchClass.G, 4, new Rational("5/4"), 0)
+        );
+        System.out.println(m2.chords);
     }
 
     /**
@@ -307,16 +307,49 @@ public class Measure {
     /**
      * This method places the portion of the note that will fit within the measure within it.
      * If necessary, the method constructs the bitten portion as several notes tied together.
+     * If there are other notes obstructing placement, this method places what it can and returns null.
      * This is useful for notes of irregular duration and notes that cross barlines.
      * @param backTie note for the first note created by this method to be tied to
      * @param offset where the note begins
      * @param pitchClass the note's pitch
      * @param octave the note's octave
      * @param duration the note's raw duration
-     * @return the unbitten duration and a reference to the last note bitten
+     * @return a pair containing the unbitten duration and a reference to the last note bitten
      */
-    public AbstractMap.SimpleEntry<Rational, Note> bite(Note backTie, Rational offset, PitchClass pitchClass, int octave, Rational duration){
-        return null;
+    public AbstractMap.SimpleEntry<Rational, Note> bite(Note backTie, Rational offset, PitchClass pitchClass, int octave, Rational duration, int string){
+        Rational remainder = duration.deepCopy(); // How much of the note is left for processing
+        Rational _offset = offset.deepCopy();
+        double noteIndex;
+        Note prevNote = null;
+        Note currentNote = null;
+        NoteValue value;
+        Rational dot;
+        Rational temp;
+        boolean dotted;
+        while(_offset.compareTo(timeSignature) == -1){ // Stop when you've exhausted all space within the measure
+            remainder.times(new Rational(64/remainder.getDenominator())); // Normalize the remainder
+            noteIndex = Math.log(remainder.getNumerator()) / Math.log(2); // Calculate duration
+            value = NoteValue.values()[
+                Math.min(NoteValue.values().length - 1, (int)noteIndex)
+            ];
+            remainder.minus(value.duration);
+            dot = new Rational(
+                value.duration.getNumerator()/2, value.duration.getDenominator()
+            );
+            temp = remainder.deepCopy();
+            temp.minus(dot);
+            if((dotted = remainder.compareTo(dot) <= 0 && temp.compareTo(new Rational("0/1")) == 1))
+                remainder = temp;
+            currentNote = new Note(value, dotted, instrument, pitchClass, octave); // Create a new note and handle ties
+            System.out.println("The current note: " + currentNote);
+            currentNote.tieBack(prevNote);
+            _offset.simplify();
+            if(!put(_offset.deepCopy(), currentNote, string))
+                return null;
+            prevNote = currentNote;
+            _offset.plus(currentNote.getDuration());
+        }
+        return new AbstractMap.SimpleEntry<Rational, Note>(remainder.deepCopy(), currentNote);
     }
 
     /**
