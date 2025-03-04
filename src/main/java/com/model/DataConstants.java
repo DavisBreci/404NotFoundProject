@@ -1,10 +1,10 @@
-package main.java.com.model;
+package com.model;
 
 
 
 public class DataConstants {
     protected static final String USER_FILE_NAME = "JSON/users.jason";
-    // protected static final String USER_TEMP_FILE_NAME = "JSON/users.jason";
+    protected static final String USER_TEMP_FILE_NAME = "JSON/users_temp.json";
     protected static final String USER_ID = "id";
     protected static final String USER_USERNAME = "username";
     protected static final String USER_PASSWORD = "password";

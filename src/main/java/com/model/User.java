@@ -83,6 +83,7 @@ public class User {
     public void assignLesson(Lesson lesson){
         assignedLessons.add(lesson);
     }
+    
     public int getStreak(){
         return streak;
     }
@@ -92,4 +93,5 @@ public class User {
     public ArrayList<Playlist> getPlaylists(){
         return playlists;
     }
+
 }
