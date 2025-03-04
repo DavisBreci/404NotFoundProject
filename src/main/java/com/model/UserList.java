@@ -1,6 +1,7 @@
 package com.model;
 
 import java.util.ArrayList;
+import java.time.LocalDate;
 
 public class UserList {
     
@@ -15,22 +16,28 @@ public class UserList {
         if(userList == null) {
             userList = new UserList();
         }
-
         return userList;
     }
 
     public User getUser(String username, String password) {
         for(User user : users)
             if(user.getUsername().equals(username) && user.getPassword().equals(password))
-                
-    }
-
-    public User addUser(String firstname, String password) {
-        // users.add(user);
+                return user;
         return null;
     }
 
+    public User addUser(String first, String last, String email, String user, String pass) {
+        User toBeAdded = new User(null, first, last, email, user, pass, 0, 0,
+                                  new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN);
+        users.add(toBeAdded);
+        return toBeAdded;
+    }
+
     public boolean removeUser(User user) {
-        return true;
+        if(users.contains(user)){
+            users.remove(user);
+            return true;
+        }
+        return false;
     }
 }
