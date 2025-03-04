@@ -8,7 +8,7 @@ public class UserList {
     private ArrayList<User> users;
 
     private UserList() {
-        users = new UserList();
+        // users = new UserList();
     }
 
     public static UserList getInstance() {
@@ -20,12 +20,12 @@ public class UserList {
     }
 
     public User getUser(String username, String password) {
-        return user;
+        return null;
     }
 
     public User addUser(String firstname, String password) {
-        users.add(user);
-        return user;
+        // users.add(user);
+        return null;
     }
 
     public boolean removeUser(User user) {

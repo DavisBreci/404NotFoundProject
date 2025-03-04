@@ -12,20 +12,20 @@ public class PlaylistList {
     }
 
     public static PlaylistList getInstance() {
-        if(playlistList == null) {
-            playlistList = new ArrayList<>();
-        }
+        // if(playlistList == null) {
+        //     playlistList = new ArrayList<>();
+        // }
 
         return playlistList;
     }
 
-    public Playlist getPlaylist(String title, String author, String description, ArrayList<song> songs, double length) {
-        return playlist;
+    public Playlist getPlaylist(String title, String author, String description, ArrayList<Song> songs, double length) {
+        return null;
     }
 
     public void addPlaylist(String title, String author, String description) {
-        Playlist newPlaylist = new Playlist();
-        playlists.add(newPlaylist);
+        // Playlist newPlaylist = new Playlist();
+        // playlists.add(newPlaylist);
     }
 
     public void removePlaylist(Playlist playlist) {

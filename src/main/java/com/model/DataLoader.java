@@ -5,18 +5,18 @@ import java.util.ArrayList;
 public class DataLoader {
     
     public ArrayList<User> getUsers() {
-        return users;
+        return null;
     }
 
     public Score midiToScore(String filename, Instrument instrument) {
-        return score;
+        return null;
     }
 
     public ArrayList<Song> getSongs() {
-        return songs;
+        return null;
     }
 
     public ArrayList<Playlist> getPlaylists() {
-        return playlists;
+        return null;
     }
 }

@@ -26,19 +26,19 @@ public class SongList {
     }
 
     public Song getSongByTitle(String name) {
-        return song;
+        return null;
     }
 
-    public ArrayList<Song> getSongsByDifficulty(DiffultyLevel dv) {
-        return sortedSongs;
+    public ArrayList<Song> getSongsByDifficulty(DifficultyLevel dv) {
+        return null;
     }
 
     public ArrayList<Song> getSongsByKey(Key k) {
-        return sortedSongs;
+        return null;
     }
 
     public ArrayList<Song> getSongsByGenre(String genre) {
-        return sortedSongs;
+        return null;
     }
 
     public void addSong(Song s) {
