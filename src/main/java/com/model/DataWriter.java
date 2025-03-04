@@ -12,12 +12,12 @@ import org.json.simple.JSONObject;
 public class DataWriter extends DataConstants {
 
     public static void saveUsers() {
-        Users users = Users.getInstance();
-        ArrayList<User> userList = users.getUsers();
+        UserList userList = User.getInstance();
+        ArrayList<User> users = userList.getUsers();
 
         JSONArray jsonUsers = new JSONArray();
 
-        for(int i = 0; i<userList.size(); i++) {
+        for(int i = 0; i<users.size(); i++) {
             jsonUsers.add(getUserJSON(users.get(i)));
         }
 
