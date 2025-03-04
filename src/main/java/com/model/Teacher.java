@@ -7,7 +7,7 @@ public class Teacher extends User {
     private ArrayList<ArrayList<User>> classes;
     private ArrayList<Lesson> lessons;
 
-    public Teacher(UUID id, String first, String last, String email,
+    public Teacher(String id, String first, String last, String email,
                    String user, String pass, int streak, int songsPlayed,
                    ArrayList<Playlist> playlists, ArrayList<Lesson> assignedLessons, LocalDate lastPlayed,
                    ArrayList<ArrayList<User>> classes, ArrayList<Lesson> lessons){
