@@ -1,20 +1,10 @@
 package com.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.jfugue.pattern.Pattern;
-
 import javax.sound.midi.MidiEvent;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
-import javax.sound.midi.Sequencer;
-import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Track;
-
 import org.jfugue.player.Player;
-import org.jfugue.player.SynthesizerManager;
 
 /**
  * Class representing tablature
@@ -26,54 +16,54 @@ public class Score {
     private int tempo;
 
     public static void main(String[] args) {
-        Instrument in = Instrument.ELECTRIC_MUTED_GUITAR;
-        Rational timeSignature = new Rational("5/4");
-        Score s = new Score(null, in, 120);
-        // Measure m1 = new Measure(in, timeSignature);
-        // m1.put(new Rational("0/1"), new Note(PitchClass.E, 2), 0);
-        // s.add(m1);
-        // System.out.println(s.toString(false));
-        Measure m = new Measure(in, new Rational("16/4")); // We don't have a score yet 
-        Chord powerChord = new Chord(NoteValue.EIGHTH, false, in);
+        /* Creating and playing "Smoke on the Water" by Deep Purple with uRock  */
+        Instrument instrument = Instrument.DISTORTION_GUITAR; // Choose our instrument
+        Score smokeOnTheWater = new Score(null, instrument, 120); // Initialize the score
+
+        for(int i = 0; i < 4; i++) // Add 4 measures of 4/4
+            smokeOnTheWater.add(new Measure(instrument, new Rational(4)));
+
+        Chord powerChord = new Chord(NoteValue.EIGHTH, false, instrument); // Create a power chord shape
         powerChord.put(new Note(PitchClass.D, 3), 1);
         powerChord.put(new Note(PitchClass.A, 3), 2);
-        m.put(new Rational("0/1"), powerChord.deepCopy());
-            powerChord.shiftString(1);
+
+        Measure m = smokeOnTheWater.get(0); // First measure
+        m.put(new Rational("0/1"), powerChord.deepCopy()); // Add chord to measure
+            powerChord.shiftString(1); // Move the chord shape around
             powerChord.transpose(-2);
-        m.put(new Rational("1/4"), powerChord.deepCopy());
+        m.put(new Rational("1/4"), powerChord.deepCopy()); // repeat!
             powerChord.transpose(2);
         m.put(new Rational("2/4"), powerChord.deepCopy());
             powerChord.shiftString(-1);
         m.put(new Rational("7/8"), powerChord.deepCopy());
             powerChord.shiftString(1);
             powerChord.transpose(-2);
-        m.put(new Rational("9/8"), powerChord.deepCopy());
+            
+        m = smokeOnTheWater.get(1);  // Second measure
+        m.put(new Rational("1/8"), powerChord.deepCopy());
             powerChord.transpose(3);
-        m.put(new Rational("11/8"), powerChord.deepCopy());
+        m.put(new Rational("3/8"), powerChord.deepCopy());
             powerChord.transpose(-1);
-        m.put(new Rational("12/8"), powerChord.deepCopy());
+        m.put(new Rational("1/2"), powerChord.deepCopy());
             powerChord.shiftString(-1);
-        m.put(new Rational("16/8"), powerChord.deepCopy());
+
+        m = smokeOnTheWater.get(2); // Third measure
+        m.put(new Rational("0/4"), powerChord.deepCopy());
             powerChord.shiftString(1);
             powerChord.transpose(-2);
-        m.put(new Rational("18/8"), powerChord.deepCopy());
+        m.put(new Rational("1/4"), powerChord.deepCopy());
             powerChord.transpose(2);
-        m.put(new Rational("20/8"), powerChord.deepCopy());
+        m.put(new Rational("1/2"), powerChord.deepCopy());
             powerChord.transpose(-2);
-        m.put(new Rational("23/8"), powerChord.deepCopy());
+        m.put(new Rational("7/8"), powerChord.deepCopy());
             powerChord.shiftString(-1);
             powerChord.transpose(2);
-        m.put(new Rational("25/8"), powerChord.deepCopy());
-        s.add(m);
+        
+        m = smokeOnTheWater.get(3); // Fourth measure
+        m.put(new Rational("1/8"), powerChord.deepCopy());
 
-        Player p = new Player();
-        p.play(s.getSequence(0, s.size(), null));
-
-        Measure m2 = new Measure(Instrument.SOPRANO_UKULELE, new Rational("5/4"));
-        m2.bite(null, new Rational("0/1"), PitchClass.G, 4, new Rational("5/4"), 0);
-        Score ukTest = new Score(null, Instrument.SOPRANO_UKULELE, 120);
-        ukTest.add(m2);
-        p.play(ukTest.getSequence(0, ukTest.size(), null));
+        Player p = new Player(); // Play it!
+        p.play(smokeOnTheWater.getSequence(0, smokeOnTheWater.size(), null));
     }
     
     /**
@@ -162,6 +152,17 @@ public class Score {
      */
     public boolean remove(Measure m){
         return measures.remove(m);
+    }
+
+    /**
+     * Retrieves the measure at the specified index
+     * @param i
+     * @return
+     */
+    public Measure get(int i){
+        if(i < 0 || i >= size())
+            return null;
+        return measures.get(i);
     }
     
     /**
