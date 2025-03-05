@@ -24,7 +24,7 @@ public class Score {
         Instrument in = Instrument.DISTORTION_GUITAR;
        
         Rational timeSignature = new Rational("5/4");
-        Score s = new Score(null, in);
+        Score s = new Score(null, in, 280);
         // Measure m1 = new Measure(in, timeSignature);
         // m1.put(new Rational("0/1"), new Note(PitchClass.E, 2), 0);
         // s.add(m1);
@@ -63,7 +63,7 @@ public class Score {
         s.add(m);
         try {
             Player p = new Player();
-            p.play(s.getSequence());
+            p.play(s.getSequence(null));
         } catch (MidiUnavailableException e) {
             e.printStackTrace();
         }
@@ -71,13 +71,14 @@ public class Score {
         
     }
 
-    public Score(String uuid, Instrument instrument){
+    public Score(String uuid, Instrument instrument, int tempo){
         measures = new ArrayList<Measure>();
         if(uuid == null)
             this.uuid = new ID();
         else
             this.uuid = new ID(uuid);
-        this.instrument = instrument; 
+        this.instrument = instrument;
+        this.tempo = tempo; 
     }
 
     public void add(Measure m){
@@ -121,7 +122,8 @@ public class Score {
 
     public Sequence getSequence(Rational extraPadding) throws MidiUnavailableException{
         // Generate Staccato from the score
-        String staccato = "I[" + instrument + "] " + toString(false);
+        // System.out.println((new Player()).getStaccatoParser().g)
+        String staccato = "I[" + instrument + "] T" + tempo + " " + toString(false);
         String [] tokens = staccato.split("\s"); // Separate the Staccato into events
         // Rational trailing rest duration
         Rational rightPad = (extraPadding == null) ? new Rational("0/1") : extraPadding.deepCopy(); 

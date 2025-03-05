@@ -10,17 +10,25 @@ public enum Instrument {
         new Note(PitchClass.B, 3),
         new Note(PitchClass.E, 4) 
         ),
-
+    STEEL_STRING_GUITAR(GUITAR),
+    ELECTRIC_JAZZ_GUITAR(GUITAR),
+    ELECTRIC_MUTED_GUITAR(GUITAR),
+    OVERDRIVEN_GUITAR(GUITAR),
     DISTORTION_GUITAR(GUITAR),
-
-    BASS(24, 
+    ACOUSTIC_BASS(24, 
         new Note(PitchClass.E, 1),
         new Note(PitchClass.A, 1),
         new Note(PitchClass.D, 2),
         new Note(PitchClass.G, 2)
     ),
+    ELECTRIC_BASS_FINGER(ACOUSTIC_BASS),
+    ELECTRIC_BASS_PICK(ACOUSTIC_BASS),
+    FRETLESS_BASS(ACOUSTIC_BASS),
+    SLAP_BASS_1(ACOUSTIC_BASS),
+    SLAP_BASS_2(ACOUSTIC_BASS),
+    SLAP_BASS_3(ACOUSTIC_BASS),
     
-    UKULELE(15,  // It's a soprano ukulele
+    SOPRANO_UKULELE(15,  // Currently non-functional
         new Note(PitchClass.G, 4),
         new Note(PitchClass.C, 4),
         new Note(PitchClass.E, 4),

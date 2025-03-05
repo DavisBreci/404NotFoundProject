@@ -78,11 +78,11 @@ public class Measure {
         System.out.println("Staccato Representation of measure:\n" + m);
         System.out.println("Now playing \"Smoke on the Water\" by Deep Purple...");
         // p.play(s);
-        Measure m2 = new Measure(Instrument.UKULELE, new Rational("5/4"));
-        System.out.println(m2.beatOf(new Rational("4/16")));
-        System.out.println(
-            m2.bite(null, new Rational("0/1"), PitchClass.G, 4, new Rational("5/4"), 0)
-        );
+        // Measure m2 = new Measure(Instrument.UKULELE, new Rational("5/4"));
+        // System.out.println(m2.beatOf(new Rational("4/16")));
+        // System.out.println(
+        //     m2.bite(null, new Rational("0/1"), PitchClass.G, 4, new Rational("5/4"), 0)
+        // );
         System.out.println(m2.chords);
     }
 
