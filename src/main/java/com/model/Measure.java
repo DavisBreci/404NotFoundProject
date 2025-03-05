@@ -341,7 +341,6 @@ public class Measure {
             if((dotted = remainder.compareTo(dot) <= 0 && temp.compareTo(new Rational("0/1")) == 1))
                 remainder = temp;
             currentNote = new Note(value, dotted, instrument, pitchClass, octave); // Create a new note and handle ties
-            System.out.println("The current note: " + currentNote);
             currentNote.tieBack(prevNote);
             _offset.simplify();
             if(!put(_offset.deepCopy(), currentNote, string))

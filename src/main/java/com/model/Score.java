@@ -68,7 +68,12 @@ public class Score {
 
         Player p = new Player();
         p.play(s.getSequence(0, s.size(), null));
-       
+
+        Measure m2 = new Measure(Instrument.SOPRANO_UKULELE, new Rational("5/4"));
+        m2.bite(null, new Rational("0/1"), PitchClass.G, 4, new Rational("5/4"), 0);
+        Score ukTest = new Score(null, Instrument.SOPRANO_UKULELE, 120);
+        ukTest.add(m2);
+        p.play(ukTest.getSequence(0, ukTest.size(), null));
     }
     
     /**
@@ -84,7 +89,23 @@ public class Score {
         else
             this.uuid = new ID(uuid);
         this.instrument = instrument;
-        this.tempo = tempo; 
+        setTempo(tempo);
+    }
+    
+    public int getTempo(){
+        return tempo;
+    }
+
+    public void setTempo(int tempo){
+        if(tempo > 0)
+            this.tempo = tempo;
+    }
+    /**
+     * Retrieves the instrument the chord belongs to
+     * @return the fretted instrument
+     */
+    public Instrument getInstrument(){
+        return this.instrument;
     }
 
     /**
