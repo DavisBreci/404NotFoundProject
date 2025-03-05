@@ -180,4 +180,3 @@ public class Chord extends BarObj{
     }
 
 }
-

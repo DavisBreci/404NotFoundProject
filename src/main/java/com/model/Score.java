@@ -10,9 +10,11 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
+import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Track;
 
 import org.jfugue.player.Player;
+import org.jfugue.player.SynthesizerManager;
 
 public class Score {
     private ID uuid;
@@ -21,16 +23,16 @@ public class Score {
     private int tempo;
 
     public static void main(String[] args) {
-        Instrument in = Instrument.DISTORTION_GUITAR;
+        Instrument in = Instrument.SLAP_BASS_1;
        
         Rational timeSignature = new Rational("5/4");
-        Score s = new Score(null, in, 280);
+        Score s = new Score(null, in, 120);
         // Measure m1 = new Measure(in, timeSignature);
         // m1.put(new Rational("0/1"), new Note(PitchClass.E, 2), 0);
         // s.add(m1);
         // System.out.println(s.toString(false));
-        Measure m = new Measure(Instrument.GUITAR, new Rational("16/4")); // We don't have a score yet 
-        Chord powerChord = new Chord(NoteValue.EIGHTH, false, Instrument.GUITAR);
+        Measure m = new Measure(in, new Rational("16/4")); // We don't have a score yet 
+        Chord powerChord = new Chord(NoteValue.EIGHTH, false, in);
         powerChord.put(new Note(PitchClass.D, 3), 1);
         powerChord.put(new Note(PitchClass.A, 3), 2);
         m.put(new Rational("0/1"), powerChord.deepCopy());
@@ -63,12 +65,17 @@ public class Score {
         s.add(m);
         try {
             Player p = new Player();
-            p.play(s.getSequence(null));
+            Measure m2 = new Measure(Instrument.SOPRANO_UKULELE, new Rational("5/4"));
+            System.out.println(
+                m2.bite(null, new Rational("0/1"), PitchClass.G, 4, new Rational("5/4"), 0)
+            );
+            Score nu = new Score(null, Instrument.SOPRANO_UKULELE, 120);
+            nu.add(m2);
+            p.play(nu.getSequence(null));
+            // p.play(s.getSequence(null));
         } catch (MidiUnavailableException e) {
             e.printStackTrace();
         }
-
-        
     }
 
     public Score(String uuid, Instrument instrument, int tempo){
@@ -120,10 +127,16 @@ public class Score {
         return staccato.toString();
     }
 
+    private String getControllerString(){
+        return ":Controller(0," + instrument.msb() +
+        ") :Controller(32," + instrument.lsb() + 
+        ") I" + instrument.patch +
+        " T" + tempo + " ";
+    }
+
     public Sequence getSequence(Rational extraPadding) throws MidiUnavailableException{
         // Generate Staccato from the score
-        // System.out.println((new Player()).getStaccatoParser().g)
-        String staccato = "I[" + instrument + "] T" + tempo + " " + toString(false);
+        String staccato = getControllerString() + toString(false);
         String [] tokens = staccato.split("\s"); // Separate the Staccato into events
         // Rational trailing rest duration
         Rational rightPad = (extraPadding == null) ? new Rational("0/1") : extraPadding.deepCopy(); 
