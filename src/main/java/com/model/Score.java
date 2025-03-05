@@ -16,6 +16,9 @@ import javax.sound.midi.Track;
 import org.jfugue.player.Player;
 import org.jfugue.player.SynthesizerManager;
 
+/**
+ * Class representing tablature
+ */
 public class Score {
     private ID uuid;
     private Instrument instrument;
@@ -23,8 +26,7 @@ public class Score {
     private int tempo;
 
     public static void main(String[] args) {
-        Instrument in = Instrument.SLAP_BASS_1;
-       
+        Instrument in = Instrument.ELECTRIC_MUTED_GUITAR;
         Rational timeSignature = new Rational("5/4");
         Score s = new Score(null, in, 120);
         // Measure m1 = new Measure(in, timeSignature);
@@ -63,21 +65,18 @@ public class Score {
             powerChord.transpose(2);
         m.put(new Rational("25/8"), powerChord.deepCopy());
         s.add(m);
-        try {
-            Player p = new Player();
-            Measure m2 = new Measure(Instrument.SOPRANO_UKULELE, new Rational("5/4"));
-            System.out.println(
-                m2.bite(null, new Rational("0/1"), PitchClass.G, 4, new Rational("5/4"), 0)
-            );
-            Score nu = new Score(null, Instrument.SOPRANO_UKULELE, 120);
-            nu.add(m2);
-            p.play(nu.getSequence(null));
-            // p.play(s.getSequence(null));
-        } catch (MidiUnavailableException e) {
-            e.printStackTrace();
-        }
-    }
 
+        Player p = new Player();
+        p.play(s.getSequence(0, s.size(), null));
+       
+    }
+    
+    /**
+     * Constructs an object representing an emtpy sheet of tablature
+     * @param uuid the score's UUID (make null to generate a new one)
+     * @param instrument the score's MIDI instrument
+     * @param tempo the score's tempo in beats per minute
+     */
     public Score(String uuid, Instrument instrument, int tempo){
         measures = new ArrayList<Measure>();
         if(uuid == null)
@@ -88,45 +87,96 @@ public class Score {
         this.tempo = tempo; 
     }
 
+    /**
+     * Adds a measure to the end of the Score
+     * @param m measure to be added
+     */
     public void add(Measure m){
         measures.add(m);
     }
 
+    /**
+     * Adds a measure at the specified location within the Score
+     * @param index location for addition
+     * @param m measure to be added
+     */
     public void add(int index, Measure m){
         measures.add(index, m);
     }
 
+    /**
+     * Reports whether the score contains the given measure
+     * @param m a measure
+     * @return whether the score contains the given measure
+     */
     public boolean contains(Measure m){
-        return  measures.contains(m);
+        return measures.contains(m);
     }
 
+    /**
+     * Retrieves the index of the given measure
+     * @param m a measure
+     * @return the given measure's index
+     */
     public int indexOf(Measure m){
-        return 0;
+        return measures.indexOf(m);
     }
 
+    /**
+     * Attempts to remove the measure at the given index
+     * @param index the target index
+     * @return whether the removal was successful
+     */
     public boolean remove(int index){
+        if(index < 0 || index >= measures.size() - 1)
+            return false;
+        measures.remove(index);
         return true;
     }
 
+    /**
+     * Attempts to remove a measure from the score
+     * @param m the measure to be removed
+     * @return whether the removal was successful
+     */
     public boolean remove(Measure m){
-        return true;
+        return measures.remove(m);
     }
     
+    /**
+     * Retrieves the number of measures in the Score
+     * @return the Score's size
+     */
     public int size(){
-        return 0;
+        return measures.size();
     }
 
+    /**
+     * Returns a Staccato representation of the entire Score, barlines included
+     */
     public String toString(){
-        return "";
+        return toString(0, measures.size() - 1, true);
     }
 
-    public String toString(boolean includeBars){
-        StringBuilder staccato = new StringBuilder();
-        for(Measure m : measures)
-            staccato.append(m.toString(includeBars));
-        return staccato.toString();
+     /**
+     * Returns a Staccato representation of the given slice of the Score.
+     * @param start the inclusive starting measure
+     * @param end the exclusive ending measure
+     * @param includeBars whether to include barlines
+     */
+    public String toString(int start, int end, boolean includeBars){
+        if(start < end && start >= 0 && end >= 0 && start < measures.size() && end <= measures.size()){
+            StringBuilder staccato = new StringBuilder();
+            for(int i = start; i < end; i++)
+                staccato.append(measures.get(i).toString(includeBars));
+            return staccato.toString();
+        } else return "";
     }
 
+    /**
+     * Builds a string of arguments that configures the JFugue synthesizer to match the score's instrument and tempo
+     * @return
+     */
     private String getControllerString(){
         return ":Controller(0," + instrument.msb() +
         ") :Controller(32," + instrument.lsb() + 
@@ -134,9 +184,16 @@ public class Score {
         " T" + tempo + " ";
     }
 
-    public Sequence getSequence(Rational extraPadding) throws MidiUnavailableException{
+    /**
+     * Retrieves the MIDI sequence that corresponds to the given slice of the score
+     * @param start the inclusive starting measure
+     * @param end the exclusive ending measure
+     * @param extraPadding optional (can be null) rest duration added to end of score
+     * @return the MIDI Sequence
+     */
+    public Sequence getSequence(int start, int end, Rational extraPadding){
         // Generate Staccato from the score
-        String staccato = getControllerString() + toString(false);
+        String staccato = getControllerString() + toString(start, end, false);
         String [] tokens = staccato.split("\s"); // Separate the Staccato into events
         // Rational trailing rest duration
         Rational rightPad = (extraPadding == null) ? new Rational("0/1") : extraPadding.deepCopy(); 
@@ -182,7 +239,7 @@ public class Score {
         Sequence s = p.getSequence(staccato); // The end of track event still occurs at the last beat
         // Calculates how many midi ticks to offset the end of track event by
         // A sequence's resolution is how many midi ticks a quarter note lasts for
-        int rightPadTicks = (int)(s.getResolution() * (rightPad.getNumerator() * (4.0 / rightPad.getDenominator())));
+        int rightPadTicks = (int)(s.getResolution() * rightPad.getNumerator() * 4.0 / rightPad.getDenominator());
         Track t = s.getTracks()[0];
         MidiEvent endOfTrack = t.get(t.size() - 1);
         endOfTrack.setTick(endOfTrack.getTick() + rightPadTicks); // Offset end of track event

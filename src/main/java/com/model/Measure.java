@@ -356,15 +356,7 @@ public class Measure {
      * Returns a staccato representation of the note
      */
     public String toString(){
-        StringBuilder staccato = new StringBuilder();
-        Iterator<Entry<Rational, ? extends BarObj>> iIterator = barIterator();
-        Entry<Rational, ? extends BarObj> i;
-        while(iIterator.hasNext()){
-            i = iIterator.next();
-            staccato.append(i.getValue().toString() + " ");
-
-        }
-        return staccato.append("|").toString();
+        return toString(true);
     }
 
     /**
