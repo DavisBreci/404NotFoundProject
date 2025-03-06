@@ -77,7 +77,7 @@ public class Measure {
         System.out.println("\tSecond to last event of track occurs @ tick " + penultimate.getTick()); // This is a problem!
         System.out.println("Staccato Representation of measure:\n" + m);
         System.out.println("Now playing \"Smoke on the Water\" by Deep Purple...");
-        // p.play(s);
+p.play(s);
         Measure m2 = new Measure(Instrument.UKULELE, new Rational("5/4"));
         System.out.println(m2.beatOf(new Rational("4/16")));
         System.out.println(
