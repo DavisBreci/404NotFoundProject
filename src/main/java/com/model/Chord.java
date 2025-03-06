@@ -4,7 +4,6 @@
 package com.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -45,11 +44,11 @@ public class Chord extends BarObj{
      * Retrieves the notes that compose the chord
      * @return a deep copy of the note array
      */
-    public Note [] getNotes(){
+    public Note [] getNotes(boolean deepCopy){
         Note [] notes = new Note[this.notes.length];
         for(int i = 0; i < notes.length; i++)
             if(this.notes[i] != null)
-                notes[i] = this.notes[i].deepCopy();
+                notes[i] = deepCopy ? this.notes[i].deepCopy() : this.notes[i];
         return notes;
     }
     /**
@@ -58,7 +57,7 @@ public class Chord extends BarObj{
      */
     public Chord deepCopy(){
         Chord copy = new Chord(value, dotted, instrument);
-        Note [] notes = getNotes();
+        Note [] notes = getNotes(true);
         for(int i = 0; i < notes.length; i++)
             if(notes[i] != null)
                 copy.put(notes[i], notes[i].getString());
@@ -103,8 +102,30 @@ public class Chord extends BarObj{
         return true;
     }
 
+    /**
+     * Attempts to remove a note from the chord
+     * @param string The note to be deleted
+     * @return Whether the removal was successful
+     */
+    public boolean remove(Note n){
+        if(n.getString() >= notes.length)
+            return false;
+        if(notes[n.getString()] == null)
+            return false;
+        if(!notes[n.getString()].equals(n))
+            return false;
+        notes[n.getString()] = null;
+        noteCount--;
+        return true;
+    }
+
+    /**
+     * Attempts to transpose the entire chrord
+     * @param steps the signed number of frets to transpose by
+     * @return whether the transposition was successful
+     */
     public boolean transpose(int steps){
-        Note [] temp = getNotes();
+        Note [] temp = getNotes(true);
         for(int i = 0; i < temp.length; i++)
             if(temp[i] != null && !temp[i].transpose(steps))
                 return false;
@@ -114,8 +135,13 @@ public class Chord extends BarObj{
         return true;
     }
 
+    /**
+     * Attempts to move the chord shape across the fretboard
+     * @param strings the signed number of strings to shift by
+     * @return whether the shift was successful
+     */
     public boolean shiftString(int strings){
-        Note [] temp = getNotes();
+        Note [] temp = getNotes(true);
         int newString = 0;
         Note newNote;
         for(int i = 0; i < temp.length; i++)
@@ -153,4 +179,3 @@ public class Chord extends BarObj{
     }
 
 }
-

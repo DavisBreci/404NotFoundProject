@@ -3,8 +3,10 @@ package com.model;
 
 
 public class DataConstants {
-    protected static final String USER_FILE_NAME = "JSON/users.jason";
+    protected static final String USER_FILE_NAME = "JSON/users.json";
     // protected static final String USER_TEMP_FILE_NAME = "JSON/users.jason";
+    // protected static final String USER_FILE_NAME = "JSON/users.jason";
+    protected static final String USER_TEMP_FILE_NAME = "JSON/users_temp.json";
     protected static final String USER_ID = "id";
     protected static final String USER_USERNAME = "username";
     protected static final String USER_PASSWORD = "password";
@@ -16,8 +18,11 @@ public class DataConstants {
     protected static final String USER_ASSIGNED_LESSONS = "assignedLessons";
     protected static final String USER_PLAYLISTS = "playlists";
 
+    protected static final String TEACHER_FILE_NAME = "JSON/teachers.json";
+    protected static final String TEACHER_CLASSES = "classes";
+    protected static final String TEACHER_LESSONS = "lessons";
 
-    protected static final String SONG_FILE_NAME = "JSON/songs.jason";
+    protected static final String SONG_FILE_NAME = "JSON/songs.json";
     protected static final String SONG_ID = "id";
     protected static final String SONG_ARTIST = "artist";
     protected static final String SONG_GENRE = "genre";
@@ -27,7 +32,7 @@ public class DataConstants {
     protected static final String SONG_SCORE = "id";
 
 
-    protected static final String PLAYLIST_FILE_NAME = "JSON/playlists.jason";
+    protected static final String PLAYLIST_FILE_NAME = "JSON/playlists.json";
     protected static final String PLAYLIST_ID = "id";
     protected static final String PLAYLIST_TITLE = "title";
     protected static final String PLAYLIST_AUTHOR = "author";
@@ -35,7 +40,7 @@ public class DataConstants {
     protected static final String PLAYLIST_SONGS = "songs";
 
 
-    protected static final String LESSONS_FILE_NAME = "JSON/lessons.jason";
+    protected static final String LESSONS_FILE_NAME = "JSON/lessons.json";
     protected static final String LESSONS_ID = "id";
     protected static final String LESSONS_SONGS = "songs";
     protected static final String LESSONS_TITLE = "title";

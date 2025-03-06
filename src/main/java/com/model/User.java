@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class User {
-    public UUID id;
+    public String id;
     protected String firstName;
     protected String lastName;
     protected String email;
@@ -16,10 +16,11 @@ public class User {
     private ArrayList<Lesson> assignedLessons;
     private LocalDate lastPlayed;
 
-    public User(UUID id, String first, String last, String email, String user,
+    public User(String id, String first, String last, String email, String user,
              String pass, int streak, int songsPlayed, ArrayList<Playlist> playlists,
              ArrayList<Lesson> assignedLessons, LocalDate lastPlayed){
-        this.id = id;
+        ID temp = id == null ? new ID() : new ID(id);
+        this.id = temp.uuid;
         this.firstName = first;
         this.lastName = last;
         this.email = email;
@@ -83,13 +84,51 @@ public class User {
     public void assignLesson(Lesson lesson){
         assignedLessons.add(lesson);
     }
+    /**
+     * @author brenskrz
+     * @return id
+     */
+    public String getId() {
+        return id;
+    }
+    /**
+     * @author brenskrz
+     * @return firstName
+     */
+    public String getFirstName() {
+        return firstName;
+    }
+    /**
+     * @author brenskrz
+     * @return lastName
+     */
+    public String getLastName() {
+        return lastName;
+    }
+    public String getUsername(){
+        return username;
+    }
+    public String getPassword(){
+        return password;
+    }
+    public String getEmail(){
+        return email;
+    }
     public int getStreak(){
         return streak;
     }
     public int getSongsPlayed(){
         return songsPlayed;
     }
+    /**
+     * @author brenskrz
+     * @return assignedLessons
+     */
+    public ArrayList<Lesson> getAssignedLessons() {
+        return assignedLessons;
+    }
     public ArrayList<Playlist> getPlaylists(){
         return playlists;
     }
+
 }

@@ -116,36 +116,34 @@ public class Rational implements Comparable<Rational>{
                     return quantize(fraction, specificity, 2 * specificity + 1);
                 else 
                     return quantize(fraction, specificity, Integer.MAX_VALUE);
-            }
+    }
             
-            private static Rational quantize(double fraction, int specificity, int noteValues) {
-                if(fraction == 0) return new Rational(0, 1);
-                int numerator = 1;
-                int nearestNumerator = 0;
-                final int denominator = (int)Math.pow(2, specificity - 1);
-                double error = 0;
-                double minimumError = Double.MAX_VALUE;
-                int i;
-                for(i = 0; i < noteValues; i++){
-                    error = Math.abs(fraction - (numerator/(double)denominator) * (1 + 0.5 * (i % 2)));
-                    if(error < minimumError){
-                        nearestNumerator = numerator;
-                        minimumError = error;
-                    } else if(error > minimumError)
-                        break;
-                    if(i % 2 == 1)
-                        numerator *= 2;
-                }
+    private static Rational quantize(double fraction, int specificity, int noteValues) {
+        if(fraction == 0) return new Rational(0, 1);
+        int numerator = 1;
+        int nearestNumerator = 0;
+        final int denominator = (int)Math.pow(2, specificity - 1);
+        double error = 0;
+        double minimumError = Double.MAX_VALUE;
+        int i;
+        for(i = 0; i < noteValues; i++){
+            error = Math.abs(fraction - (numerator/(double)denominator) * (1 + 0.5 * (i % 2)));
+            if(error < minimumError){
+                nearestNumerator = numerator;
+                minimumError = error;
+            } else if(error > minimumError)
+                break;
+            if(i % 2 == 1)
+                numerator *= 2;
+        }
 
-                Rational quantized = new Rational(nearestNumerator, denominator);
-                if(i % 2 == 0){ // Dot note if necessary
-                    Rational dot = quantized.deepCopy();
-                    dot.times(new Rational(1, 2));
-                    quantized.plus(dot);
-                }
-                quantized.simplify();
-                return quantized;
-            }
+        Rational quantized = new Rational(nearestNumerator, denominator);
+        if(i % 2 == 0){ // Dot note if necessary
+            quantized.times(new Rational(3,2));
+        }
+        quantized.simplify();
+        return quantized;
+    }
             
 
     public Rational deepCopy(){

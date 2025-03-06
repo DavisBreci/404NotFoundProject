@@ -3,6 +3,11 @@ package com.model;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
+
+import java.time.LocalDate;
+
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -12,16 +17,16 @@ import org.json.simple.JSONObject;
 public class DataWriter extends DataConstants {
 
     public static void saveUsers() {
-        UserList userList = User.getInstance();
-        ArrayList<User> users = userList.getUsers();
-
+        UserList userList = UserList.getInstance();
+        ArrayList<User> users = userList.getUser();
+        
         JSONArray jsonUsers = new JSONArray();
 
         for(int i = 0; i<users.size(); i++) {
             jsonUsers.add(getUserJSON(users.get(i)));
         }
 
-        try (FileWriter file = new FileWriter(USER_FILE_NAME)) {
+        try (FileWriter file = new FileWriter(USER_TEMP_FILE_NAME)) {
             file.write(jsonUsers.toJSONString());
             file.flush();
 
@@ -50,20 +55,23 @@ public class DataWriter extends DataConstants {
         return userDetails;
     }
 
-    public static void saveSongs() {
-        Songs songs = Songs.getInstance();
-        ArrayList<Song> songList = songs.getSongs();
+    public static void main(String args[]) {
+        DataWriter.saveUsers();
+    }
 
-        // ArrayList<User> userList = new ArrayList();
-        // userList.add(new User(null, "brendan", "skrzyniarz", "brenskrz@gmail.com", "brenskrz", "hello", "2", "3", "id", "id", "monday" ));
-        JSONArray jsonSongs = new JSONArray();
 
-        for(int i = 0; i<songs.size(); i++) {
-            jsonSongs.add(getSongJSON(users.get(i)));
+    public static void saveTeachers() {
+        UserList teacherList = UserList.getInstance();
+        ArrayList<User> teachers = teacherList.getUsers();
+        
+        JSONArray jsonTeachers = new JSONArray();
+
+        for(int i = 0; i<teachers.size(); i++) {
+            jsonTeachers.add(getUserJSON(teachers.get(i)));
         }
 
-        try (FileWriter file = new FileWriter(SONG_FILE_NAME)) {
-            file.write(jsonSongs.toJSONString());
+        try (FileWriter file = new FileWriter(TEACHER_FILE_NAME)) {
+            file.write(jsonTeachers.toJSONString());
             file.flush();
 
         }
@@ -72,27 +80,57 @@ public class DataWriter extends DataConstants {
         }
     }
 
-    public static JSONObject getSongJSON(Song song) {
-        JSONObject songDetails = new JSONObject();
+    public static JSONObject getTeacherJSON(Teacher teacher) {
+        
+        JSONObject teacherDetails = new JSONObject();
+        teacherDetails.put(TEACHER_CLASSES, teacher.getClasses());
+        teacherDetails.put(TEACHER_LESSONS, teacher.getLessons());
+        
 
-        songDetails.put(SONG_ID, song.getId().toString());
-        songDetails.put(SONG_ARTIST, song.getArtist());
-        songDetails.put(SONG_GENRE, song.getGenre());
-        songDetails.put(SONG_DIFFICULTY_LEVEL, song.getDifficultyLevel());
-        songDetails.put(SONG_KEY, song.getKey());
-        songDetails.put(SONG_INSTRUMENT, song.getInstrument());
-        songDetails.put(SONG_SCORE, song.getScore());
-
-        return songDetails;
+        return teacherDetails;
     }
+
+//     public static void saveSongs() {
+//         SongList songList = SongList.getInstance();
+//         ArrayList<Song> songs = songList.getSongs();
+
+//         JSONArray jsonSongs = new JSONArray();
+
+//         for(int i = 0; i<songs.size(); i++) {
+//             jsonSongs.add(getSongJSON(songs.get(i)));
+//         }
+
+//         try (FileWriter file = new FileWriter(SONG_FILE_NAME)) {
+//             file.write(jsonSongs.toJSONString());
+//             file.flush();
+
+//         }
+//         catch (IOException e) {
+//             e.printStackTrace();
+//         }
+//     }
+
+//     public static JSONObject getSongJSON(Song song) {
+//         JSONObject songDetails = new JSONObject();
+
+//         songDetails.put(SONG_ID, song.getId().toString());
+//         songDetails.put(SONG_ARTIST, song.getArtist());
+//         songDetails.put(SONG_GENRE, song.getGenre());
+//         songDetails.put(SONG_DIFFICULTY_LEVEL, song.getDifficultyLevel());
+//         songDetails.put(SONG_KEY, song.getKey());
+//         songDetails.put(SONG_INSTRUMENT, song.getInstrument());
+//         songDetails.put(SONG_SCORE, song.getScore());
+
+//         return songDetails;
+//     }
     
 
-    public boolean savePlaylists() {
-        return true;
-    }
+//     public boolean savePlaylists() {
+//         return true;
+//     }
 
-    public boolean saveLessons() {
-        return true;
-    }
+//     public boolean saveLessons() {
+//         return true;
+//     }
 
 }

@@ -11,7 +11,7 @@ public class LessonList {
         lessons = new ArrayList<>();
     }
 
-    public static UserList getInstance() {
+    public static LessonList getInstance() {
         if(lessonList == null) {
             lessonList = new LessonList();
         }
@@ -20,10 +20,10 @@ public class LessonList {
     }
 
     public Lesson getLesson(String title) {
-        return Lesson;
+        return null;
     }
 
     public Lesson addLesson(String title) {
-        return newLesson;
+        return null;
     }
 }

@@ -1,3 +1,6 @@
+/**
+ * @author Christopher Ferguson
+ */
 package com.model;
 
 import java.util.AbstractMap;
@@ -5,79 +8,24 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.jfugue.pattern.Pattern;
-import org.jfugue.player.Player;
-
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiEvent;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.Sequence;
-import javax.sound.midi.Sequencer;
-import javax.sound.midi.Track;
-
+/**
+ * Class representing a single measure of tablature
+ */
 public class Measure {
     private Instrument instrument;
     private Rational timeSignature;
     private TreeMap<Rational, Chord> chords;
     private TreeMap<Rational, Rest> rests;
-
-    public static void main(String [] args){
-        Measure m = new Measure(Instrument.GUITAR, new Rational("16/4")); // We don't have a score yet 
-        Chord powerChord = new Chord(NoteValue.EIGHTH, false, Instrument.GUITAR);
-        powerChord.put(new Note(PitchClass.D, 3), 1);
-        powerChord.put(new Note(PitchClass.A, 3), 2);
-        m.put(new Rational("0/1"), powerChord.deepCopy());
-            powerChord.shiftString(1);
-            powerChord.transpose(-2);
-        m.put(new Rational("1/4"), powerChord.deepCopy());
-            powerChord.transpose(2);
-        m.put(new Rational("2/4"), powerChord.deepCopy());
-            powerChord.shiftString(-1);
-        m.put(new Rational("7/8"), powerChord.deepCopy());
-            powerChord.shiftString(1);
-            powerChord.transpose(-2);
-        m.put(new Rational("9/8"), powerChord.deepCopy());
-            powerChord.transpose(3);
-        m.put(new Rational("11/8"), powerChord.deepCopy());
-            powerChord.transpose(-1);
-        m.put(new Rational("12/8"), powerChord.deepCopy());
-            powerChord.shiftString(-1);
-        m.put(new Rational("16/8"), powerChord.deepCopy());
-            powerChord.shiftString(1);
-            powerChord.transpose(-2);
-        m.put(new Rational("18/8"), powerChord.deepCopy());
-            powerChord.transpose(2);
-        m.put(new Rational("20/8"), powerChord.deepCopy());
-            powerChord.transpose(-2);
-        m.put(new Rational("23/8"), powerChord.deepCopy());
-            powerChord.shiftString(-1);
-            powerChord.transpose(2);
-        m.put(new Rational("25/8"), powerChord.deepCopy());
-        Player p = new Player();
-        Pattern riff = new Pattern(m.toString());
-        riff.setTempo(114); // in BPM
-        riff.setInstrument(30); // Distortion guitar
-        Sequence s = p.getSequence(riff.toString());
-        Track [] tracks = s.getTracks();
-        System.out.println("Metadata for this song's JFugue-generated MIDI sequence:");
-        System.out.println("\tThe sequence contains " + tracks.length + " tracks.");
-        Track track = tracks[0];
-        MidiEvent ultimate = track.get(track.size() - 1);
-        MidiEvent penultimate = track.get(track.size() - 2);
-        // ultimate.setTick(ultimate.getTick() * 2);
-        System.out.println("\tEnd of track event occurs @ tick " + ultimate.getTick());
-        System.out.println("\tSecond to last event of track occurs @ tick " + penultimate.getTick()); // This is a problem!
-        System.out.println("Staccato Representation of measure:\n" + m);
-        System.out.println("Now playing \"Smoke on the Water\" by Deep Purple...");
-        p.play(s);
-    }
-
+    
+    /**
+     * Creates an empty measure
+     * @param instrument the measure's instrument
+     * @param timeSignature the time signature the measure is in
+     */
     public Measure(Instrument instrument, Rational timeSignature){
         Entry.comparingByKey();
         this.instrument = instrument;
@@ -107,6 +55,7 @@ public class Measure {
      * @param note the note to be added
      * @return whether the addition was successful
      */
+
     public boolean put(Rational offset, Note note, int string){
         Chord container = null;
         if((container = chords.get(offset)) != null)
@@ -126,7 +75,7 @@ public class Measure {
     public boolean put(Rational offset, Chord chord){
         if(offset == null || chord == null) return false;
         Entry<Rational, Chord> newChord = new AbstractMap.SimpleEntry<Rational, Chord>(offset, chord);
-        Iterator<Entry<Rational, Chord>> iIterator = entryIterator();
+        Iterator<Entry<Rational, Chord>> iIterator = chordIterator();
         Entry<Rational, Chord> i;
         while(iIterator.hasNext()){
             i = iIterator.next();
@@ -141,6 +90,12 @@ public class Measure {
         return false;
     }
 
+    /**
+     * Method for finding whether a musical object cannot be contained within the measure
+     * @param offset the barObj's offset
+     * @param barObj a musical object that has a duration
+     * @return whether the BarObj cannot be contained within the measure
+     */
     private boolean outOfBounds(Rational offset, BarObj barObj){
         if(offset.compareTo(new Rational("0/1")) == -1)
             return true;
@@ -151,29 +106,70 @@ public class Measure {
         return false;
     }
 
+    /**
+     * Attempts to remove a chord from the measure
+     * @param offset the chord's offset
+     * @param chord the chord for removal
+     * @return whether the removal was successful
+     */
     public boolean remove(Rational offset, Chord chord){
-        return true;
+        return chords.remove(offset, chord);
     }
 
+    /**
+     * Attempts to remove a note from the measure 
+     * @param offset the note's offset
+     * @param n the note for removal
+     * @return whether the removal was successful
+     */
+    public boolean remove(Rational offset, Note n){
+        Chord container = chords.get(offset);
+        if(container == null)
+            return false;
+        return container.remove(n);
+    }
+
+    /**
+     * Retrieves the chord at the specified offset, if it exists
+     * @return the chord
+     */
     public Chord get(Rational offset){
-        return null;
+        return chords.get(offset);
     }
 
+    /**
+     * Retrieves an entry set of chords
+     * @return the entry set
+     */
     public Set<Map.Entry<Rational, Chord>>  chordEntrySet(){
-        return null;
+        return chords.entrySet();
     }
     
+    /**
+     * Retrieves an entry set of rests
+     * @return the entry set
+     */
     public Set<Map.Entry<Rational, Rest>>  restEntrySet(){
-        return null;
+        return rests.entrySet();
     }
 
+    /**
+     * Returns true if the measure contains no notes
+     * @return whether the measure is empty
+     */
     public boolean isEmpty(){
-        return true;
+        return chords.isEmpty();
     }
-
+    
+    /**
+     * Gets rid of all the notes within a measure
+     */
     public void clear(){
-
+        chords.clear();
+        rests.clear();
+        greedyRestFill(new Rational(0, 1), timeSignature);
     }
+
     /**
      * Fills gaps between notes with rests
      */
@@ -181,12 +177,12 @@ public class Measure {
         rests.clear();
         Rational gapStart = new Rational("0/1");
         Rational gapEnd;
-        Iterator<Entry<Rational, Chord>> iIterator = entryIterator();
+        Iterator<Entry<Rational, Chord>> iIterator = chordIterator();
         Entry<Rational, Chord> currentEntry;
         while(iIterator.hasNext()){
             currentEntry = iIterator.next();
             gapEnd = currentEntry.getKey();
-            if(gapStart.compareTo(gapEnd) == -1){// Gap between notes
+            if(gapStart.compareTo(gapEnd) == -1){ // Gap between notes
                 greedyRestFill(gapStart, gapEnd); 
             } 
             gapStart = gapEnd.deepCopy();
@@ -196,8 +192,8 @@ public class Measure {
         if(gapStart.compareTo(gapEnd) == -1){
             greedyRestFill(gapStart, gapEnd);
         }
-
     }
+
     /**
      * Greedily fills the space between the start and end with rests
      * @param start where to begin filling
@@ -234,24 +230,75 @@ public class Measure {
         }
     }
 
+    /**
+     * Method that finds which beat of the measure a given offset falls on
+     * @param offset the distance from the start of the measure
+     * @return the 
+     */
     public int beatOf(Rational offset){
-        return 1;
+        return (offset.getNumerator() * timeSignature.getDenominator())/offset.getDenominator() + 1;
     }
+
     /**
      * This method places the portion of the note that will fit within the measure within it.
      * If necessary, the method constructs the bitten portion as several notes tied together.
+     * If there are other notes obstructing placement, this method places what it can and returns null.
      * This is useful for notes of irregular duration and notes that cross barlines.
+     * @param backTie note for the first note created by this method to be tied to
      * @param offset where the note begins
      * @param pitchClass the note's pitch
      * @param octave the note's octave
      * @param duration the note's raw duration
-     * @return the unbitten duration and a reference to the last note bitten
+     * @return a pair containing the unbitten duration and a reference to the last note bitten
      */
-    public AbstractMap.SimpleEntry<Rational, Note> bite(Rational offset, PitchClass pitchClass, int octave, Rational duration){
-        return null;
+    public AbstractMap.SimpleEntry<Rational, Note> bite(Note backTie, Rational offset, PitchClass pitchClass, int octave, Rational duration, int string){
+        Rational remainder = duration.deepCopy(); // How much of the note is left for processing
+        Rational _offset = offset.deepCopy();
+        double noteIndex;
+        Note prevNote = null;
+        Note currentNote = null;
+        NoteValue value;
+        Rational dot;
+        Rational temp;
+        boolean dotted;
+        while(_offset.compareTo(timeSignature) == -1){ // Stop when you've exhausted all space within the measure
+            remainder.times(new Rational(64/remainder.getDenominator())); // Normalize the remainder
+            noteIndex = Math.log(remainder.getNumerator()) / Math.log(2); // Calculate duration
+            value = NoteValue.values()[
+                Math.min(NoteValue.values().length - 1, (int)noteIndex)
+            ];
+            remainder.minus(value.duration);
+            dot = new Rational(
+                value.duration.getNumerator()/2, value.duration.getDenominator()
+            );
+            temp = remainder.deepCopy();
+            temp.minus(dot);
+            if((dotted = remainder.compareTo(dot) <= 0 && temp.compareTo(new Rational("0/1")) == 1))
+                remainder = temp;
+            currentNote = new Note(value, dotted, instrument, pitchClass, octave); // Create a new note and handle ties
+            currentNote.tieBack(prevNote);
+            _offset.simplify();
+            if(!put(_offset.deepCopy(), currentNote, string))
+                return null;
+            prevNote = currentNote;
+            _offset.plus(currentNote.getDuration());
+        }
+        return new AbstractMap.SimpleEntry<Rational, Note>(remainder.deepCopy(), currentNote);
     }
 
+    /**
+     * Returns a staccato representation of the note
+     */
     public String toString(){
+        return toString(true);
+    }
+
+    /**
+     * Version of toString() that lets the user choose whether they want barlines
+     * @param includeBars whether to append a barline to the measure's end
+     * @return the Staccato string
+     */
+    public String toString(boolean includeBars){
         StringBuilder staccato = new StringBuilder();
         Iterator<Entry<Rational, ? extends BarObj>> iIterator = barIterator();
         Entry<Rational, ? extends BarObj> i;
@@ -260,15 +307,23 @@ public class Measure {
             staccato.append(i.getValue().toString() + " ");
 
         }
-        return staccato.append("|").toString();
+        return includeBars ? staccato.append("|").toString() : staccato.toString();
     }
 
-    private Iterator<Entry<Rational, Chord>> entryIterator(){
+    /**
+     * Retrieves an iterator that iterates over chords only
+     * @return the chord iterator
+     */
+    public Iterator<Entry<Rational, Chord>> chordIterator(){
         TreeSet<Entry<Rational, Chord>> ts = new TreeSet<Entry<Rational, Chord>>(Comparator.comparing(Entry::getKey));
         ts.addAll(chords.entrySet());
         return ts.iterator();
     }
 
+    /**
+     * Retrieves an iterator that iterates over rests and chords
+     * @return the bar iterator
+     */
     private Iterator<Entry<Rational, ? extends BarObj>> barIterator(){
         TreeSet<Entry<Rational, ? extends BarObj>> ts = new TreeSet<Entry<Rational, ? extends BarObj>>(Comparator.comparing(Entry::getKey));
         ts.addAll(rests.entrySet());
