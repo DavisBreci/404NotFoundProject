@@ -47,4 +47,8 @@ public class Playlist {
     public void sortByDifficulty(){
         
     }
+    public static void main(String[] args){
+        User u = new User(null,"f","l","e","u","p",0,0,null,null,null);
+        System.out.println(u.id);
+    }
 }

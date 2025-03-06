@@ -41,4 +41,7 @@ public class UserList {
         }
         return false;
     }
+    public ArrayList<User> getAllUsers(){
+        return users;
+    }
 }
