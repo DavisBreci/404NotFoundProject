@@ -267,4 +267,8 @@ public class Score {
         endOfTrack.setTick(endOfTrack.getTick() + rightPadTicks); // Offset end of track event
         return s;
     }
+
+    public static Score midiToScore(Sequence src, int trackIndex){
+        return null;
+    }
 }
