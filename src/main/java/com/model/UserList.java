@@ -24,6 +24,7 @@ public class UserList {
             if(user.getUsername().equals(username) && user.getPassword().equals(password))
                 return user;
         return null;
+        
     }
 
     public User addUser(String first, String last, String email, String user, String pass) {

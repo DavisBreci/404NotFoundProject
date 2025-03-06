@@ -4,7 +4,6 @@
 package com.model;
 
 import java.util.AbstractMap;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
@@ -12,13 +11,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-
-import javax.sound.midi.MidiEvent;
-import javax.sound.midi.Sequence;
-import javax.sound.midi.Track;
-
-import org.jfugue.pattern.Pattern;
-import org.jfugue.player.Player;
 
 /**
  * Class representing a single measure of tablature
@@ -77,7 +69,7 @@ public class Measure {
         System.out.println("\tSecond to last event of track occurs @ tick " + penultimate.getTick()); // This is a problem!
         System.out.println("Staccato Representation of measure:\n" + m);
         System.out.println("Now playing \"Smoke on the Water\" by Deep Purple...");
-p.play(s);
+        //p.play(s);
         Measure m2 = new Measure(Instrument.UKULELE, new Rational("5/4"));
         System.out.println(m2.beatOf(new Rational("4/16")));
         System.out.println(
@@ -341,7 +333,6 @@ p.play(s);
             if((dotted = remainder.compareTo(dot) <= 0 && temp.compareTo(new Rational("0/1")) == 1))
                 remainder = temp;
             currentNote = new Note(value, dotted, instrument, pitchClass, octave); // Create a new note and handle ties
-            System.out.println("The current note: " + currentNote);
             currentNote.tieBack(prevNote);
             _offset.simplify();
             if(!put(_offset.deepCopy(), currentNote, string))
@@ -356,15 +347,7 @@ p.play(s);
      * Returns a staccato representation of the note
      */
     public String toString(){
-        StringBuilder staccato = new StringBuilder();
-        Iterator<Entry<Rational, ? extends BarObj>> iIterator = barIterator();
-        Entry<Rational, ? extends BarObj> i;
-        while(iIterator.hasNext()){
-            i = iIterator.next();
-            staccato.append(i.getValue().toString() + " ");
-
-        }
-        return staccato.append("|").toString();
+        return toString(true);
     }
 
     /**
@@ -381,7 +364,7 @@ p.play(s);
             staccato.append(i.getValue().toString() + " ");
 
         }
-        return staccato.append("|").toString();
+        return includeBars ? staccato.append("|").toString() : staccato.toString();
     }
 
     /**
