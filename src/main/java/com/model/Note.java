@@ -279,7 +279,6 @@ public class Note extends BarObj {
         int newFret = fret + steps;
         int newNoteNum = midiNoteNum() + steps;
         if(newFret < 0 || newFret >= instrument.frets){
-            System.out.println("Failure " + fret + " " + newFret);
             return false;
         } 
             
