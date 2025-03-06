@@ -58,9 +58,37 @@ public class DataWriter extends DataConstants {
     public static void main(String args[]) {
         DataWriter.saveUsers();
     }
-//     public static void saveTeachers() {
 
-//     }
+
+    public static void saveTeachers() {
+        UserList teacherList = UserList.getInstance();
+        ArrayList<User> teachers = teacherList.getUsers();
+        
+        JSONArray jsonTeachers = new JSONArray();
+
+        for(int i = 0; i<teachers.size(); i++) {
+            jsonTeachers.add(getUserJSON(teachers.get(i)));
+        }
+
+        try (FileWriter file = new FileWriter(TEACHER_FILE_NAME)) {
+            file.write(jsonTeachers.toJSONString());
+            file.flush();
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static JSONObject getTeacherJSON(Teacher teacher) {
+        
+        JSONObject teacherDetails = new JSONObject();
+        teacherDetails.put(TEACHER_CLASSES, teacher.getClasses());
+        teacherDetails.put(TEACHER_LESSONS, teacher.getLessons());
+        
+
+        return teacherDetails;
+    }
 
 //     public static void saveSongs() {
 //         SongList songList = SongList.getInstance();
