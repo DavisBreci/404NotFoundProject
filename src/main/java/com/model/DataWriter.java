@@ -18,7 +18,7 @@ public class DataWriter extends DataConstants {
 
     public static void saveUsers() {
         UserList userList = UserList.getInstance();
-        ArrayList<User> users = userList.getUser();
+        ArrayList<User> users = userList.getUsers();
         
         JSONArray jsonUsers = new JSONArray();
 
@@ -26,7 +26,7 @@ public class DataWriter extends DataConstants {
             jsonUsers.add(getUserJSON(users.get(i)));
         }
 
-        try (FileWriter file = new FileWriter(USER_TEMP_FILE_NAME)) {
+        try (FileWriter file = new FileWriter(USER_FILE_NAME)) {
             file.write(jsonUsers.toJSONString());
             file.flush();
 
@@ -125,13 +125,68 @@ public class DataWriter extends DataConstants {
     }
     
 
-    public boolean savePlaylists() {
+    public static void savePlaylists() {
         PlaylistList playlistList = PlaylistList.getInstance();
-        ArrayList<Playlist> playlists = playlistList.getPlaylist(LESSONS_TITLE, PLAYLIST_AUTHOR, PLAYLIST_DESCRIPTION, null, 0);
+        ArrayList<Playlist> playlists = playlistList.getPlaylists();
+
+        JSONArray jsonPlaylists = new JSONArray();
+
+        for(int i = 0; i<playlists.size();i++) {
+            jsonPlaylists.add(getPlaylistJSON(playlists.get(i)));
+        }
+
+        try (FileWriter file = new FileWriter(PLAYLIST_FILE_NAME)) {
+            file.write(jsonPlaylists.toJSONString());
+            file.flush();
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        
     }
 
-    public boolean saveLessons() {
-        return true;
+    public static JSONObject getPlaylistJSON(Playlist playlist) {
+        JSONObject playlistDetails = new JSONObject();
+
+        playlistDetails.put(PLAYLIST_ID, playlist.getId().toString());
+        playlistDetails.put(PLAYLIST_TITLE, playlist.getTitle());
+        playlistDetails.put(PLAYLIST_AUTHOR, playlist.getAuthor());
+        playlistDetails.put(PLAYLIST_DESCRIPTION, playlist.getDescription());
+        playlistDetails.put(PLAYLIST_SONGS, playlist.getSongs());
+
+        return playlistDetails;
+    }
+
+    public static void saveLessons() {
+        LessonList lessonList = LessonList.getInstance();
+        ArrayList<Lesson> lessons = lessonList.getLessons();
+
+        JSONArray jsonLessons = new JSONArray();
+
+        for(int i = 0; i<lessons.size(); i++) {
+            jsonLessons.add(getLessonJSON(lessons.get(i)));
+        }
+
+        try (FileWriter file = new FileWriter(LESSONS_FILE_NAME)) {
+            file.write(jsonLessons.toJSONString());
+            file.flush();
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static JSONObject getLessonJSON(Lesson lesson) {
+        JSONObject lessonDetails = new JSONObject();
+
+        lessonDetails.put(LESSONS_ID, lesson.getId().toString());
+        lessonDetails.put(LESSONS_SONGS, lesson.getSongs());
+        lessonDetails.put(LESSONS_TITLE, lesson.getTitle());
+
+        return lessonDetails;
     }
 
 }

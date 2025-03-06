@@ -26,6 +26,14 @@ public class UserList {
         return null;
         
     }
+    /**
+     * @author brenskrz
+     * @return users
+     */
+    public ArrayList<User> getUsers() {
+        return users;
+        
+    }
 
     public User addUser(String first, String last, String email, String user, String pass) {
         User toBeAdded = new User(null, first, last, email, user, pass, 0, 0,

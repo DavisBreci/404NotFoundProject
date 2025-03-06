@@ -23,7 +23,17 @@ public class LessonList {
         return null;
     }
 
+    /**
+     * @author brenskrz
+     * @return lessons
+     */
+    public ArrayList<Lesson> getLessons() {
+        return lessons;
+    }
+
     public Lesson addLesson(String title) {
         return null;
     }
+
+    
 }

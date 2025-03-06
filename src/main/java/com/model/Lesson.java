@@ -22,4 +22,16 @@ public class Lesson {
             }
         }
     }
+    /**
+     * @author brenskrz
+     */
+    public UUID getId() {
+        return id;
+    }
+    public ArrayList<Song> getSongs() {
+        return songs;
+    }
+    public String getTitle() {
+        return title;
+    }
 }

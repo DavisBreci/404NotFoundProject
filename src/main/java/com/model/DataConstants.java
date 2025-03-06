@@ -24,6 +24,7 @@ public class DataConstants {
 
     protected static final String SONG_FILE_NAME = "JSON/songs.json";
     protected static final String SONG_ID = "id";
+    protected static final String SONG_TITLE = "title";
     protected static final String SONG_ARTIST = "artist";
     protected static final String SONG_GENRE = "genre";
     protected static final String SONG_DIFFICULTY_LEVEL = "BEGINNER";

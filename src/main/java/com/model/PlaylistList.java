@@ -23,6 +23,14 @@ public class PlaylistList {
         return null;
     }
 
+    /**
+     * @authro brenskrz
+     * @return playlists
+     */
+    public ArrayList<Playlist> getPlaylists() {
+        return playlists;
+    }
+
     public void addPlaylist(String title, String author, String description) {
         // Playlist newPlaylist = new Playlist();
         // playlists.add(newPlaylist);
