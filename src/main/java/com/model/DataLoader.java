@@ -96,7 +96,37 @@ public class DataLoader extends DataConstants {
     }
 
     public static ArrayList<Playlist> getPlaylists() {
-        return null;
+        ArrayList<Playlist> playlists = new ArrayList<Playlist>();
+
+        try {
+            FileReader reader = new FileReader(PLAYLIST_FILE_NAME);
+			JSONArray playlistsJSON = (JSONArray)new JSONParser().parse(reader);
+            
+            for(int i=0; i < playlistsJSON.size(); i++) {
+                JSONObject individual = (JSONObject)playlistsJSON.get(i);
+                UUID id = UUID.fromString((String)individual.get(USER_ID));
+                String userName = (String)individual.get(USER_USERNAME);
+                String password = (String)individual.get(USER_PASSWORD);
+                String email = (String)individual.get(USER_EMAIL);
+                String firstName = (String)individual.get(USER_FIRST_NAME);
+                String lastName = (String)individual.get(USER_LAST_NAME);
+                int Streak = (int)individual.get(USER_STREAK);
+                int songsPlayed = (int)individual.get(USER_SONGS_PLAYED);
+                String[] playlistsInput = (String[])individual.get(USER_PLAYLISTS);
+                String[] assignedLessonsInput = (String[])individual.get(USER_ASSIGNED_LESSONS);
+                String[] classesInput = (String[])individual.get(TEACHER_CLASSES);
+                String[] lessonsInput = (String[])individual.get(TEACHER_LESSONS);
+                //Following four lines currently load empty data while I work on the data loaders for each.
+                ArrayList<Playlist> playlistsOutput =  new ArrayList<Playlist>();
+                ArrayList<Lesson> assignedLessonsOutut = new ArrayList<Lesson>();
+                ArrayList<ArrayList<User>> classesOutput = new ArrayList<ArrayList<User>>();
+                ArrayList<Lesson> lessonsOutput =  new ArrayList<Lesson>();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return playlists;
     }
 }
 
