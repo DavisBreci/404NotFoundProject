@@ -1,5 +1,8 @@
 package com.model;
 
+/**
+ * @author brenskrz
+ */
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
