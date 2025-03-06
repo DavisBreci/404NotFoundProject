@@ -90,47 +90,48 @@ public class DataWriter extends DataConstants {
         return teacherDetails;
     }
 
-//     public static void saveSongs() {
-//         SongList songList = SongList.getInstance();
-//         ArrayList<Song> songs = songList.getSongs();
+    public static void saveSongs() {
+        SongList songList = SongList.getInstance();
+        ArrayList<Song> songs = songList.getSongs();
 
-//         JSONArray jsonSongs = new JSONArray();
+        JSONArray jsonSongs = new JSONArray();
 
-//         for(int i = 0; i<songs.size(); i++) {
-//             jsonSongs.add(getSongJSON(songs.get(i)));
-//         }
+        for(int i = 0; i<songs.size(); i++) {
+            jsonSongs.add(getSongJSON(songs.get(i)));
+        }
 
-//         try (FileWriter file = new FileWriter(SONG_FILE_NAME)) {
-//             file.write(jsonSongs.toJSONString());
-//             file.flush();
+        try (FileWriter file = new FileWriter(SONG_FILE_NAME)) {
+            file.write(jsonSongs.toJSONString());
+            file.flush();
 
-//         }
-//         catch (IOException e) {
-//             e.printStackTrace();
-//         }
-//     }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-//     public static JSONObject getSongJSON(Song song) {
-//         JSONObject songDetails = new JSONObject();
+    public static JSONObject getSongJSON(Song song) {
+        JSONObject songDetails = new JSONObject();
 
-//         songDetails.put(SONG_ID, song.getId().toString());
-//         songDetails.put(SONG_ARTIST, song.getArtist());
-//         songDetails.put(SONG_GENRE, song.getGenre());
-//         songDetails.put(SONG_DIFFICULTY_LEVEL, song.getDifficultyLevel());
-//         songDetails.put(SONG_KEY, song.getKey());
-//         songDetails.put(SONG_INSTRUMENT, song.getInstrument());
-//         songDetails.put(SONG_SCORE, song.getScore());
+        songDetails.put(SONG_ID, song.getId().toString());
+        songDetails.put(SONG_ARTIST, song.getArtist());
+        songDetails.put(SONG_GENRE, song.getGenre());
+        songDetails.put(SONG_DIFFICULTY_LEVEL, song.getDifficultyLevel());
+        songDetails.put(SONG_KEY, song.getKey());
+        songDetails.put(SONG_INSTRUMENT, song.getInstrument());
+        songDetails.put(SONG_SCORE, song.getScore());
 
-//         return songDetails;
-//     }
+        return songDetails;
+    }
     
 
-//     public boolean savePlaylists() {
-//         return true;
-//     }
+    public boolean savePlaylists() {
+        PlaylistList playlistList = PlaylistList.getInstance();
+        ArrayList<Playlist> playlists = playlistList.getPlaylist(LESSONS_TITLE, PLAYLIST_AUTHOR, PLAYLIST_DESCRIPTION, null, 0);
+    }
 
-//     public boolean saveLessons() {
-//         return true;
-//     }
+    public boolean saveLessons() {
+        return true;
+    }
 
 }
