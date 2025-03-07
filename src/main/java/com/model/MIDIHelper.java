@@ -13,10 +13,10 @@ public final class MIDIHelper {
     public static final int NOTE_ON_16 = 159;
     public static final int NOTE_OFF_1 = 128;
     public static final int NOTE_OFF_16 = 143;
-    public static final int META = 255;
-    public static final int TIME_SIGNATURE = 88;
-    public static final int CHAN_VOL_MSB = 0x07;
-    public static final int CHAN_VOL_LSB = 0x27;
+    public static final byte META = (byte)255;
+    public static final byte TIME_SIGNATURE = (byte)88;
+    public static final byte CHAN_VOL_MSB = 0x07;
+    public static final byte CHAN_VOL_LSB = 0x27;
     public static final int MAX_VOL = 16383;
     public static final int TEMPO = 0x51;
 

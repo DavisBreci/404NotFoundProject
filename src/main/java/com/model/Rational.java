@@ -173,7 +173,8 @@ public class Rational implements Comparable<Rational>{
      * This is a rational approximation algorithm that idk if we'll end up using.
      * // https://en.wikipedia.org/wiki/Stern%E2%80%93Brocot_tree#Mediants_and_binary_search
      */
-    private static Rational sternBrocot(double q, double tolerance, int specificity) {
+    public static Rational sternBrocot(double q, double tolerance) {
+        if(q == 0) return new Rational(0, 1);
 		Rational rL = new Rational(0, 1);
 		Rational rH = new Rational(1, 0);
 		Rational rM;

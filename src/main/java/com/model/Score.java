@@ -18,7 +18,7 @@ import org.jfugue.player.Player;
  * Class representing tablature
  */
 public class Score {
-    private ID uuid;
+    public ID uuid;
     private Instrument instrument;
     private ArrayList<Measure> measures;
     private int tempo;
@@ -46,7 +46,7 @@ public class Score {
         m.put(new Rational("7/8"), powerChord.deepCopy());
             powerChord.shiftString(1);
             powerChord.transpose(-2);
-            
+    
         m = smokeOnTheWater.get(1);  // Second measure
         m.put(new Rational("1/8"), powerChord.deepCopy());
             powerChord.transpose(3);
@@ -76,9 +76,13 @@ public class Score {
         // System.out.println(
         //    Arrays.toString(smokeOnTheWater.asChordArray())
         // );
-        Score.midiToScore(
-            loadSequence("C:\\Users\\CTFer\\eclipse-workspace\\MIDIExperiment\\src\\MIDI\\Alphys.mid"), 0
+        Sequence seq =  loadSequence("C:\\Users\\CTFer\\eclipse-workspace\\MIDIExperiment\\src\\MIDI\\Alphys.mid");
+        // p.play(seq);
+        Score alphys = Score.midiToScore(
+            seq, 0, Instrument.GUITAR
         );
+        p.play(alphys.getSequence(0, alphys.size(), null));
+
     }
     
     /**
@@ -117,8 +121,10 @@ public class Score {
      * Adds a measure to the end of the Score
      * @param m measure to be added
      */
-    public void add(Measure m){
-        measures.add(m);
+    public boolean add(Measure m){
+        if(m != null)
+            return measures.add(m);
+        return false;
     }
 
     /**
@@ -192,7 +198,7 @@ public class Score {
      * Returns a Staccato representation of the entire Score, barlines included
      */
     public String toString(){
-        return toString(0, measures.size() - 1, true);
+        return toString(0, measures.size(), true);
     }
 
      /**
@@ -309,8 +315,15 @@ public class Score {
 		}
 		return loadedSequence;
 	}
-
-    public static Score midiToScore(Sequence src, int trackIndex, Instrument instrument){
+    /**
+     * Converts a MIDI Sequence into a Score object
+     * @param src MIDI sequence for conversion
+     * @param trackIndex the track of the sequence to be converted
+     * @param instrument the instrument the score should use
+     * @return the score
+     */
+    // TODO: Calculate fret to use
+    public static Score midiToScore(Sequence src, int trackIndex, Instrument instrument){ 
         if(src == null) return null;
 		if(trackIndex < 0 || trackIndex >= src.getTracks().length) return null; 
 		// MIDI properties
@@ -320,36 +333,37 @@ public class Score {
 		MidiEvent currentEvent;
 		byte [] currentMessage;
 		// Note properties
-		// TODO: Note previousNote = null;
 		Rational duration;
 		Rational offset;
 		byte noteNum = 0;
+        Score score = new Score(null, instrument, 120);
 		// Measure properties
 		ArrayList<Measure> measures = new ArrayList<Measure>();
-		// Measure m = new Measure(); 
 		Rational timeSignature = new Rational(4, 4);
+        Measure m = null;
 		int barCount = 1;
-		long tempo = 0;
 		long barStart = 0;
 		long barDuration = resolution * 4;
 		long barEnd = barDuration;
 		long barsLept = 0;
-		
+		// TODO: Should be able to switch to new measure based on measure content
 		for(int i = 0; i < track.size(); i++) {
 			currentEvent = track.get(i);
 			currentMessage = currentEvent.getMessage().getMessage();
 			if(currentEvent.getTick() == barEnd){
                 barStart = barEnd;
                 barCount++;
-                /* TODO:
-                 * Add existing measure to score
-                 * construct new measure
-                 */
+                score.add(m);
+                m = new Measure(instrument, timeSignature);
             } else if (currentEvent.getTick() > barEnd){
             	barsLept = ((currentEvent.getTick() - barStart)/barDuration);
             	barCount += barsLept;
                 barStart += barsLept * barDuration;
-                // TODO: Add existing measure to score and any empty measures that we skipped over
+                score.add(m);
+                for(int j = 0; j < barsLept; j++){
+                    measures.add(new Measure(instrument, timeSignature));
+                }
+                m = new Measure(instrument, timeSignature);
             }
 			if(currentMessage[0] == MIDIHelper.META){
 				if(currentMessage[1] == MIDIHelper.TIME_SIGNATURE) {
@@ -357,32 +371,43 @@ public class Score {
                     timeSignature.setDenominator(2 << (Byte.toUnsignedInt(currentMessage[4]) - 1)); // Power of 2
                     barStart = currentEvent.getTick();
                     barDuration = MIDIHelper.getBarDuration(resolution, timeSignature);
+                    score.add(m);
+                    m = new Measure(instrument, timeSignature);
 				} else if(currentMessage[1] == MIDIHelper.TEMPO) {
-					tempo = MIDIHelper.getLong(currentMessage, 3, 3);
+					score.setTempo(MIDIHelper.mpqToBpm(MIDIHelper.getLong(currentMessage, 3, 3)));
 				}
-				/* TODO:
-                 * Add existing measure to score
-                 * construct new measure
-                 */
 			} else if(MIDIHelper.isNoteOn(currentMessage[0]) || MIDIHelper.isNoteOff(currentMessage[0])) {
 				noteNum = currentMessage[1];
 				if(noteMemo[noteNum] != null) {
 					System.out.println("\tNote off event detected...");
-					// Calculate rational duration
-                    // midiQuantize(noteMemo[noteNum], currentEvent, resolution)
 					duration = MIDIHelper.midiQuantize(noteMemo[noteNum], currentEvent, resolution);
-					// Calculate rational offset
-					offset = MIDIHelper.midiQuantize(barStart, noteMemo[noteNum], resolution);
-					// Get pitch class and octave
+                    offset = Rational.sternBrocot(
+                        (double)(noteMemo[noteNum].getTick() - barStart) / (4 * resolution), 
+                        0.001
+                    );
+                    if(offset.compareTo(timeSignature) == 0){
+                        barStart = barEnd;
+                        barCount++;
+                        score.add(m);
+                        m = new Measure(instrument, timeSignature);
+                        offset = MIDIHelper.midiQuantize(barStart, noteMemo[noteNum], resolution);
+                    }
 					System.out.print(
 							Note.noteNumToPitchClass(noteNum) + "" + Note.noteNumToOctave(noteNum) +
 							" of length " + duration + 
 							" at an offset of " + offset + 
 							" from the start of bar " + barCount + "\n"
-							);
-					// Calculate fret to use
+					);
+                    duration.times(new Rational(64 / duration.getDenominator()));
+                    double lg = Math.log(duration.getNumerator())/ Math.log(2);
 					// Add note to measure
-					
+                    Note n = new Note(
+                        NoteValue.values()[(int)lg],
+                        lg % 1 != 0,
+                        instrument,
+                        Note.noteNumToPitchClass(noteNum), Note.noteNumToOctave(noteNum)
+                    );
+					m.put(offset, n, 5);
 					noteMemo[noteNum] = null;
 				} else {
 					System.out.println("\tNote on event detected...");
@@ -393,7 +418,8 @@ public class Score {
 		}
 		// In case trailing fermata creates erroneous trailing measure
 		// TODO: if (score.getLastMeasure().isEmpty()) score.delete(lastMeasure);
-        return null;
+        score.add(m);
+        return score;
     }
 
     private static MidiEvent [] initNoteMemo(){
