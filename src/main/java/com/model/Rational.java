@@ -48,6 +48,7 @@ public class Rational implements Comparable<Rational>{
     }
 
     public void minus(Rational r) {
+        // System.out.println(this + " minus " + r);
         Rational temp = r.deepCopy();
         temp.negative();
 		plus(temp);
@@ -70,6 +71,10 @@ public class Rational implements Comparable<Rational>{
 	}
 
     public void simplify(){
+        if(isZero()){
+            numerator = 0;
+            denominator = 1;
+        }
         int gcd = gcd(numerator, denominator);
 		numerator /= gcd;
         denominator /= gcd;
@@ -193,7 +198,7 @@ public class Rational implements Comparable<Rational>{
 	}
 
     public boolean isZero(){
-        return numerator == 0 && denominator != 0;
+        return numerator == 0;
     }
 
 }

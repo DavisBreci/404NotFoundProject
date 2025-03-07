@@ -1,3 +1,7 @@
+/**
+ * @author Christopher Ferguson
+ * TODO: Maybe use find and replace to require notes to specify their instrument in constructors
+ */
 package com.model;
 
 import java.io.File;
@@ -5,6 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.UUID;
+import java.util.regex.Pattern;
 import java.util.Map.Entry;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -18,71 +24,21 @@ import org.jfugue.player.Player;
  * Class representing tablature
  */
 public class Score {
-    public ID uuid;
+    public final String uuid;
     private Instrument instrument;
     private ArrayList<Measure> measures;
     private int tempo;
 
     public static void main(String[] args) {
-        /* Creating and playing "Smoke on the Water" by Deep Purple with uRock  */
-        Instrument instrument = Instrument.DISTORTION_GUITAR; // Choose our instrument
-        Score smokeOnTheWater = new Score(null, instrument, 120); // Initialize the score
-
-        for(int i = 0; i < 4; i++) // Add 4 measures of 4/4
-            smokeOnTheWater.add(new Measure(instrument, new Rational(4)));
-
-        Chord powerChord = new Chord(NoteValue.EIGHTH, false, instrument); // Create a power chord shape
-        powerChord.put(new Note(PitchClass.D, 3), 1);
-        powerChord.put(new Note(PitchClass.A, 3), 2);
-
-        Measure m = smokeOnTheWater.get(0); // First measure
-        m.put(new Rational("0/1"), powerChord.deepCopy()); // Add chord to measure
-            powerChord.shiftString(1); // Move the chord shape around
-            powerChord.transpose(-2);
-        m.put(new Rational("1/4"), powerChord.deepCopy()); // repeat!
-            powerChord.transpose(2);
-        m.put(new Rational("2/4"), powerChord.deepCopy());
-            powerChord.shiftString(-1);
-        m.put(new Rational("7/8"), powerChord.deepCopy());
-            powerChord.shiftString(1);
-            powerChord.transpose(-2);
-    
-        m = smokeOnTheWater.get(1);  // Second measure
-        m.put(new Rational("1/8"), powerChord.deepCopy());
-            powerChord.transpose(3);
-        m.put(new Rational("3/8"), powerChord.deepCopy());
-            powerChord.transpose(-1);
-        m.put(new Rational("1/2"), powerChord.deepCopy());
-            powerChord.shiftString(-1);
-
-        m = smokeOnTheWater.get(2); // Third measure
-        m.put(new Rational("0/4"), powerChord.deepCopy());
-            powerChord.shiftString(1);
-            powerChord.transpose(-2);
-        m.put(new Rational("1/4"), powerChord.deepCopy());
-            powerChord.transpose(2);
-        m.put(new Rational("1/2"), powerChord.deepCopy());
-            powerChord.transpose(-2);
-        m.put(new Rational("7/8"), powerChord.deepCopy());
-            powerChord.shiftString(-1);
-            powerChord.transpose(2);
-        
-        m = smokeOnTheWater.get(3); // Fourth measure
-        m.put(new Rational("1/8"), powerChord.deepCopy());
-        
-
-        Player p = new Player(); // Play it!
-        // p.play(smokeOnTheWater.getSequence(0, smokeOnTheWater.size(), null));
-        // System.out.println(
-        //    Arrays.toString(smokeOnTheWater.asChordArray())
-        // );
-        Sequence seq =  loadSequence("C:\\Users\\CTFer\\eclipse-workspace\\MIDIExperiment\\src\\MIDI\\Alphys.mid");
-        // p.play(seq);
-        Score alphys = Score.midiToScore(
-            seq, 0, Instrument.GUITAR
+        Sequence seq =  loadSequence("src\\main\\midi\\Teen_Town.mid"); // To be replaced by DataLoader method
+        Score score = Score.midiToScore(
+            seq, 0, Instrument.FRETLESS_BASS
         );
-        p.play(alphys.getSequence(0, alphys.size(), null));
-
+        Player p = new Player();
+        // MIDI files for basses are written an octave lower than they're played
+        Sequence reproduced = score.getSequence(0, score.size(), null, 1);
+        System.out.println("Now playing \"Teen Town\" by Jaco Pastorius");
+        p.play(reproduced);
     }
     
     /**
@@ -94,9 +50,9 @@ public class Score {
     public Score(String uuid, Instrument instrument, int tempo){
         measures = new ArrayList<Measure>();
         if(uuid == null)
-            this.uuid = new ID();
+            this.uuid = UUID.randomUUID().toString();
         else
-            this.uuid = new ID(uuid);
+            this.uuid = uuid;
         this.instrument = instrument;
         setTempo(tempo);
     }
@@ -234,15 +190,15 @@ public class Score {
      * @param extraPadding optional (can be null) rest duration added to end of score
      * @return the MIDI Sequence
      */
-    public Sequence getSequence(int start, int end, Rational extraPadding){
+    public Sequence getSequence(int start, int end, Rational extraPadding, int octaves){
         // Generate Staccato from the score
-        String staccato = getControllerString() + toString(start, end, false);
+        String staccato = getControllerString() + transposeStaccato(toString(start, end, false), octaves);
         String [] tokens = staccato.split("\s"); // Separate the Staccato into events
         // Rational trailing rest duration
         Rational rightPad = (extraPadding == null) ? new Rational("0/1") : extraPadding.deepCopy(); 
         String [] components; // Symbols that make up a token
         for(int i = tokens.length - 1; i >= 0; i--){ // Find trailing rests by starting from last token
-            if(java.util.regex.Pattern.matches("R[w,h,q,i,s,t,x,o]?.", tokens[i])){ // See if a note is a rest
+            if(Pattern.matches("R[w,h,q,i,s,t,x,o]?.", tokens[i])){ // See if a note is a rest
                 components = tokens[i].split("");
                 switch(components[1]){ // Add the appropriate amount to right padding
                     case "w":
@@ -322,34 +278,39 @@ public class Score {
      * @param instrument the instrument the score should use
      * @return the score
      */
-    // TODO: Calculate fret to use
     public static Score midiToScore(Sequence src, int trackIndex, Instrument instrument){ 
         if(src == null) return null;
 		if(trackIndex < 0 || trackIndex >= src.getTracks().length) return null; 
-		// MIDI properties
-		final int resolution = src.getResolution();
-		MidiEvent [] noteMemo = initNoteMemo();
-		Track track = src.getTracks()[trackIndex]; 
-		MidiEvent currentEvent;
+		/* MIDI properties */
+            final int resolution = src.getResolution(); // Number of MIDI ticks in a quarter note
+            MidiEvent [] noteMemo = initNoteMemo(); // Used for matching note off and note on events
+            Track track = src.getTracks()[trackIndex]; 
+            MidiEvent currentEvent;
 		byte [] currentMessage;
-		// Note properties
-		Rational duration;
-		Rational offset;
-		byte noteNum = 0;
-        Score score = new Score(null, instrument, 120);
-		// Measure properties
-		ArrayList<Measure> measures = new ArrayList<Measure>();
-		Rational timeSignature = new Rational(4, 4);
-        Measure m = null;
-		int barCount = 1;
-		long barStart = 0;
-		long barDuration = resolution * 4;
-		long barEnd = barDuration;
-		long barsLept = 0;
+		/* Note properties */
+            Rational duration;
+            Rational offset = new Rational("0/1");
+            Rational tempOffset;
+            byte noteNum = 0;
+            Score score = new Score(null, instrument, 120);
+            // The duration of this chord doesn't matter bc it just indicates which strings are busy
+            Chord currentChord = new Chord(NoteValue.WHOLE, false, instrument); // Never put in a measure
+            Note prevNote = instrument.tuning[0]; // Starts on the instrument's lowest note
+		/* Measure properties */
+            Rational timeSignature = new Rational(4, 4);
+            Measure m = null; // The current measure
+            int barCount = 1; // How many bars are in the piece
+            long barStart = 0; // MIDI tick the current bar starts at
+            long barDuration = resolution * 4; // Length of current bar in ticks
+            long barEnd = barDuration; // MIDI tick the current bar ends at
+            long barsLept = 0; // Used when note being processed doesn't start at measure beginning
 		// TODO: Should be able to switch to new measure based on measure content
 		for(int i = 0; i < track.size(); i++) {
 			currentEvent = track.get(i);
 			currentMessage = currentEvent.getMessage().getMessage();
+            /*
+                Before putting notes in the measure, we must establish the context.
+             */ 
 			if(currentEvent.getTick() == barEnd){
                 barStart = barEnd;
                 barCount++;
@@ -360,8 +321,8 @@ public class Score {
             	barCount += barsLept;
                 barStart += barsLept * barDuration;
                 score.add(m);
-                for(int j = 0; j < barsLept; j++){
-                    measures.add(new Measure(instrument, timeSignature));
+                for(int j = 0; j < barsLept - 1; j++){
+                    score.add(new Measure(instrument, timeSignature));
                 }
                 m = new Measure(instrument, timeSignature);
             }
@@ -373,7 +334,7 @@ public class Score {
                     barDuration = MIDIHelper.getBarDuration(resolution, timeSignature);
                     score.add(m);
                     m = new Measure(instrument, timeSignature);
-				} else if(currentMessage[1] == MIDIHelper.TEMPO) {
+				} else if(currentMessage[1] == MIDIHelper.TEMPO) { // Please avoid MIDI files with tempo changes
 					score.setTempo(MIDIHelper.mpqToBpm(MIDIHelper.getLong(currentMessage, 3, 3)));
 				}
 			} else if(MIDIHelper.isNoteOn(currentMessage[0]) || MIDIHelper.isNoteOff(currentMessage[0])) {
@@ -381,33 +342,40 @@ public class Score {
 				if(noteMemo[noteNum] != null) {
 					System.out.println("\tNote off event detected...");
 					duration = MIDIHelper.midiQuantize(noteMemo[noteNum], currentEvent, resolution);
-                    offset = Rational.sternBrocot(
-                        (double)(noteMemo[noteNum].getTick() - barStart) / (4 * resolution), 
+
+                    tempOffset = Rational.sternBrocot( // Used instead of midiQuantize because note starts are in-sync w/ grid
+                        (double)(noteMemo[noteNum].getTick() - barStart) / (4 * resolution),
                         0.001
                     );
-                    if(offset.compareTo(timeSignature) == 0){
-                        barStart = barEnd;
-                        barCount++;
-                        score.add(m);
-                        m = new Measure(instrument, timeSignature);
-                        offset = MIDIHelper.midiQuantize(barStart, noteMemo[noteNum], resolution);
-                    }
+
+                    if(tempOffset.compareTo(offset) != 0){ // On different chord
+                        currentChord.clear();
+                        offset = tempOffset;
+                    } 
+
 					System.out.print(
 							Note.noteNumToPitchClass(noteNum) + "" + Note.noteNumToOctave(noteNum) +
 							" of length " + duration + 
 							" at an offset of " + offset + 
 							" from the start of bar " + barCount + "\n"
 					);
+
                     duration.times(new Rational(64 / duration.getDenominator()));
-                    double lg = Math.log(duration.getNumerator())/ Math.log(2);
-					// Add note to measure
+                    double lg = Math.log(duration.getNumerator())/ Math.log(2); // Index NoteValue via log2
                     Note n = new Note(
                         NoteValue.values()[(int)lg],
-                        lg % 1 != 0,
+                        lg % 1 != 0, // lg will be fractional if there's a dot
                         instrument,
-                        Note.noteNumToPitchClass(noteNum), Note.noteNumToOctave(noteNum)
+                        Note.noteNumToPitchClass(noteNum), 
+                        Note.noteNumToOctave(noteNum)
                     );
-					m.put(offset, n, 5);
+                    int string = getIdealString(currentChord, prevNote, n);
+                    if(string == -1) continue;
+                    Note tempNote = n.deepCopy(); // necessary because we're not changing the chord's duration
+                    currentChord.put(tempNote, string);
+                    n.setLocation(string, tempNote.getFret());
+                    prevNote = n;
+					m.put(offset, n, string); // Add note to measure
 					noteMemo[noteNum] = null;
 				} else {
 					System.out.println("\tNote on event detected...");
@@ -416,9 +384,9 @@ public class Score {
 			}
 			barEnd = barStart + barDuration;
 		}
-		// In case trailing fermata creates erroneous trailing measure
-		// TODO: if (score.getLastMeasure().isEmpty()) score.delete(lastMeasure);
+		// TODO: fix trailing fermata creates erroneous trailing measure 
         score.add(m);
+
         return score;
     }
 
@@ -428,4 +396,57 @@ public class Score {
 				memo[i]= null;
 		return memo;
 	}
+
+    /**
+     * Decides which string a note should be placed on. Returns -1 if the note can't be placed.
+     * @param currentChord The chord the note should be added to
+     * @param prevNote the algorithm will choose the ffret that minimizes the distance to this note
+     * @param currentNote the note to choose a string for
+     * @return the best string to place the current note on
+     */
+    private static int getIdealString(Chord currentChord, Note prevNote, Note currentNote){
+        int idealString = -1;
+        double minSteps = Double.MAX_VALUE;
+        double currentSteps = 0;
+        Note [] openNotes = currentChord.getInstrument().tuning;
+        Note [] notes = currentChord.getNotes(false); // method isn't destructive
+
+        for(int i = 0; i < openNotes.length; i++){
+            if(notes[i] != null) 
+                continue; // String is busy
+            currentSteps = openNotes[i].stepsTo(currentNote); // Prospect fret
+            if(currentSteps < 0 || currentSteps > currentChord.getInstrument().frets)
+                continue; // Note not on current string
+            currentSteps -= (int)Math.abs(prevNote.getFret()); // Fret dist btwn previous note and current 
+            if(i == prevNote.getString())
+                currentSteps *= 1.5; // Disincentivize remaining on the same string
+            if(currentSteps >= minSteps)
+                continue; // This string isn't a better option
+            minSteps = currentSteps;
+            idealString = i;
+        }
+
+        return idealString;
+    }
+
+    public static String transposeStaccato(String staccato, int octaves){
+        String [] tokens = staccato.split("\s");
+        StringBuilder transposed = new StringBuilder();
+        String [] components;
+        for(int i = 0; i < tokens.length; i++){
+            if(!Pattern.matches("[ABCDEFG]b?[0-9][w,h,q,i,s,t,x,o]?.", tokens[i])){
+                transposed.append(tokens[i]+ " ");
+                continue;
+            }
+            components = tokens[i].split("");
+            if(components[1].equals("b")){
+                components[2] = (Integer.parseInt(components[2]) + octaves) + "";
+            } else {
+                components[1] = (Integer.parseInt(components[1]) + octaves) + "";
+            }
+            transposed.append(String.join("", components) + " ");
+        }
+        
+        return transposed.toString();
+    }
 }

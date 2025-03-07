@@ -75,16 +75,16 @@ public class Chord extends BarObj{
     public boolean put(Note note, int string){
         if(note == null || notes[string] != null)
             return false;
-        if(note.restring(string)){
-            if(duration != note.getDuration()){
-                note.setValue(value);
-                note.setDotted(dotted);
-            }
-            if(instrument != note.getInstrument())
-                note.setInstrument(instrument);
-            notes[string] = note;
-            noteCount++;
-        }   
+        if(instrument != note.getInstrument())
+            note.setInstrument(instrument);
+        if(!note.restring(string))
+            return false;
+        if(duration != note.getDuration()){
+            note.setValue(value);
+            note.setDotted(dotted);
+        }
+        notes[string] = note;
+        noteCount++;
         return true;
     }
     /**
@@ -104,7 +104,7 @@ public class Chord extends BarObj{
 
     /**
      * Attempts to remove a note from the chord
-     * @param string The note to be deleted
+     * @param n The note to be deleted
      * @return Whether the removal was successful
      */
     public boolean remove(Note n){
@@ -114,6 +114,7 @@ public class Chord extends BarObj{
             return false;
         if(!notes[n.getString()].equals(n))
             return false;
+        notes[n.getString()].untie();
         notes[n.getString()] = null;
         noteCount--;
         return true;
@@ -178,4 +179,10 @@ public class Chord extends BarObj{
         return staccato.toString();
     }
 
+    /**
+     * Rids the chord of notes
+     */
+    public void clear(){
+        notes = new Note[instrument.tuning.length];
+    }
 }

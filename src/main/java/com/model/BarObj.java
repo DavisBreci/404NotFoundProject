@@ -41,14 +41,9 @@ public abstract class BarObj implements Comparable<BarObj>{
     }
 
     public static Rational calcDuration(NoteValue value, boolean dotted){
-         Rational duration = new Rational(
-            (int)Math.pow(2, value.ordinal()), 
-            (int)Math.pow(2, NoteValue.values().length -1));
+         Rational duration = value.duration.deepCopy();
         if(dotted)
-            duration.plus(new Rational(
-                duration.getNumerator(), 
-                duration.getDenominator() * 2)
-            );
+            duration.times(new Rational(3,2));
         return duration;
     }
 

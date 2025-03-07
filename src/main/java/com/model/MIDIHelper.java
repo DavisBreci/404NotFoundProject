@@ -1,3 +1,6 @@
+/**
+ * @author Christopher Ferguson
+ */
 package com.model;
 
 import javax.sound.midi.MidiEvent;
@@ -57,5 +60,4 @@ public final class MIDIHelper {
     public static int mpqToBpm(long tempo){
         return (int)(60000000 / tempo);
     }
-    
 }

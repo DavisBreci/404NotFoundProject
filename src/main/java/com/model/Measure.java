@@ -32,6 +32,7 @@ public class Measure {
         this.timeSignature = timeSignature;
         this.chords = new TreeMap<Rational, Chord>();
         this.rests = new TreeMap<Rational, Rest>();
+        greedyRestFill(new Rational(0, 1), timeSignature);
     }
     /**
      * Calculates whether two notes are overlapping. The order of the input doesn't matter.
@@ -182,16 +183,14 @@ public class Measure {
         while(iIterator.hasNext()){
             currentEntry = iIterator.next();
             gapEnd = currentEntry.getKey();
-            if(gapStart.compareTo(gapEnd) == -1){ // Gap between notes
+            if(gapStart.compareTo(gapEnd) == -1) // Gap between notes
                 greedyRestFill(gapStart, gapEnd); 
-            } 
             gapStart = gapEnd.deepCopy();
             gapStart.plus(currentEntry.getValue().getDuration());
         }
         gapEnd = timeSignature;
-        if(gapStart.compareTo(gapEnd) == -1){
+        if(gapStart.compareTo(gapEnd) == -1)
             greedyRestFill(gapStart, gapEnd);
-        }
     }
 
     /**
@@ -216,12 +215,11 @@ public class Measure {
                 Math.min(NoteValue.values().length - 1, (int)noteIndex)
             ];
             remainder.minus(value.duration);
-            dot = new Rational(
-                value.duration.getNumerator()/2, value.duration.getDenominator()
-            );
+            dot = value.duration.deepCopy();
+            dot.times(new Rational(1, 2));
             temp = remainder.deepCopy();
             temp.minus(dot);
-            if((dotted = remainder.compareTo(dot) <= 0 && temp.compareTo(new Rational("0/1")) == 1))
+            if(dotted = (remainder.compareTo(dot) <= 0) && temp.compareTo(new Rational("0/1")) == 1)
                 remainder = temp;
             rest = new Rest(value, dotted);
             offset.simplify();
