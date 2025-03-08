@@ -30,6 +30,16 @@ public class Score {
     private int tempo;
 
     public static void main(String[] args) {
+        // Sequence seq =  loadSequence("src\\main\\midi\\Teen_Town.mid"); // To be replaced by DataLoader method
+        // Score score = Score.midiToScore(
+        //     seq, 0, Instrument.FRETLESS_BASS
+        // );
+        // Player p = new Player();
+        // // MIDI files for basses are written an octave lower than they're played
+        // Sequence reproduced = score.getSequence(0, score.size(), null, 1);
+        // System.out.println("Now playing \"Teen Town\" by Jaco Pastorius");
+        // p.play(reproduced);
+
         Sequence seq =  loadSequence("src\\main\\midi\\Teen_Town.mid"); // To be replaced by DataLoader method
         Score score = Score.midiToScore(
             seq, 0, Instrument.FRETLESS_BASS
@@ -37,7 +47,6 @@ public class Score {
         Player p = new Player();
         // MIDI files for basses are written an octave lower than they're played
         Sequence reproduced = score.getSequence(0, score.size(), null, 1);
-        System.out.println("Now playing \"Teen Town\" by Jaco Pastorius");
         p.play(reproduced);
     }
     
@@ -279,6 +288,16 @@ public class Score {
      * @return the score
      */
     public static Score midiToScore(Sequence src, int trackIndex, Instrument instrument){ 
+        class MemoObj {
+            MidiEvent noteEvent;
+            int measureIndex;
+            Rational offset;
+            MemoObj(MidiEvent noteEvent, int measureIndex, Rational offset){
+                this.noteEvent = noteEvent;
+                this.measureIndex = measureIndex;
+                this.offset = offset;
+            }
+        }
         if(src == null) return null;
 		if(trackIndex < 0 || trackIndex >= src.getTracks().length) return null; 
 		/* MIDI properties */
@@ -311,7 +330,7 @@ public class Score {
             /*
                 Before putting notes in the measure, we must establish the context.
              */ 
-			if(currentEvent.getTick() == barEnd){
+			if(currentEvent.getTick() == barEnd){ // TODO: Fix note off changing measure
                 barStart = barEnd;
                 barCount++;
                 score.add(m);
@@ -328,21 +347,27 @@ public class Score {
             }
 			if(currentMessage[0] == MIDIHelper.META){
 				if(currentMessage[1] == MIDIHelper.TIME_SIGNATURE) {
+                    System.out.println("Time signature changed to " + timeSignature);
                     timeSignature.setNumerator(Byte.toUnsignedInt(currentMessage[3]));
                     timeSignature.setDenominator(2 << (Byte.toUnsignedInt(currentMessage[4]) - 1)); // Power of 2
                     barStart = currentEvent.getTick();
                     barDuration = MIDIHelper.getBarDuration(resolution, timeSignature);
                     score.add(m);
                     m = new Measure(instrument, timeSignature);
+                    
 				} else if(currentMessage[1] == MIDIHelper.TEMPO) { // Please avoid MIDI files with tempo changes
 					score.setTempo(MIDIHelper.mpqToBpm(MIDIHelper.getLong(currentMessage, 3, 3)));
-				}
+				} else if (currentMessage[1] == MIDIHelper.INSTRUMENT_NAME){
+                    System.out.println(MIDIHelper.getInstrumentName(currentMessage));
+                }
 			} else if(MIDIHelper.isNoteOn(currentMessage[0]) || MIDIHelper.isNoteOff(currentMessage[0])) {
 				noteNum = currentMessage[1];
 				if(noteMemo[noteNum] != null) {
 					System.out.println("\tNote off event detected...");
 					duration = MIDIHelper.midiQuantize(noteMemo[noteNum], currentEvent, resolution);
-
+                    System.out.println(noteMemo[noteNum].getTick());
+                    System.out.println(barStart);
+                    System.out.println((double)(noteMemo[noteNum].getTick() - barStart) / (4 * resolution));
                     tempOffset = Rational.sternBrocot( // Used instead of midiQuantize because note starts are in-sync w/ grid
                         (double)(noteMemo[noteNum].getTick() - barStart) / (4 * resolution),
                         0.001
@@ -400,7 +425,7 @@ public class Score {
     /**
      * Decides which string a note should be placed on. Returns -1 if the note can't be placed.
      * @param currentChord The chord the note should be added to
-     * @param prevNote the algorithm will choose the ffret that minimizes the distance to this note
+     * @param prevNote the algorithm will choose the fret that minimizes the distance to this note
      * @param currentNote the note to choose a string for
      * @return the best string to place the current note on
      */
@@ -430,6 +455,7 @@ public class Score {
     }
 
     public static String transposeStaccato(String staccato, int octaves){
+        if(octaves == 0) return staccato;
         String [] tokens = staccato.split("\s");
         StringBuilder transposed = new StringBuilder();
         String [] components;

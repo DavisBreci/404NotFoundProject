@@ -22,6 +22,7 @@ public final class MIDIHelper {
     public static final byte CHAN_VOL_LSB = 0x27;
     public static final int MAX_VOL = 16383;
     public static final int TEMPO = 0x51;
+    public static final byte INSTRUMENT_NAME = (byte)0x04;
 
     public static Rational midiQuantize(MidiEvent a, MidiEvent b, int resolution) {
         return Rational.quantize(
@@ -59,5 +60,13 @@ public final class MIDIHelper {
 
     public static int mpqToBpm(long tempo){
         return (int)(60000000 / tempo);
+    }
+
+    public static String getInstrumentName(byte [] msg){
+        StringBuilder name = new StringBuilder();
+        int end = 3 + Byte.toUnsignedInt(msg[2]);
+        for(int i = 3; i < end; i++)
+            name.append((char)msg[i]);
+        return name.toString();
     }
 }

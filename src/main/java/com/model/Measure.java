@@ -221,7 +221,9 @@ public class Measure {
             temp.minus(dot);
             if(dotted = (remainder.compareTo(dot) <= 0) && temp.compareTo(new Rational("0/1")) == 1)
                 remainder = temp;
+            System.out.println("Bottom Remainder " + remainder);
             rest = new Rest(value, dotted);
+            System.out.println("Top Remainder " + remainder);
             offset.simplify();
             rests.put(offset.deepCopy(), rest);
             offset.plus(rest.getDuration());
