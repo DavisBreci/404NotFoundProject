@@ -50,6 +50,14 @@ public class Measure {
         return (bStart.compareTo(aEnd) == -1 && aStart.compareTo(bEnd) == -1) || (aStart.compareTo(bEnd) == -1 && bStart.compareTo(aEnd) == -1);
     }
 
+    public void setTimeSignature(Rational timeSignature){
+        if(timeSignature.compareTo(this.timeSignature) < 0){
+            clear();
+            updateRests();
+        }
+        this.timeSignature = timeSignature.deepCopy();
+    }
+
     /**
      * Attempts to add a note to the measure. 
      * @param offset the chord's distance from the measure's start
@@ -221,9 +229,9 @@ public class Measure {
             temp.minus(dot);
             if(dotted = (remainder.compareTo(dot) <= 0) && temp.compareTo(new Rational("0/1")) == 1)
                 remainder = temp;
-            System.out.println("Bottom Remainder " + remainder);
+            // System.out.println("Bottom Remainder " + remainder);
             rest = new Rest(value, dotted);
-            System.out.println("Top Remainder " + remainder);
+            // System.out.println("Top Remainder " + remainder);
             offset.simplify();
             rests.put(offset.deepCopy(), rest);
             offset.plus(rest.getDuration());

@@ -7,7 +7,6 @@ package com.model;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -40,15 +39,19 @@ public class Score {
         // System.out.println("Now playing \"Teen Town\" by Jaco Pastorius");
         // p.play(reproduced);
 
-        Sequence seq =  loadSequence("src\\main\\midi\\Teen_Town.mid"); // To be replaced by DataLoader method
+        Sequence seq =  loadSequence("src\\main\\midi\\Larks_II_GuitarOnly.mid"); // To be replaced by DataLoader method
         Score score = Score.midiToScore(
-            seq, 0, Instrument.FRETLESS_BASS
+            seq, 0, Instrument.DISTORTION_GUITAR
         );
         Player p = new Player();
         // MIDI files for basses are written an octave lower than they're played
+        System.out.println(score);
         Sequence reproduced = score.getSequence(0, score.size(), null, 1);
+       
         p.play(reproduced);
-    }
+        System.out.println(score + "\n\n\n");
+        System.out.println(Score.transposeStaccato(score.toString(), 1));
+    }   
     
     /**
      * Constructs an object representing an emtpy sheet of tablature
@@ -176,7 +179,7 @@ public class Score {
         if(start < end && start >= 0 && end >= 0 && start < measures.size() && end <= measures.size()){
             StringBuilder staccato = new StringBuilder();
             for(int i = start; i < end; i++)
-                staccato.append(measures.get(i).toString(includeBars));
+                staccato.append(" " + measures.get(i).toString(includeBars));
             return staccato.toString();
         } else return "";
     }
@@ -201,7 +204,7 @@ public class Score {
      */
     public Sequence getSequence(int start, int end, Rational extraPadding, int octaves){
         // Generate Staccato from the score
-        String staccato = getControllerString() + transposeStaccato(toString(start, end, false), octaves);
+        String staccato = getControllerString() + Score.transposeStaccato(toString(start, end, false), octaves);
         String [] tokens = staccato.split("\s"); // Separate the Staccato into events
         // Rational trailing rest duration
         Rational rightPad = (extraPadding == null) ? new Rational("0/1") : extraPadding.deepCopy(); 
@@ -297,19 +300,25 @@ public class Score {
                 this.measureIndex = measureIndex;
                 this.offset = offset;
             }
+            static MemoObj [] initNoteMemo(){
+                MemoObj [] memo = new MemoObj[MIDIHelper.MIDI_NOTE_RANGE];
+                for(int i = 0; i < MIDIHelper.MIDI_NOTE_RANGE; i++) 
+                        memo[i]= null;
+                return memo;
+            }
         }
         if(src == null) return null;
 		if(trackIndex < 0 || trackIndex >= src.getTracks().length) return null; 
 		/* MIDI properties */
             final int resolution = src.getResolution(); // Number of MIDI ticks in a quarter note
-            MidiEvent [] noteMemo = initNoteMemo(); // Used for matching note off and note on events
+            MemoObj [] noteMemo = MemoObj.initNoteMemo(); // Used for matching note off and note on events
             Track track = src.getTracks()[trackIndex]; 
             MidiEvent currentEvent;
+            long lastNoteOnTick = 0;
 		byte [] currentMessage;
 		/* Note properties */
             Rational duration;
             Rational offset = new Rational("0/1");
-            Rational tempOffset;
             byte noteNum = 0;
             Score score = new Score(null, instrument, 120);
             // The duration of this chord doesn't matter bc it just indicates which strings are busy
@@ -334,57 +343,42 @@ public class Score {
                 barStart = barEnd;
                 barCount++;
                 score.add(m);
-                m = new Measure(instrument, timeSignature);
+                m = new Measure(instrument, timeSignature.deepCopy());
             } else if (currentEvent.getTick() > barEnd){
             	barsLept = ((currentEvent.getTick() - barStart)/barDuration);
             	barCount += barsLept;
                 barStart += barsLept * barDuration;
                 score.add(m);
-                for(int j = 0; j < barsLept - 1; j++){
-                    score.add(new Measure(instrument, timeSignature));
+                for(int j = 0; j < barsLept - 2; j++){
+                    score.add(new Measure(instrument, timeSignature.deepCopy()));
                 }
                 m = new Measure(instrument, timeSignature);
             }
 			if(currentMessage[0] == MIDIHelper.META){
 				if(currentMessage[1] == MIDIHelper.TIME_SIGNATURE) {
-                    System.out.println("Time signature changed to " + timeSignature);
                     timeSignature.setNumerator(Byte.toUnsignedInt(currentMessage[3]));
                     timeSignature.setDenominator(2 << (Byte.toUnsignedInt(currentMessage[4]) - 1)); // Power of 2
                     barStart = currentEvent.getTick();
                     barDuration = MIDIHelper.getBarDuration(resolution, timeSignature);
-                    score.add(m);
-                    m = new Measure(instrument, timeSignature);
-                    
+                    if(m == null){
+                        m = new Measure(instrument, timeSignature);
+                    } else{
+                        m.setTimeSignature(timeSignature);
+                    }    
 				} else if(currentMessage[1] == MIDIHelper.TEMPO) { // Please avoid MIDI files with tempo changes
 					score.setTempo(MIDIHelper.mpqToBpm(MIDIHelper.getLong(currentMessage, 3, 3)));
-				} else if (currentMessage[1] == MIDIHelper.INSTRUMENT_NAME){
-                    System.out.println(MIDIHelper.getInstrumentName(currentMessage));
-                }
+				}
 			} else if(MIDIHelper.isNoteOn(currentMessage[0]) || MIDIHelper.isNoteOff(currentMessage[0])) {
 				noteNum = currentMessage[1];
 				if(noteMemo[noteNum] != null) {
 					System.out.println("\tNote off event detected...");
-					duration = MIDIHelper.midiQuantize(noteMemo[noteNum], currentEvent, resolution);
-                    System.out.println(noteMemo[noteNum].getTick());
-                    System.out.println(barStart);
-                    System.out.println((double)(noteMemo[noteNum].getTick() - barStart) / (4 * resolution));
-                    tempOffset = Rational.sternBrocot( // Used instead of midiQuantize because note starts are in-sync w/ grid
-                        (double)(noteMemo[noteNum].getTick() - barStart) / (4 * resolution),
-                        0.001
-                    );
-
-                    if(tempOffset.compareTo(offset) != 0){ // On different chord
-                        currentChord.clear();
-                        offset = tempOffset;
-                    } 
-
+					duration = MIDIHelper.midiQuantize(noteMemo[noteNum].noteEvent, currentEvent, resolution);
 					System.out.print(
 							Note.noteNumToPitchClass(noteNum) + "" + Note.noteNumToOctave(noteNum) +
 							" of length " + duration + 
-							" at an offset of " + offset + 
+							" at an offset of " + noteMemo[noteNum].offset + 
 							" from the start of bar " + barCount + "\n"
 					);
-
                     duration.times(new Rational(64 / duration.getDenominator()));
                     double lg = Math.log(duration.getNumerator())/ Math.log(2); // Index NoteValue via log2
                     Note n = new Note(
@@ -395,32 +389,40 @@ public class Score {
                         Note.noteNumToOctave(noteNum)
                     );
                     int string = getIdealString(currentChord, prevNote, n);
-                    if(string == -1) continue;
+                    if(string == -1){
+                        noteMemo[noteNum] = null;
+                        continue;
+                    }
                     Note tempNote = n.deepCopy(); // necessary because we're not changing the chord's duration
                     currentChord.put(tempNote, string);
                     n.setLocation(string, tempNote.getFret());
                     prevNote = n;
-					m.put(offset, n, string); // Add note to measure
+					m.put(noteMemo[noteNum].offset.deepCopy(), n, string); // Add note to measure
 					noteMemo[noteNum] = null;
 				} else {
 					System.out.println("\tNote on event detected...");
-					noteMemo[noteNum] = currentEvent;
+                    if(currentEvent.getTick() != lastNoteOnTick){ // On different chord 
+                        System.out.println("Change of chord " + lastNoteOnTick + " -> " + currentEvent.getTick() + ". " + Note.noteNumToPitchClass(noteNum) + "" + Note.noteNumToOctave(noteNum));
+                        currentChord.clear();
+                        lastNoteOnTick = currentEvent.getTick();
+                        System.out.println("The bar starts at " + barStart);
+                        offset = Rational.sternBrocot( // Used instead of midiQuantize because note starts are in-sync w/ grid
+                        (double)(currentEvent.getTick() - barStart) / (4 * resolution),
+                        0.001);
+                        System.out.println("Stern-Brocot quantizes " +  (double)(currentEvent.getTick() - barStart) / (4 * resolution) + 
+                        " as " + offset);
+                    } else {
+                        System.out.println("\tSame chord. " + Note.noteNumToPitchClass(noteNum) + "" + Note.noteNumToOctave(noteNum) + " " + offset);
+                    }
+					noteMemo[noteNum] = new MemoObj(currentEvent, barCount, offset.deepCopy());
 				}
 			}
 			barEnd = barStart + barDuration;
 		}
 		// TODO: fix trailing fermata creates erroneous trailing measure 
         score.add(m);
-
         return score;
     }
-
-    private static MidiEvent [] initNoteMemo(){
-		MidiEvent [] memo = new MidiEvent[MIDIHelper.MIDI_NOTE_RANGE];
-		for(int i = 0; i < MIDIHelper.MIDI_NOTE_RANGE; i++) 
-				memo[i]= null;
-		return memo;
-	}
 
     /**
      * Decides which string a note should be placed on. Returns -1 if the note can't be placed.
@@ -455,24 +457,40 @@ public class Score {
     }
 
     public static String transposeStaccato(String staccato, int octaves){
-        if(octaves == 0) return staccato;
         String [] tokens = staccato.split("\s");
         StringBuilder transposed = new StringBuilder();
-        String [] components;
+        String [] chordComponents;
+        String [] transposedChordComponents;
+        String [] noteComponents;
         for(int i = 0; i < tokens.length; i++){
-            if(!Pattern.matches("[ABCDEFG]b?[0-9][w,h,q,i,s,t,x,o]?.", tokens[i])){
-                transposed.append(tokens[i]+ " ");
-                continue;
+            if(tokens[i].contains("+")){ // Chord
+                chordComponents = tokens[i].split("\\+");
+                transposedChordComponents = new String [chordComponents.length];
+                for(int j = 0; j < chordComponents.length; j++){
+                    noteComponents = chordComponents[j].split("");
+                    // System.out.println(Arrays.toString(noteComponents));
+                    if(noteComponents[1].equals("b")){
+                        noteComponents[2] = (Integer.parseInt(noteComponents[2]) + octaves) + "";
+                    } else {
+                        noteComponents[1] = (Integer.parseInt(noteComponents[1]) + octaves) + "";
+                    }
+                    transposedChordComponents[j] = String.join("", noteComponents);
+                } 
+                transposed.append(String.join("+", transposedChordComponents) + " ");
+            } else{
+                if(!Pattern.matches("[ABCDEFG]b?[0-9][w,h,q,i,s,t,x,o]?\\.?", tokens[i])){
+                    transposed.append(tokens[i]+ " ");
+                    continue;
+                }
+                noteComponents = tokens[i].split("");
+                if(noteComponents[1].equals("b")){
+                    noteComponents[2] = (Integer.parseInt(noteComponents[2]) + octaves) + "";
+                } else {
+                    noteComponents[1] = (Integer.parseInt(noteComponents[1]) + octaves) + "";
+                }
+                transposed.append(String.join("", noteComponents) + " ");
             }
-            components = tokens[i].split("");
-            if(components[1].equals("b")){
-                components[2] = (Integer.parseInt(components[2]) + octaves) + "";
-            } else {
-                components[1] = (Integer.parseInt(components[1]) + octaves) + "";
-            }
-            transposed.append(String.join("", components) + " ");
         }
-        
         return transposed.toString();
     }
 }
