@@ -1,6 +1,5 @@
 /**
  * @author Christopher Ferguson
- * TODO: Maybe use find and replace to require notes to specify their instrument in constructors
  */
 package com.model;
 
@@ -39,12 +38,12 @@ public class Score {
         // System.out.println("Now playing \"Teen Town\" by Jaco Pastorius");
         // p.play(reproduced);
 
-        Sequence seq =  loadSequence("src\\main\\midi\\Larks_II_GuitarOnly.mid"); // To be replaced by DataLoader method
+        Sequence seq =  loadSequence("src\\main\\midi\\Teen_Town.mid"); // To be replaced by DataLoader method
         Score score = Score.midiToScore(
-            seq, 0, Instrument.DISTORTION_GUITAR
+            seq, 0, Instrument.FRETLESS_BASS
         );
         Player p = new Player();
-        // MIDI files for basses are written an octave lower than they're played
+        // MIDI files for basses/guitars are written an octave lower than they're played
         System.out.println(score);
         Sequence reproduced = score.getSequence(0, score.size(), null, 1);
        
@@ -291,17 +290,17 @@ public class Score {
      * @return the score
      */
     public static Score midiToScore(Sequence src, int trackIndex, Instrument instrument){ 
-        class MemoObj {
+        class MemoEntry {
             MidiEvent noteEvent;
             int measureIndex;
             Rational offset;
-            MemoObj(MidiEvent noteEvent, int measureIndex, Rational offset){
+            MemoEntry(MidiEvent noteEvent, int measureIndex, Rational offset){
                 this.noteEvent = noteEvent;
                 this.measureIndex = measureIndex;
                 this.offset = offset;
             }
-            static MemoObj [] initNoteMemo(){
-                MemoObj [] memo = new MemoObj[MIDIHelper.MIDI_NOTE_RANGE];
+            static MemoEntry [] initNoteMemo(){
+                MemoEntry [] memo = new MemoEntry[MIDIHelper.MIDI_NOTE_RANGE];
                 for(int i = 0; i < MIDIHelper.MIDI_NOTE_RANGE; i++) 
                         memo[i]= null;
                 return memo;
@@ -311,7 +310,7 @@ public class Score {
 		if(trackIndex < 0 || trackIndex >= src.getTracks().length) return null; 
 		/* MIDI properties */
             final int resolution = src.getResolution(); // Number of MIDI ticks in a quarter note
-            MemoObj [] noteMemo = MemoObj.initNoteMemo(); // Used for matching note off and note on events
+            MemoEntry [] noteMemo = MemoEntry.initNoteMemo(); // Used for matching note off and note on events
             Track track = src.getTracks()[trackIndex]; 
             MidiEvent currentEvent;
             long lastNoteOnTick = 0;
@@ -370,7 +369,7 @@ public class Score {
 				}
 			} else if(MIDIHelper.isNoteOn(currentMessage[0]) || MIDIHelper.isNoteOff(currentMessage[0])) {
 				noteNum = currentMessage[1];
-				if(noteMemo[noteNum] != null) {
+				if(noteMemo[noteNum] != null) { // Note off
 					System.out.println("\tNote off event detected...");
 					duration = MIDIHelper.midiQuantize(noteMemo[noteNum].noteEvent, currentEvent, resolution);
 					System.out.print(
@@ -399,22 +398,21 @@ public class Score {
                     prevNote = n;
 					m.put(noteMemo[noteNum].offset.deepCopy(), n, string); // Add note to measure
 					noteMemo[noteNum] = null;
-				} else {
+				} else { // Note on
 					System.out.println("\tNote on event detected...");
                     if(currentEvent.getTick() != lastNoteOnTick){ // On different chord 
                         System.out.println("Change of chord " + lastNoteOnTick + " -> " + currentEvent.getTick() + ". " + Note.noteNumToPitchClass(noteNum) + "" + Note.noteNumToOctave(noteNum));
                         currentChord.clear();
                         lastNoteOnTick = currentEvent.getTick();
                         System.out.println("The bar starts at " + barStart);
-                        offset = Rational.sternBrocot( // Used instead of midiQuantize because note starts are in-sync w/ grid
-                        (double)(currentEvent.getTick() - barStart) / (4 * resolution),
-                        0.001);
-                        System.out.println("Stern-Brocot quantizes " +  (double)(currentEvent.getTick() - barStart) / (4 * resolution) + 
-                        " as " + offset);
+                        // offset = Rational.sternBrocot( 
+                        // (double)(currentEvent.getTick() - barStart) / (4 * resolution), 0.001
+                        // );
+                        offset = MIDIHelper.midiQuantize(barStart, currentEvent, resolution);
                     } else {
                         System.out.println("\tSame chord. " + Note.noteNumToPitchClass(noteNum) + "" + Note.noteNumToOctave(noteNum) + " " + offset);
                     }
-					noteMemo[noteNum] = new MemoObj(currentEvent, barCount, offset.deepCopy());
+					noteMemo[noteNum] = new MemoEntry(currentEvent, barCount, offset.deepCopy());
 				}
 			}
 			barEnd = barStart + barDuration;

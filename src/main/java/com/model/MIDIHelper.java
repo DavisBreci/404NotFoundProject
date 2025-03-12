@@ -26,12 +26,12 @@ public final class MIDIHelper {
 
     public static Rational midiQuantize(MidiEvent a, MidiEvent b, int resolution) {
         return Rational.quantize(
-                (double)(b.getTick() - a.getTick())/(4 * resolution), VALID_NOTE_VALUES, true);
+                (double)(b.getTick() - a.getTick())/(4 * resolution), 0.01, 64);
     }
     
     public static Rational midiQuantize(long a, MidiEvent b, int resolution) {
         return Rational.quantize(
-                (double)(b.getTick() - a)/(4 * resolution), VALID_NOTE_VALUES, true);
+                (double)(b.getTick() - a)/(4 * resolution), 0.01, 64);
     }
     
     public static boolean isNoteOn(Byte bStatus) {
