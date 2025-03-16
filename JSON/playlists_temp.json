@@ -1,0 +1,16 @@
+[
+    {
+        "author": "brendan",
+        "songs": [],
+        "description": "a great playlist",
+        "id": "f181b0d8-28b8-4ceb-89a1-d069c8e2c087",
+        "title": "brendan's playlist"
+    },
+    {
+        "author": "ryan",
+        "songs": [],
+        "description": "an amazing playlist",
+        "id": "fdb01edf-e1ef-424b-bc67-34d93afb3e91",
+        "title": "ryan's playlist"
+    }
+]

@@ -1,0 +1,12 @@
+[
+    {
+        "songs": "[com.model.Song@5680a178, com.model.Song@5fdef03a]",
+        "id": "024c6435-50f6-4a66-8eb6-b8b8c30fb827",
+        "title": "Lesson 1"
+    },
+    {
+        "songs": "[com.model.Song@3b22cdd0, com.model.Song@1e81f4dc]",
+        "id": "c1e1b2e8-7d08-4a31-b458-2ac6bd43b466",
+        "title": "Lesson 2"
+    }
+]

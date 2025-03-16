@@ -23,6 +23,7 @@ public class DataConstants {
     protected static final String TEACHER_LESSONS = "lessons";
 
     protected static final String SONG_FILE_NAME = "JSON/songs.json";
+    protected static final String SONG_TEMP_FILE_NAME = "JSON/songs_temp.json";
     protected static final String SONG_ID = "id";
     protected static final String SONG_TITLE = "title";
     protected static final String SONG_ARTIST = "artist";
@@ -34,6 +35,7 @@ public class DataConstants {
 
 
     protected static final String PLAYLIST_FILE_NAME = "JSON/playlists.json";
+    protected static final String PLAYLIST_FILE_TEMP_NAME = "JSON/playlists_temp.json";   
     protected static final String PLAYLIST_ID = "id";
     protected static final String PLAYLIST_TITLE = "title";
     protected static final String PLAYLIST_AUTHOR = "author";
@@ -42,6 +44,7 @@ public class DataConstants {
 
 
     protected static final String LESSONS_FILE_NAME = "JSON/lessons.json";
+    protected static final String LESSONS_FILE_TEMP_NAME = "JSON/lessons_temp.json";
     protected static final String LESSONS_ID = "id";
     protected static final String LESSONS_SONGS = "songs";
     protected static final String LESSONS_TITLE = "title";

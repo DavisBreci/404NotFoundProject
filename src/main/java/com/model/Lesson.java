@@ -7,7 +7,7 @@ public class Lesson {
     private String title;
 
     public Lesson(UUID id, ArrayList<Song> songs, String title){
-        this.id = id;
+        this.id = this.id;
         this.songs = songs;
         this.title = title;
     }
@@ -26,6 +26,9 @@ public class Lesson {
      * @author brenskrz
      */
     public UUID getId() {
+        if(id == null) {
+            id = UUID.randomUUID();
+        }
         return id;
     }
     public ArrayList<Song> getSongs() {
