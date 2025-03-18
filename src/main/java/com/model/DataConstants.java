@@ -19,6 +19,7 @@ public class DataConstants {
     protected static final String USER_PLAYLISTS = "playlists";
 
     protected static final String TEACHER_FILE_NAME = "JSON/teachers.json";
+    protected static final String TEACHER_TEMP_FILE_NAME = "JSON/teachers_temp.json";
     protected static final String TEACHER_CLASSES = "classes";
     protected static final String TEACHER_LESSONS = "lessons";
 
