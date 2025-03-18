@@ -393,10 +393,10 @@ public class DataWriter extends DataConstants {
 
 
 
-        DataWriter.saveUsers(DataLoader.getUsers());
+        // DataWriter.saveUsers(DataLoader.getUsers());
         // DataWriter.saveTeachers(DataLoader.getTeachers());
         // DataWriter.savePlaylists(DataLoader.getPlaylists());
-        // DataWriter.saveSongs(DataLoader.getSongs());
+        DataWriter.saveSongs(DataLoader.getSongs());
 
         // DataWriter.saveNewScore(myNewScore, SCORE_TEMP_FILE_NAME);
     }
