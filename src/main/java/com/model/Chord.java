@@ -13,6 +13,7 @@ public class Chord extends BarObj{
     private Instrument instrument;
     private Note [] notes;
     private int noteCount;
+    private Rational offset;
     /**
      * Constructs an empty chord with the given duration and instrument
      * @param value the note's base duration
@@ -178,4 +179,17 @@ public class Chord extends BarObj{
         return staccato.toString();
     }
 
+    public Rational getOffset() {
+        return offset;
+    }
+    
+    public ArrayList<Note> getNotes(){
+        ArrayList<Note> noteList = new ArrayList<>();
+        for(int i = 0; i < this.notes.length; i++){
+            if(this.notes[i] != null){
+                noteList.add(this.notes[i]);
+            }
+        }
+        return noteList;
+    }
 }

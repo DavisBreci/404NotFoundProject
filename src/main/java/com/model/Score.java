@@ -402,4 +402,12 @@ public class Score {
 				memo[i]= null;
 		return memo;
 	}
+
+    public ArrayList<Measure> getMeasures() {
+        return new ArrayList<>(measures);
+    }
+
+    public String getId() {
+        return this.uuid.toString();
+    }
 }

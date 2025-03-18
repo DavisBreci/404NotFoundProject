@@ -10,7 +10,7 @@ import java.util.UUID;
 
 import java.time.LocalDate;
 
-
+import org.jfugue.theory.TimeSignature;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -241,10 +241,158 @@ public class DataWriter extends DataConstants {
     //     DataWriter.saveLessons();
     // }
 
-    public static void saveScores() {
-        ScoreList
+    public static void saveNewScore(Score newScore, String filename) {
+        // 1. Create a JSON object for the score
+        JSONObject jsonScore = new JSONObject();
+        jsonScore.put("uuid", newScore.getId());
+        jsonScore.put("instrument", newScore.getInstrument().toString());
+        jsonScore.put("tempo", newScore.getTempo());
+
+        // 2. Create a JSON array for the measures
+        JSONArray jsonMeasures = new JSONArray();
+        for (Measure measure : newScore.getMeasures()) {
+            System.out.println("Processing measure with time signature: " + measure.getTimeSignature());
+
+            JSONObject jsonMeasure = new JSONObject();
+            jsonMeasure.put("timeSignature", measure.getTimeSignature().toString());
+
+            // Store chords using offsets as keys
+            JSONObject jsonChords = new JSONObject();
+
+            for (Chord chord : measure.getChords()) {
+                System.out.println("Processing chord at offset: " + chord.getOffset());
+
+                JSONObject jsonChord = new JSONObject();
+                jsonChord.put("value", chord.getValue().toString());
+                jsonChord.put("dotted", chord.isDotted());
+
+                // Create JSON array for notes (6 slots, since a guitar has 6 strings)
+                JSONArray jsonNotes = new JSONArray();
+                for (int i = 0; i < 6; i++) {
+                    if (i < chord.getNotes().size() && chord.getNotes().get(i) != null) {
+                        Note note = chord.getNotes().get(i);
+                        System.out.println("Adding note: " + note.getPitchClass() + " at string " + note.getString());
+
+                        JSONObject jsonNote = new JSONObject();
+                        jsonNote.put("pitchClass", note.getPitchClass().toString());
+                        jsonNote.put("octave", note.getOctave());
+                        jsonNote.put("string", note.getString());
+                        jsonNote.put("frontTie", note.hasFrontTie());
+                        jsonNote.put("backTie", note.hasBackTie());
+                        jsonNotes.add(jsonNote);
+                    } else {
+                        jsonNotes.add("null");
+                    }
+                }
+
+                jsonChord.put("notes", jsonNotes);
+                jsonChords.put(chord.getOffset(), jsonChord);
+            }
+
+            if (jsonChords.isEmpty()) {
+                System.out.println("Warning: No chords found in measure.");
+            }
+
+            jsonMeasure.put("chords", jsonChords);
+            jsonMeasures.add(jsonMeasure);
+        }
+
+        if (jsonMeasures.isEmpty()) {
+            System.out.println("Warning: No measures found in score.");
+        }
+
+        jsonScore.put("measures", jsonMeasures);
+
+        // 3. Write the JSON object to a new file
+        try (FileWriter file = new FileWriter(filename)) {
+            file.write(jsonScore.toJSONString());
+            file.flush();
+            System.out.println("Successfully wrote score to " + filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    public static void getScoreJSON(ArrayList<Score> scores) {
+        JSONArray jsonScores = new JSONArray();
 
+        for (Score score : scores) {
+            JSONObject jsonScore = new JSONObject();
 
+            jsonScore.put("uuid", score.getId());
+            jsonScore.put("instrument", score.getInstrument().toString());
+            jsonScore.put("tempo", score.getTempo());
+
+            JSONArray jsonMeasures = new JSONArray();
+
+            for (Measure measure : score.getMeasures()) {
+                JSONObject jsonMeasure = new JSONObject();
+
+                jsonMeasure.put("timeSignature", measure.getTimeSignature().toString());
+
+                JSONObject jsonChords = new JSONObject();
+                ArrayList<Chord> chords = measure.getChords();
+
+                for (Chord chord : chords) {
+                    JSONObject jsonChord = new JSONObject();
+
+                    jsonChord.put("value", chord.getValue().toString());
+                    jsonChord.put("dotted", chord.isDotted());
+
+                    JSONArray jsonNotes = new JSONArray();
+                    for (Note note : chord.getNotes()) {
+                        if (note != null) {
+                            JSONObject jsonNote = new JSONObject();
+                            jsonNote.put("pitchClass", note.getPitchClass().toString());
+                            jsonNote.put("octave", note.getOctave());
+                            jsonNote.put("string", note.getString());
+                            jsonNote.put("frontTie", note.hasFrontTie());
+                            jsonNote.put("backTie", note.hasBackTie());
+                            jsonNotes.add(jsonNote);
+                        } else {
+                            jsonNotes.add("null");
+                        }
+                    }
+
+                    jsonChord.put("notes", jsonNotes);
+                    jsonChords.put(chord.getOffset(), jsonChord);
+                }
+
+                jsonMeasure.put("chords", jsonChords);
+                jsonMeasures.add(jsonMeasure);
+            }
+
+            jsonScore.put("measures", jsonMeasures);
+            jsonScores.add(jsonScore);
+        }
+
+        try (FileWriter file = new FileWriter("scores.json")) {
+            file.write(jsonScores.toJSONString());
+            file.flush();
+            System.out.println("Successfully wrote all scores to scores.json");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String args[]) {
+        Score myNewScore = new Score("my_unique_id", Instrument.GUITAR, 100);
+        Rational testTimeSignature = new Rational(3, 4);
+        // Add test measures and chords
+        Measure measure = new Measure(Instrument.GUITAR, testTimeSignature);
+        Chord chord = new Chord(NoteValue.EIGHTH, false, Instrument.GUITAR);
+        chord.put(new Note(NoteValue.EIGHTH, false, Instrument.GUITAR, PitchClass.A, 4), 4);
+        Rational offset = new Rational(0, 1);
+        boolean success = measure.put(offset, chord);
+        if (!success) {
+            System.out.println("Failed to add chord to the measure (possible collision or out of bounds).");
+        }
+        myNewScore.add(measure);
+
+        DataWriter.saveNewScore(myNewScore, SCORE_TEMP_FILE_NAME);
+    }
 }
+
+
+
+
