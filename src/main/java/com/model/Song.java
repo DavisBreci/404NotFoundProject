@@ -43,7 +43,7 @@ public class Song {
     public Key getKey(){
         return key;
     }
-    public DifficultyLevel getDifficultyLevel(){
+    public DifficultyLevel getDifficulty(){
         return difficulty;
     }
     public Instrument getInstrument(){
