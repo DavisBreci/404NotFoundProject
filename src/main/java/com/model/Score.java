@@ -275,7 +275,7 @@ public class Score {
         return temp.toArray(ret);
     }
     
-    private static Sequence loadSequence(String filename){ // For testing only. To be moved to dataLoader
+    public static Sequence loadSequence(String filename){ // For testing only. To be moved to dataLoader
 		Sequence loadedSequence = null;
 		try {
 			loadedSequence = MidiSystem.getSequence(new File(filename));
