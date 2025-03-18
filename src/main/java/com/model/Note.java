@@ -157,7 +157,7 @@ public class Note extends BarObj {
      * @param noteNum a MIDI note number
      * @return the octave number
      */
-    private static int noteNumToOctave(int noteNum){
+    public static int noteNumToOctave(int noteNum){
         return noteNum / 12 - 1;
     }
 
@@ -166,7 +166,7 @@ public class Note extends BarObj {
      * @param noteNum a MIDI note number
      * @return the pitch class
      */
-    private static PitchClass noteNumToPitchClass(int noteNum){
+    public static PitchClass noteNumToPitchClass(int noteNum){
         return PitchClass.values()[noteNum - 12 * (noteNum / 12)];
     }
 

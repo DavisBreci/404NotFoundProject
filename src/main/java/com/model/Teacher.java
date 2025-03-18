@@ -2,6 +2,7 @@
 package com.model;
 import java.util.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Teacher extends User {
     private ArrayList<ArrayList<User>> classes;
@@ -29,4 +30,11 @@ public class Teacher extends User {
     public void createLesson(String lessonName){
 
     }
+    public ArrayList<ArrayList<User>> getClasses() {
+        return classes;
+    }
+    public ArrayList<Lesson> getLessons() {
+        return lessons;
+    }
+    
 }

@@ -132,7 +132,7 @@ public class Measure {
     public boolean put(Rational offset, Chord chord){
         if(offset == null || chord == null) return false;
         Entry<Rational, Chord> newChord = new AbstractMap.SimpleEntry<Rational, Chord>(offset, chord);
-        Iterator<Entry<Rational, Chord>> iIterator = entryIterator();
+        Iterator<Entry<Rational, Chord>> iIterator = chordIterator();
         Entry<Rational, Chord> i;
         while(iIterator.hasNext()){
             i = iIterator.next();
@@ -234,7 +234,7 @@ public class Measure {
         rests.clear();
         Rational gapStart = new Rational("0/1");
         Rational gapEnd;
-        Iterator<Entry<Rational, Chord>> iIterator = entryIterator();
+        Iterator<Entry<Rational, Chord>> iIterator = chordIterator();
         Entry<Rational, Chord> currentEntry;
         while(iIterator.hasNext()){
             currentEntry = iIterator.next();
@@ -371,7 +371,7 @@ public class Measure {
      * Retrieves an iterator that iterates over chords only
      * @return the chord iterator
      */
-    private Iterator<Entry<Rational, Chord>> entryIterator(){
+    public Iterator<Entry<Rational, Chord>> chordIterator(){
         TreeSet<Entry<Rational, Chord>> ts = new TreeSet<Entry<Rational, Chord>>(Comparator.comparing(Entry::getKey));
         ts.addAll(chords.entrySet());
         return ts.iterator();

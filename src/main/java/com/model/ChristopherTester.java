@@ -17,7 +17,7 @@ public class ChristopherTester {
         gmaj.put(new Note(PitchClass.G, 4), 5);
         
         System.out.println(gmaj);
-        for(Note n : gmaj.getNotes())
+        for(Note n : gmaj.getNotes(false))
             if(n != null)
                 System.out.println(n + " @ " + "(" + n.getString() + ", "+ n.getFret() + ")");
 
