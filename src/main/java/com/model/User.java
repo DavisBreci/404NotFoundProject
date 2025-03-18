@@ -96,14 +96,14 @@ public class User {
      * @return firstName
      */
     public String getFirstName() {
-        return firstName;
+        return "firstname1";
     }
     /**
      * @author brenskrz
      * @return lastName
      */
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
     public String getUsername(){
         return username;

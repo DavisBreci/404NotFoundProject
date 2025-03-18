@@ -287,4 +287,19 @@ public class Note extends BarObj {
         fret = newFret;
         return true;
     }
+
+
+	public boolean hasFrontTie() {
+		if(frontTie != null) {
+            return true;
+        }
+        return false;
+	}
+
+	public boolean hasBackTie() {
+		if(backTie != null) {
+            return true;
+        }
+        return false;
+	}
 }
