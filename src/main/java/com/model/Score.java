@@ -175,10 +175,12 @@ public class Score {
      * @param includeBars whether to include barlines
      */
     public String toString(int start, int end, boolean includeBars){
-        if(start < end && start >= 0 && end >= 0 && start < measures.size() && end <= measures.size()){
+        if(start <= end && start >= 0 && end >= 0 && start < measures.size() && end <= measures.size()){
             StringBuilder staccato = new StringBuilder();
-            for(int i = start; i < end; i++)
-                staccato.append(" " + measures.get(i).toString(includeBars));
+            do {
+                staccato.append(" " + measures.get(start).toString(includeBars));
+                start++;
+            } while (start < end);            
             return staccato.toString();
         } else return "";
     }
@@ -207,40 +209,42 @@ public class Score {
         String [] tokens = staccato.split("\s"); // Separate the Staccato into events
         // Rational trailing rest duration
         Rational rightPad = (extraPadding == null) ? new Rational("0/1") : extraPadding.deepCopy(); 
+        Rational newPad = new Rational("0/1");
         String [] components; // Symbols that make up a token
         for(int i = tokens.length - 1; i >= 0; i--){ // Find trailing rests by starting from last token
             if(Pattern.matches("R[w,h,q,i,s,t,x,o]?.", tokens[i])){ // See if a note is a rest
                 components = tokens[i].split("");
                 switch(components[1]){ // Add the appropriate amount to right padding
                     case "w":
-                        rightPad.plus(new Rational("1/1"));
+                        newPad = new Rational("1/1");
                         break;
                     case "h":
-                        rightPad.plus(new Rational("1/2"));
+                        newPad = new Rational("1/2");
                         break;
                     case "q":
-                        rightPad.plus(new Rational("1/4"));
+                        newPad = new Rational("1/4");
                         break;
                     case "i":
-                        rightPad.plus(new Rational("1/8"));
+                        newPad = new Rational("1/8");
                         break;
                     case "s":
-                        rightPad.plus(new Rational("1/16"));
+                        newPad = new Rational("1/16");
                         break;
                     case "t":
-                        rightPad.plus(new Rational("1/32"));
+                        newPad = new Rational("1/32");
                         break;
                     case "x":
-                        rightPad.plus(new Rational("1/64"));
+                        newPad = new Rational("1/64");
                         break;
                     case "o":
-                        rightPad.plus(new Rational("1/128"));
+                        newPad = new Rational("1/128");
                         break;
                     default:
                         break;
                 }
                 if(components.length == 3) // Add dotted length if necessary
-                    rightPad.times(new Rational("3/2"));
+                    newPad.times(new Rational("3/2"));
+                rightPad.plus(newPad);
             } else {
                 break; // If we run into a non-rest, then we've exhausted all the trailing rests
             }  
