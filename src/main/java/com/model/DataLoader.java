@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /*
  * @author ryanMazz
@@ -96,7 +96,7 @@ public class DataLoader extends DataConstants {
 
         try {
             FileReader reader = new FileReader(SONG_FILE_NAME);
-            JSONArray songsJSON = (JSONArray)new JSONParser().parse(reader);
+            JSONArray individual = (JSONArray)new JSONParser().parse(reader);
             String id = (String)individual.get(SONG_ID);
             String title = (String)individual.get(SONG_TITLE);
             String artist = (String)individual.get(SONG_ARTIST);
@@ -129,7 +129,7 @@ public class DataLoader extends DataConstants {
                 String title = (String)individual.get(PLAYLIST_TITLE);
                 String author = (String)individual.get(PLAYLIST_AUTHOR);
                 String desc = (String)individual.get(PLAYLIST_DESCRIPTION);
-                String[] songIDs = (String)individual.get(PLAYLIST_SONGS);
+                String[] songIDs = (String[])individual.get(PLAYLIST_SONGS);
                 //Following line currently loads empty data while I work on the data loader.
                 ArrayList<Song> songOutput =  new ArrayList<Song>();
 

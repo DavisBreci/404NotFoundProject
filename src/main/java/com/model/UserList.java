@@ -34,6 +34,10 @@ public class UserList {
         return toBeAdded;
     }
 
+    public ArrayList<User> getUsers() {
+        return users;
+    }
+
     public boolean removeUser(User user) {
         if(users.contains(user)){
             users.remove(user);

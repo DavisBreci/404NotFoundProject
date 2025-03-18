@@ -1,3 +1,6 @@
+/**
+ * @author Christopher Ferguson
+ */
 package com.model;
 
 import javax.sound.midi.MidiEvent;
@@ -13,21 +16,22 @@ public final class MIDIHelper {
     public static final int NOTE_ON_16 = 159;
     public static final int NOTE_OFF_1 = 128;
     public static final int NOTE_OFF_16 = 143;
-    public static final int META = 255;
-    public static final int TIME_SIGNATURE = 88;
-    public static final int CHAN_VOL_MSB = 0x07;
-    public static final int CHAN_VOL_LSB = 0x27;
+    public static final byte META = (byte)255;
+    public static final byte TIME_SIGNATURE = (byte)88;
+    public static final byte CHAN_VOL_MSB = 0x07;
+    public static final byte CHAN_VOL_LSB = 0x27;
     public static final int MAX_VOL = 16383;
     public static final int TEMPO = 0x51;
+    public static final byte INSTRUMENT_NAME = (byte)0x04;
 
     public static Rational midiQuantize(MidiEvent a, MidiEvent b, int resolution) {
         return Rational.quantize(
-                (double)(b.getTick() - a.getTick())/(4 * resolution), VALID_NOTE_VALUES, true);
+                (double)(b.getTick() - a.getTick())/(4 * resolution), 0.01, 64);
     }
     
     public static Rational midiQuantize(long a, MidiEvent b, int resolution) {
         return Rational.quantize(
-                (double)(b.getTick() - a)/(4 * resolution), VALID_NOTE_VALUES, true);
+                (double)(b.getTick() - a)/(4 * resolution), 0.01, 64);
     }
     
     public static boolean isNoteOn(Byte bStatus) {
@@ -57,5 +61,12 @@ public final class MIDIHelper {
     public static int mpqToBpm(long tempo){
         return (int)(60000000 / tempo);
     }
-    
+
+    public static String getInstrumentName(byte [] msg){
+        StringBuilder name = new StringBuilder();
+        int end = 3 + Byte.toUnsignedInt(msg[2]);
+        for(int i = 3; i < end; i++)
+            name.append((char)msg[i]);
+        return name.toString();
+    }
 }

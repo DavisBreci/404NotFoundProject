@@ -70,6 +70,10 @@ public class Rational implements Comparable<Rational>{
 	}
 
     public void simplify(){
+        if(isZero()){
+            numerator = 0;
+            denominator = 1;
+        }
         int gcd = gcd(numerator, denominator);
 		numerator /= gcd;
         denominator /= gcd;
@@ -111,40 +115,70 @@ public class Rational implements Comparable<Rational>{
 		return a;
 	}
 
-    public static Rational quantize(double fraction, int specificity, boolean bounded) { 
-                if(bounded)
-                    return quantize(fraction, specificity, 2 * specificity + 1);
-                else 
-                    return quantize(fraction, specificity, Integer.MAX_VALUE);
-    }
-            
-    private static Rational quantize(double fraction, int specificity, int noteValues) {
-        if(fraction == 0) return new Rational(0, 1);
-        int numerator = 1;
-        int nearestNumerator = 0;
-        final int denominator = (int)Math.pow(2, specificity - 1);
-        double error = 0;
-        double minimumError = Double.MAX_VALUE;
-        int i;
-        for(i = 0; i < noteValues; i++){
-            error = Math.abs(fraction - (numerator/(double)denominator) * (1 + 0.5 * (i % 2)));
-            if(error < minimumError){
-                nearestNumerator = numerator;
-                minimumError = error;
-            } else if(error > minimumError)
-                break;
-            if(i % 2 == 1)
-                numerator *= 2;
-        }
+    public static Rational quantize(double fraction, double tolerance, int maxDenominator) { 
+                // if(bounded)
+                //     return quantize(fraction, specificity, 2 * specificity + 1);
+                // else 
+                //     return quantize(fraction, specificity, Integer.MAX_VALUE);
+                if(fraction == 0.0) return new Rational("0/1");
+                if(fraction == 1.0) return new Rational("1/1");
+                Rational quantized = new Rational(1, 1);
+                quantized.times(new Rational((int)fraction,1)); // Take out any whole notes
+                quantized.plus(
+                    quantize(
+                        new Rational("0/1"), 
+                        new Rational("1/1"), 
+                        fraction - (int)fraction,
+                        tolerance, maxDenominator
+                        )
+                );
+                return quantized;
 
-        Rational quantized = new Rational(nearestNumerator, denominator);
-        if(i % 2 == 0){ // Dot note if necessary
-            quantized.times(new Rational(3,2));
-        }
-        quantized.simplify();
-        return quantized;
     }
             
+    // private static Rational quantize(double fraction, int specificity, int noteValues) {
+    //     if(fraction == 0) return new Rational(0, 1);
+    //     int numerator = 1;
+    //     int nearestNumerator = 0;
+    //     final int denominator = (int)Math.pow(2, specificity - 1);
+    //     double error = 0;
+    //     double minimumError = Double.MAX_VALUE;
+    //     int i;
+    //     for(i = 0; i < noteValues; i++){
+    //         error = Math.abs(fraction - (numerator/(double)denominator) * (1 + 0.5 * (i % 2)));
+    //         if(error < minimumError){
+    //             nearestNumerator = numerator;
+    //             minimumError = error;
+    //         } else if(error > minimumError)
+    //             break;
+    //         if(i % 2 == 1)
+    //             numerator *= 2;
+    //     }
+
+    //     Rational quantized = new Rational(nearestNumerator, denominator);
+    //     if(i % 2 == 0){ // Dot note if necessary
+    //         quantized.times(new Rational(3,2));
+    //     }
+    //     quantized.simplify();
+    //     return quantized;
+    // }
+    
+    private static Rational quantize(Rational start, Rational end, double target, double tolerance, int maxDenominator){
+        Rational middle = start.deepCopy();
+        middle.plus(end);
+        middle.times(new Rational(1, 2));
+        middle.simplify();
+        if(middle.getDenominator() >= maxDenominator)
+            return middle;
+        double dMiddle = middle.toDouble();
+        if(Math.abs(dMiddle - target) <= tolerance)
+            return middle;
+        if (dMiddle < target)
+            return quantize(middle, end, target, tolerance, maxDenominator);
+        if(dMiddle > target)
+            return quantize(start, middle, target, tolerance, maxDenominator);
+        return middle; // Should never be reached
+    }
 
     public Rational deepCopy(){
         return new Rational(numerator, denominator);
@@ -173,7 +207,8 @@ public class Rational implements Comparable<Rational>{
      * This is a rational approximation algorithm that idk if we'll end up using.
      * // https://en.wikipedia.org/wiki/Stern%E2%80%93Brocot_tree#Mediants_and_binary_search
      */
-    private static Rational sternBrocot(double q, double tolerance, int specificity) {
+    public static Rational sternBrocot(double q, double tolerance) {
+        if(q == 0) return new Rational(0, 1);
 		Rational rL = new Rational(0, 1);
 		Rational rH = new Rational(1, 0);
 		Rational rM;
@@ -192,7 +227,7 @@ public class Rational implements Comparable<Rational>{
 	}
 
     public boolean isZero(){
-        return numerator == 0 && denominator != 0;
+        return numerator == 0;
     }
 
 }
