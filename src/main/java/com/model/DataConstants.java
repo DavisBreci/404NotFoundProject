@@ -72,22 +72,5 @@ public class DataConstants {
     protected static final String NOTE_OCTAVE = "octave"; 
     protected static final String NOTE_STRING_POSITION = "string";
     protected static final String NOTE_FRONT_TIE = "frontTie";
-    protected static final String NOTE_BACK_TIE = "backTie";
-
-
-    protected static final String MEASURE_TIME_SIGNATURE = "timeSignature";
-    protected static final String MEASURE_CHORDS = "chords";
-
-    protected static final String CHORD_OFFSET = "offset";
-    protected static final String CHORD_VALUE = "value";
-    protected static final String CHORD_DOTTED = "dotted";
-    protected static final String CHORD_NOTES = "notes";
-
-    protected static final String NOTE_PITCH_CLASS = "pitchClass";
-    protected static final String NOTE_OCTAVE = "octave"; 
-    protected static final String NOTE_STRING_POSITION = "string";
-    protected static final String NOTE_FRONT_TIE = "frontTie";
-    protected static final String NOTE_BACK_TIE = "backTie";
-
-    
+    protected static final String NOTE_BACK_TIE = "backTie";    
 }
