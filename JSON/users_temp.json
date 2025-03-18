@@ -1,1 +1,26 @@
-[{"password":"404nf","firstname":"firstname1","songsPlayed":1,"playlists":[],"id":"d22d8a52-6b53-4508-b3e6-7c1e5d51fc1c","streak":10,"email":"dbreci@email.sc.edu","assignedLessons":[],"username":"dbreci","lastname":null},{"password":"247sucks","firstname":"firstname1","songsPlayed":13,"playlists":[],"id":"8d666f44-a46c-4d5d-8877-48917befec86","streak":1,"email":"CTF2@email.sc.edu","assignedLessons":[],"username":"ctferg","lastname":null}]
+[
+    {
+        "password": "404nf",
+        "firstname": "firstname1",
+        "songsPlayed": 1,
+        "playlists": [],
+        "id": "d22d8a52-6b53-4508-b3e6-7c1e5d51fc1c",
+        "streak": 10,
+        "email": "dbreci@email.sc.edu",
+        "assignedLessons": [],
+        "username": "dbreci",
+        "lastname": null
+    },
+    {
+        "password": "247sucks",
+        "firstname": "firstname1",
+        "songsPlayed": 13,
+        "playlists": [],
+        "id": "8d666f44-a46c-4d5d-8877-48917befec86",
+        "streak": 1,
+        "email": "CTF2@email.sc.edu",
+        "assignedLessons": [],
+        "username": "ctferg",
+        "lastname": null
+    }
+]
