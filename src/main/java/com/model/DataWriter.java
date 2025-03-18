@@ -21,6 +21,16 @@ import javafx.scene.chart.PieChart.Data;
 
 public class DataWriter extends DataConstants {
 
+<<<<<<< HEAD
+    public static void saveUsers() {
+        UserList userList = UserList.getInstance();
+<<<<<<< HEAD
+        ArrayList<User> users = userList.getAllUsers();
+=======
+        ArrayList<User> users = userList.getUsers();
+>>>>>>> 1178810767975bb7fc1e6cd4c1b0a70bdd91526a
+        
+=======
     public static void saveUsers(ArrayList<User> users) {
         // UserList userList = UserList.getInstance();
         // ArrayList<User> users = userList.getUsers();
@@ -29,6 +39,7 @@ public class DataWriter extends DataConstants {
         // ArrayList<User> users = new ArrayList<>();
         // users.add(new User(USER_ID, USER_FIRST_NAME, USER_LAST_NAME, USER_EMAIL, USER_USERNAME, USER_PASSWORD, 0, 0, null, null, null));
 
+>>>>>>> ed247b528051d41c99ebf6d93f71f82adfa7a5cd
         JSONArray jsonUsers = new JSONArray();
 
         for(int i = 0; i<users.size(); i++) {

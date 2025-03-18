@@ -1,10 +1,9 @@
-// class complete
 package com.model;
 import java.time.LocalDate;
 import java.util.*;
 
 public class User {
-    public String id;
+    public final String id;
     protected String firstName;
     protected String lastName;
     protected String email;
@@ -130,5 +129,4 @@ public class User {
     public ArrayList<Playlist> getPlaylists(){
         return playlists;
     }
-
 }

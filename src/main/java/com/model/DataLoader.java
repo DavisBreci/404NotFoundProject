@@ -10,7 +10,10 @@ import org.jfugue.theory.TimeSignature;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+<<<<<<< HEAD
+=======
 import com.model.DataConstants;
+>>>>>>> ed247b528051d41c99ebf6d93f71f82adfa7a5cd
 import java.time.LocalDate;
 
 /*
@@ -137,6 +140,18 @@ public class DataLoader extends DataConstants {
         
         try {
             FileReader reader = new FileReader(SONG_FILE_NAME);
+<<<<<<< HEAD
+            JSONArray individual = (JSONArray)new JSONParser().parse(reader);
+            String id = (String)individual.get(SONG_ID);
+            String title = (String)individual.get(SONG_TITLE);
+            String artist = (String)individual.get(SONG_ARTIST);
+            String genre = (String)individual.get(SONG_GENRE);
+            String difficultyLevel = (String)individual.get(SONG_DIFFICULTY_LEVEL);
+            String key = (String)individual.get(SONG_KEY);
+            String instrument = (String)individual.get();
+            String[] playlistsIDs = (String[])individual.get(USER_PLAYLISTS);
+            String[] assignedLessonsIDs = (String[])individual.get(USER_ASSIGNED_LESSONS);
+=======
 			JSONArray songJSON = (JSONArray)new JSONParser().parse(reader);
             for(int i=0; i < songJSON.size(); i++) {
                 JSONObject individual = (JSONObject)songJSON.get(i);
@@ -148,6 +163,7 @@ public class DataLoader extends DataConstants {
                 String key = (String)individual.get(SONG_KEY);
                 String instrument = (String)individual.get(SONG_INSTRUMENT);
                 String scoreID = (String)individual.get(SONG_SCORE);
+>>>>>>> ed247b528051d41c99ebf6d93f71f82adfa7a5cd
 
 
                 //for all scores in loaded scores arraylist
