@@ -11,8 +11,8 @@ public class DataConstants {
     protected static final String USER_USERNAME = "username";
     protected static final String USER_PASSWORD = "password";
     protected static final String USER_EMAIL = "email";
-    protected static final String USER_FIRST_NAME = "firstname";
-    protected static final String USER_LAST_NAME = "lastname";
+    protected static final String USER_FIRST_NAME = "firstName";
+    protected static final String USER_LAST_NAME = "lastName";
     protected static final String USER_STREAK = "streak";
     protected static final String USER_SONGS_PLAYED = "songsPlayed";
     protected static final String USER_ASSIGNED_LESSONS = "assignedLessons";
