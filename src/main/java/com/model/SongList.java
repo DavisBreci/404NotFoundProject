@@ -26,6 +26,10 @@ public class SongList {
         return true;
     }
 
+    public ArrayList<Song> getSongs() {
+        return songs;
+    }
+
     public Song getSongByTitle(String name) {
         return null;
     }

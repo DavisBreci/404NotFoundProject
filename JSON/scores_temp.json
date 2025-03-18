@@ -1,0 +1,30 @@
+{
+    "measures": [
+        {
+            "chords": {
+                "null": {
+                    "notes": [
+                        {
+                            "octave": 4,
+                            "string": 4,
+                            "backTie": false,
+                            "pitchClass": "A",
+                            "frontTie": false
+                        },
+                        "null",
+                        "null",
+                        "null",
+                        "null",
+                        "null"
+                    ],
+                    "value": "EIGHTH",
+                    "dotted": false
+                }
+            },
+            "timeSignature": "3\/4"
+        }
+    ],
+    "tempo": 100,
+    "instrument": "GUITAR",
+    "uuid": "com.model.ID@e2144e4"
+}

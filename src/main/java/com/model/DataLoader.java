@@ -148,7 +148,13 @@ public class DataLoader extends DataConstants {
                 String key = (String)individual.get(SONG_KEY);
                 String instrument = (String)individual.get(SONG_INSTRUMENT);
                 String scoreID = (String)individual.get(SONG_SCORE);
-                songs.add(new Song(title, artist, genre, Key.valueOf(key), DifficultyLevel.valueOf(difficultyLevel), 
+
+
+                //for all scores in loaded scores arraylist
+                //if scoreID == activescore.id
+                //copy score to dummy
+
+                songs.add(new Song(id, title, artist, genre, Key.valueOf(key), DifficultyLevel.valueOf(difficultyLevel), 
                 Instrument.valueOf(instrument), getScoreFromID(scoreID)));
             }
         } catch(Exception e) {

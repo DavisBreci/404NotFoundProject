@@ -1,13 +1,14 @@
 package com.model;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class PlaylistList {
     
     private static PlaylistList playlistList;
     private ArrayList<Playlist> playlists;
 
-    private PlaylistList() {
+    PlaylistList() {
         playlists = new ArrayList<>();
     }
 
@@ -23,9 +24,17 @@ public class PlaylistList {
         return null;
     }
 
+    /**
+     * @authro brenskrz
+     * @return playlists
+     */
+    public ArrayList<Playlist> getPlaylists() {
+        return playlists;
+    }
+
     public void addPlaylist(String title, String author, String description) {
-        // Playlist newPlaylist = new Playlist();
-        // playlists.add(newPlaylist);
+        Playlist newPlaylist = new Playlist(UUID.randomUUID(), title, author, description, new ArrayList<>());
+        playlists.add(newPlaylist);
     }
 
     public void removePlaylist(Playlist playlist) {

@@ -495,4 +495,18 @@ public class Score {
         }
         return transposed.toString();
     }
+    private static MidiEvent [] initNoteMemo(){
+		MidiEvent [] memo = new MidiEvent[MIDIHelper.MIDI_NOTE_RANGE];
+		for(int i = 0; i < MIDIHelper.MIDI_NOTE_RANGE; i++) 
+				memo[i]= null;
+		return memo;
+	}
+
+    public ArrayList<Measure> getMeasures() {
+        return new ArrayList<>(measures);
+    }
+
+    public String getId() {
+        return this.uuid.toString();
+    }
 }
