@@ -23,62 +23,7 @@ public class Measure {
     private TreeMap<Rational, Chord> chords;
     private TreeMap<Rational, Rest> rests;
     
-    public static void main(String [] args){
-        Measure m = new Measure(Instrument.GUITAR, new Rational("16/4")); // We don't have a score yet 
-        Chord powerChord = new Chord(NoteValue.EIGHTH, false, Instrument.GUITAR);
-        powerChord.put(new Note(PitchClass.D, 3), 1);
-        powerChord.put(new Note(PitchClass.A, 3), 2);
-        m.put(new Rational("0/1"), powerChord.deepCopy());
-            powerChord.shiftString(1);
-            powerChord.transpose(-2);
-        m.put(new Rational("1/4"), powerChord.deepCopy());
-            powerChord.transpose(2);
-        m.put(new Rational("2/4"), powerChord.deepCopy());
-            powerChord.shiftString(-1);
-        m.put(new Rational("7/8"), powerChord.deepCopy());
-            powerChord.shiftString(1);
-            powerChord.transpose(-2);
-        m.put(new Rational("9/8"), powerChord.deepCopy());
-            powerChord.transpose(3);
-        m.put(new Rational("11/8"), powerChord.deepCopy());
-            powerChord.transpose(-1);
-        m.put(new Rational("12/8"), powerChord.deepCopy());
-            powerChord.shiftString(-1);
-        m.put(new Rational("16/8"), powerChord.deepCopy());
-            powerChord.shiftString(1);
-            powerChord.transpose(-2);
-        m.put(new Rational("18/8"), powerChord.deepCopy());
-            powerChord.transpose(2);
-        m.put(new Rational("20/8"), powerChord.deepCopy());
-            powerChord.transpose(-2);
-        m.put(new Rational("23/8"), powerChord.deepCopy());
-            powerChord.shiftString(-1);
-            powerChord.transpose(2);
-        m.put(new Rational("25/8"), powerChord.deepCopy());
-        Player p = new Player();
-        Pattern riff = new Pattern(m.toString());
-        riff.setTempo(114); // in BPM
-        riff.setInstrument(30); // Distortion guitar
-        Sequence s = p.getSequence(riff.toString());
-        Track [] tracks = s.getTracks();
-        System.out.println("Metadata for this song's JFugue-generated MIDI sequence:");
-        System.out.println("\tThe sequence contains " + tracks.length + " tracks.");
-        Track track = tracks[0];
-        MidiEvent ultimate = track.get(track.size() - 1);
-        MidiEvent penultimate = track.get(track.size() - 2);
-        // ultimate.setTick(ultimate.getTick() * 2);
-        System.out.println("\tEnd of track event occurs @ tick " + ultimate.getTick());
-        System.out.println("\tSecond to last event of track occurs @ tick " + penultimate.getTick()); // This is a problem!
-        System.out.println("Staccato Representation of measure:\n" + m);
-        System.out.println("Now playing \"Smoke on the Water\" by Deep Purple...");
-        //p.play(s);
-        Measure m2 = new Measure(Instrument.UKULELE, new Rational("5/4"));
-        System.out.println(m2.beatOf(new Rational("4/16")));
-        System.out.println(
-            m2.bite(null, new Rational("0/1"), PitchClass.G, 4, new Rational("5/4"), 0)
-        );
-        System.out.println(m2.chords);
-    }
+    
 
     /**
      * Creates an empty measure

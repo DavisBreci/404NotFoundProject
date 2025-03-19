@@ -6,7 +6,9 @@ package com.model;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.UUID;
+import java.util.Iterator;
 
 import java.time.LocalDate;
 
@@ -207,10 +209,10 @@ public class DataWriter extends DataConstants {
         ArrayList<Song> lessonSongs1 = new ArrayList<>();
         ArrayList<Song> lessonSongs2 = new ArrayList<>();
 
-        lessonSongs1.add(new Song("9", LESSONS_TITLE, SONG_ARTIST, SONG_GENRE, null, null, null, null));
-        lessonSongs1.add(new Song("10", LESSONS_TITLE, SONG_ARTIST, SONG_GENRE, null, null, null, null));
-        lessonSongs2.add(new Song("11", LESSONS_TITLE, SONG_ARTIST, SONG_GENRE, null, null, null, null));
-        lessonSongs2.add(new Song("12", LESSONS_TITLE, SONG_ARTIST, SONG_GENRE, null, null, null, null));
+        lessonSongs1.add(new Song(UUID.randomUUID().toString(), LESSONS_TITLE, SONG_ARTIST, SONG_GENRE, null, null, null, null));
+        lessonSongs1.add(new Song(UUID.randomUUID().toString(), LESSONS_TITLE, SONG_ARTIST, SONG_GENRE, null, null, null, null));
+        lessonSongs2.add(new Song(UUID.randomUUID().toString(), LESSONS_TITLE, SONG_ARTIST, SONG_GENRE, null, null, null, null));
+        lessonSongs2.add(new Song(UUID.randomUUID().toString(), LESSONS_TITLE, SONG_ARTIST, SONG_GENRE, null, null, null, null));
 
         lessonList.addLesson("Lesson 1", lessonSongs1);
         lessonList.addLesson("Lesson 2", lessonSongs2);
@@ -237,8 +239,12 @@ public class DataWriter extends DataConstants {
         JSONObject lessonDetails = new JSONObject();
 
         lessonDetails.put(LESSONS_ID, lesson.getId().toString());
-        lessonDetails.put(LESSONS_SONGS, lesson.getSongs().toString());
         lessonDetails.put(LESSONS_TITLE, lesson.getTitle());
+        ArrayList<String> songIds = new ArrayList<>();
+        for(Song song : lesson.getSongs()) {
+            songIds.add(song.getId());
+        }
+        lessonDetails.put(LESSONS_SONGS, songIds);
 
         return lessonDetails;
     }
@@ -260,12 +266,21 @@ public class DataWriter extends DataConstants {
             JSONObject jsonMeasure = new JSONObject();
             jsonMeasure.put("timeSignature", measure.getTimeSignature().toString());
 
-            JSONObject jsonChords = new JSONObject();
+            JSONArray jsonChords = new JSONArray();
 
-            for (Chord chord : measure.getChords()) {
+            Iterator<Map.Entry<Rational, Chord>> iterator = measure.chordIterator();
+            while(iterator.hasNext()) {
+                Map.Entry<Rational, Chord> entry = iterator.next();
+                Rational offset = entry.getKey();
+                Chord chord = entry.getValue();
+                if (offset == null) {
+                    System.out.println("Warning: Null offset found, skipping chord.");
+                    continue;
+                }
                 System.out.println("Processing chord at offset: " + chord.getOffset());
 
                 JSONObject jsonChord = new JSONObject();
+                jsonChord.put("offset", chord.getValue().toString());
                 jsonChord.put("value", chord.getValue().toString());
                 jsonChord.put("dotted", chord.isDotted());
 
@@ -289,7 +304,7 @@ public class DataWriter extends DataConstants {
                 }
 
                 jsonChord.put("notes", jsonNotes);
-                jsonChords.put(chord.getOffset(), jsonChord);
+                jsonChords.add(jsonChord);
             }
 
             if (jsonChords.isEmpty()) {
@@ -332,32 +347,38 @@ public class DataWriter extends DataConstants {
 
                 jsonMeasure.put("timeSignature", measure.getTimeSignature().toString());
 
-                JSONObject jsonChords = new JSONObject();
-                ArrayList<Chord> chords = measure.getChords();
+                JSONArray jsonChords = new JSONArray();
+                Iterator<Map.Entry<Rational, Chord>> iterator = measure.chordIterator();
+                while (iterator.hasNext()) {
+                    Map.Entry<Rational, Chord> entry = iterator.next();
+                    Rational offset = entry.getKey(); 
+                    Chord chord = entry.getValue(); 
+                    if (offset == null) {
+                        System.out.println("Warning: Null offset found, skipping chord.");
+                    continue;
+                    }
 
-                for (Chord chord : chords) {
                     JSONObject jsonChord = new JSONObject();
 
+                    jsonChord.put("offset", chord.getValue().toString());
                     jsonChord.put("value", chord.getValue().toString());
                     jsonChord.put("dotted", chord.isDotted());
-
+                    
                     JSONArray jsonNotes = new JSONArray();
                     for (Note note : chord.getNotes()) {
                         if (note != null) {
                             JSONObject jsonNote = new JSONObject();
                             jsonNote.put("pitchClass", note.getPitchClass().toString());
-                            jsonNote.put("octave", note.getOctave());
-                            jsonNote.put("string", note.getString());
-                            jsonNote.put("frontTie", note.hasFrontTie());
-                            jsonNote.put("backTie", note.hasBackTie());
+                            jsonNote.put("octave", String.valueOf(note.getOctave()).toString());
+                            jsonNote.put("string", String.valueOf(note.getString()).toString());
+                            jsonNote.put("frontTie", String.valueOf(note.hasFrontTie()).toString());
+                            jsonNote.put("backTie", String.valueOf(note.hasBackTie()).toString());
                             jsonNotes.add(jsonNote);
-                        } else {
-                            jsonNotes.add("null");
                         }
                     }
 
                     jsonChord.put("notes", jsonNotes);
-                    jsonChords.put(chord.getOffset(), jsonChord);
+                    jsonChords.add(jsonChord);
                 }
 
                 jsonMeasure.put("chords", jsonChords);
@@ -394,14 +415,10 @@ public class DataWriter extends DataConstants {
 
 
         DataWriter.saveUsers(DataLoader.getUsers());
-        // DataWriter.saveTeachers(DataLoader.getTeachers());
+        DataWriter.saveTeachers(DataLoader.getTeachers());
         // DataWriter.savePlaylists(DataLoader.getPlaylists());
         // DataWriter.saveSongs(DataLoader.getSongs());
 
-        // DataWriter.saveNewScore(myNewScore, SCORE_TEMP_FILE_NAME);
+        // DataWriter.saveNewScore(DataLoader.getScoreFromID("3a6c83d2-2235-4fff-84dc-7ad6ec2dabf8"), SCORE_TEMP_FILE_NAME);
     }
 }
-
-
-
-

@@ -2,11 +2,7 @@ package com.model;
 import java.util.*;
 
 public class Song {
-<<<<<<< HEAD
-    private String id;
-=======
     public String id;
->>>>>>> ed247b528051d41c99ebf6d93f71f82adfa7a5cd
     private String title;
     private String artist;
     private String genre;
@@ -17,11 +13,7 @@ public class Song {
 
     public Song(String id, String title, String artist, String genre, Key key,
                 DifficultyLevel difficulty, Instrument instrument, Score score){
-<<<<<<< HEAD
-        
-=======
         this.id = id;
->>>>>>> ed247b528051d41c99ebf6d93f71f82adfa7a5cd
         this.title = title;
         this.artist = artist;
         this.genre = genre;
@@ -30,11 +22,6 @@ public class Song {
         this.instrument = instrument;
         this.score = score;
     }
-<<<<<<< HEAD
-    public Score getScore(){
-        return score;
-    }
-=======
 
      /**
      * @author brenskrz
@@ -66,5 +53,4 @@ public class Song {
         return score;
     }
     
->>>>>>> ed247b528051d41c99ebf6d93f71f82adfa7a5cd
 }

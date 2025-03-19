@@ -47,12 +47,6 @@ public class Playlist {
     public void sortByDifficulty(){
         
     }
-<<<<<<< HEAD
-    public static void main(String[] args){
-        User u = new User(null,"f","l","e","u","p",0,0,null,null,null);
-        System.out.println(u.id);
-    }
-=======
 
     /**
      * @author brenskrz
@@ -74,5 +68,4 @@ public class Playlist {
         return songs;
      }
      
->>>>>>> ed247b528051d41c99ebf6d93f71f82adfa7a5cd
 }
