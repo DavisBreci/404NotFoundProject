@@ -29,9 +29,9 @@ public class DataConstants {
     protected static final String SONG_TITLE = "title";
     protected static final String SONG_ARTIST = "artist";
     protected static final String SONG_GENRE = "genre";
-    protected static final String SONG_DIFFICULTY_LEVEL = "BEGINNER";
-    protected static final String SONG_KEY = "GMAJOR_EMINOR";
-    protected static final String SONG_INSTRUMENT = "guitar";
+    protected static final String SONG_DIFFICULTY_LEVEL = "difficultyLevel";
+    protected static final String SONG_KEY = "key";
+    protected static final String SONG_INSTRUMENT = "instrument";
     protected static final String SONG_SCORE = "score";
 
     protected static final String PLAYLIST_FILE_NAME = "JSON/playlists.json";
