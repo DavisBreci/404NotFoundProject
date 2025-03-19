@@ -35,23 +35,22 @@ public class DataLoader extends DataConstants {
                 String lastName = (String)individual.get(USER_LAST_NAME);
                 long Streak = (long)individual.get(USER_STREAK);
                 long songsPlayed = (long)individual.get(USER_SONGS_PLAYED);
-                // JSONArray rawPlaylistsIDs = (JSONArray)individual.get(USER_PLAYLISTS);
-                // String[] playlistsIDs = new String[rawPlaylistsIDs.size()];
-                // for(int j=0; j < rawPlaylistsIDs.size(); j++) {
-                //     playlistsIDs[j] = (String)rawPlaylistsIDs.get(j);
-                // }
+                JSONArray playlistIDs = (JSONArray)individual.get(USER_PLAYLISTS);
+                ArrayList<Playlist> playlists =  new ArrayList<Playlist>();
+                for(int j=0; j < playlistIDs.size(); j++) {
+                    playlists.add(getPlaylistFromID((String)playlistIDs.get(j)));
+                }  
                 // JSONArray rawAssignedLessonsIDs = (JSONArray)individual.get(USER_ASSIGNED_LESSONS);
                 // String[] assignedLessonsIDs = new String[rawAssignedLessonsIDs.size()];
                 // for(int j=0; j < rawAssignedLessonsIDs.size(); j++) {
                 //     assignedLessonsIDs[j] = (String)rawAssignedLessonsIDs.get(j);
                 // }
-                //Following two lines currently load empty data while I work on the data loaders for each.
-                ArrayList<Playlist> playlistsOutput =  new ArrayList<Playlist>();
+                //Following line currently loads empty data while I work on the data loaders.
                 ArrayList<Lesson> assignedLessonsOutut = new ArrayList<Lesson>();
 
                 //Users.json does not current support a Last Played Date
                 users.add(new User(id, firstName, lastName, email, userName, password, (int)Streak, (int)songsPlayed,
-                playlistsOutput, assignedLessonsOutut, LocalDate.now()));      
+                playlists, assignedLessonsOutut, LocalDate.now()));      
             }
 
             
@@ -91,35 +90,34 @@ public class DataLoader extends DataConstants {
                 String lastName = (String)individual.get(USER_LAST_NAME);
                 long Streak = (long)individual.get(USER_STREAK);
                 long songsPlayed = (long)individual.get(USER_SONGS_PLAYED);
-                JSONArray rawPlaylistsIDs = (JSONArray)individual.get(USER_PLAYLISTS);
-                String[] playlistsIDs = new String[rawPlaylistsIDs.size()];
-                for(int j=0; j < rawPlaylistsIDs.size(); j++) {
-                    playlistsIDs[j] = (String)rawPlaylistsIDs.get(j);
-                }
-                JSONArray rawAssignedLessonsIDs = (JSONArray)individual.get(USER_ASSIGNED_LESSONS);
-                String[] assignedLessonsIDs = new String[rawAssignedLessonsIDs.size()];
-                for(int j=0; j < rawAssignedLessonsIDs.size(); j++) {
-                    assignedLessonsIDs[j] = (String)rawAssignedLessonsIDs.get(j);
-                }
-                JSONArray rawClassIDs = (JSONArray)individual.get(TEACHER_CLASSES);
-                String[] classIDs = new String[rawClassIDs.size()];
-                for(int j=0; j < rawClassIDs.size(); j++) {
-                    classIDs[j] = (String)rawClassIDs.get(j);
-                }
-                JSONArray rawLessonIDs = (JSONArray)individual.get(TEACHER_LESSONS);
-                String[] lessonIDs = new String[rawLessonIDs.size()];
-                for(int j=0; j < rawLessonIDs.size(); j++) {
-                    lessonIDs[j] = (String)rawLessonIDs.get(j);
-                }
-                //Following four lines currently load empty data while I work on the data loaders for each.
-                ArrayList<Playlist> playlistsOutput =  new ArrayList<Playlist>();
+                JSONArray playlistIDs = (JSONArray)individual.get(USER_PLAYLISTS);
+                ArrayList<Playlist> playlists =  new ArrayList<Playlist>();
+                for(int j=0; j < playlistIDs.size(); j++) {
+                    playlists.add(getPlaylistFromID((String)playlistIDs.get(j)));
+                }  
+                // JSONArray rawAssignedLessonsIDs = (JSONArray)individual.get(USER_ASSIGNED_LESSONS);
+                // String[] assignedLessonsIDs = new String[rawAssignedLessonsIDs.size()];
+                // for(int j=0; j < rawAssignedLessonsIDs.size(); j++) {
+                //     assignedLessonsIDs[j] = (String)rawAssignedLessonsIDs.get(j);
+                // }
+                // JSONArray rawClassIDs = (JSONArray)individual.get(TEACHER_CLASSES);
+                // String[] classIDs = new String[rawClassIDs.size()];
+                // for(int j=0; j < rawClassIDs.size(); j++) {
+                //     classIDs[j] = (String)rawClassIDs.get(j);
+                // }
+                // JSONArray rawLessonIDs = (JSONArray)individual.get(TEACHER_LESSONS);
+                // String[] lessonIDs = new String[rawLessonIDs.size()];
+                // for(int j=0; j < rawLessonIDs.size(); j++) {
+                //     lessonIDs[j] = (String)rawLessonIDs.get(j);
+                // }
+                //Following three lines currently load empty data while I work on the data loaders for each.
                 ArrayList<Lesson> assignedLessonsOutut = new ArrayList<Lesson>();
                 ArrayList<ArrayList<User>> classesOutput = new ArrayList<ArrayList<User>>();
                 ArrayList<Lesson> lessonsOutput =  new ArrayList<Lesson>();
 
-                //Teachers.json does not current support a Last Played Date
+                //NOTE: Teachers.json does not current support a Last Played Date
                 teachers.add(new Teacher(id, firstName, lastName, email, userName, password, (int)Streak, (int)songsPlayed,
-                playlistsOutput, assignedLessonsOutut, LocalDate.now(), classesOutput, lessonsOutput));      
+                playlists, assignedLessonsOutut, LocalDate.now(), classesOutput, lessonsOutput));      
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -132,7 +130,7 @@ public class DataLoader extends DataConstants {
         return null;
     }
 
-    public static ArrayList<Song> getSongs() {
+    public static ArrayList<Song> getAllSongs() {
         ArrayList<Song> songs = new ArrayList<Song>();
         
         try {
@@ -148,14 +146,42 @@ public class DataLoader extends DataConstants {
                 String key = (String)individual.get(SONG_KEY);
                 String instrument = (String)individual.get(SONG_INSTRUMENT);
                 String scoreID = (String)individual.get(SONG_SCORE);
-
-
-                //for all scores in loaded scores arraylist
-                //if scoreID == activescore.id
-                //copy score to dummy
-
                 songs.add(new Song(id, title, artist, genre, Key.valueOf(key), DifficultyLevel.valueOf(difficultyLevel), 
                 Instrument.valueOf(instrument), getScoreFromID(scoreID)));
+            }
+            return songs;
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Song getSongFromID(String inputID) {
+        try {
+            FileReader reader = new FileReader(SONG_FILE_NAME);
+			JSONArray songJSON = (JSONArray)new JSONParser().parse(reader);
+
+            String songID = "";
+
+            for(int i=0; i < songJSON.size(); i++) {
+                JSONObject individual = (JSONObject)songJSON.get(i);
+                if (inputID.equals((String)individual.get(SONG_ID))) {
+                    songID = (String)individual.get(SONG_ID);
+                    String title = (String)individual.get(SONG_TITLE);
+                    String artist = (String)individual.get(SONG_ARTIST);
+                    String genre = (String)individual.get(SONG_GENRE);
+                    String difficultyLevel = (String)individual.get(SONG_DIFFICULTY_LEVEL);
+                    String key = (String)individual.get(SONG_KEY);
+                    //String instrument = (String)individual.get(SONG_INSTRUMENT);
+                    String instrument = "GUITAR"; //reminder, have this written in all caps via the data writer
+                    String scoreID = (String)individual.get(SONG_SCORE);
+                    return new Song(songID, title, artist, genre, Key.valueOf(key), DifficultyLevel.valueOf(difficultyLevel),
+                    Instrument.valueOf(instrument), getScoreFromID(scoreID));
+                }
+            }
+            if (songID == "") {
+                System.out.println("No matching song found for ID: " + inputID);
+                return null;
             }
         } catch(Exception e) {
             e.printStackTrace();
@@ -163,14 +189,13 @@ public class DataLoader extends DataConstants {
         return null;
     }
 
-
     public static Score getScoreFromID(String inputID) {
         try {
             FileReader reader = new FileReader(SCORE_FILE_NAME);
             JSONArray scoreJSON = (JSONArray)new JSONParser().parse(reader);
 
             String scoreID = "";
-            String instrument = "GUITAR";
+            String instrument = "";
             String tempo = "0";
 
             for(int i=0; i<scoreJSON.size(); i++) { //search for score with matching id
@@ -179,7 +204,7 @@ public class DataLoader extends DataConstants {
                     System.out.println("Score identified for UUID: " + inputID);
                     //Matching ID found, generate score object.
                     scoreID = (String)individualScore.get(SCORE_ID);
-                    //instrument = (String)individualScore.get(SCORE_INSTRUMENT);
+                    instrument = (String)individualScore.get(SCORE_INSTRUMENT);
                     tempo = (String)individualScore.get(SCORE_TEMPO);
                     Score output = new Score(scoreID, Instrument.valueOf(instrument), Integer.valueOf(tempo));
 
@@ -202,8 +227,8 @@ public class DataLoader extends DataConstants {
                             //for each note
                             JSONArray rawNotes = (JSONArray) individualChord.get(CHORD_NOTES);
                             for (int l = 0; l < rawNotes.size(); l++) {
-                                JSONObject individualNote = (JSONObject) rawNotes.get(l);
-                                if (!individualNote.equals("null")) { //If note is not empty, proceed
+                                if (!rawNotes.get(l).equals("null")) { //If note is not empty, proceed
+                                    JSONObject individualNote = (JSONObject) rawNotes.get(l);
                                     String pitchClass = (String) individualNote.get(NOTE_PITCH_CLASS); //pull pitchClass (PitchClass Enumerator)
                                     String octave = (String) individualNote.get(NOTE_OCTAVE); //pull octave (long -> int)
                                     String stringPos = (String) individualNote.get(NOTE_STRING_POSITION); //pull stringPos (long -> int)
@@ -236,8 +261,7 @@ public class DataLoader extends DataConstants {
         return null;
     }
 
-
-    public static ArrayList<Playlist> getPlaylists() {
+    public static ArrayList<Playlist> getAllPlaylists() {
         ArrayList<Playlist> playlists = new ArrayList<Playlist>();
 
         try {
@@ -250,18 +274,60 @@ public class DataLoader extends DataConstants {
                 String title = (String)individual.get(PLAYLIST_TITLE);
                 String author = (String)individual.get(PLAYLIST_AUTHOR);
                 String desc = (String)individual.get(PLAYLIST_DESCRIPTION);
-                String[] songIDs = (String[])individual.get(PLAYLIST_SONGS);
-                //Following line currently loads empty data while I work on the data loader.
+                JSONArray SongIDs = (JSONArray)individual.get(PLAYLIST_SONGS);
                 ArrayList<Song> songOutput =  new ArrayList<Song>();
+                for(int j=0; j < SongIDs.size(); j++) {
+                    songOutput.add(getSongFromID((String)SongIDs.get(j)));
+                    System.out.println("Pulled song from id: " + (String)SongIDs.get(j)); //debug
+                }  
 
+                
                 playlists.add(new Playlist(id, title, author, desc, songOutput));
             }
+            return playlists;
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return playlists;
+        return null;
     }
 
-    
+    public static Playlist getPlaylistFromID(String inputID) {
+        try {
+            FileReader reader = new FileReader(PLAYLIST_FILE_NAME);
+			JSONArray playlistJSON = (JSONArray)new JSONParser().parse(reader);
+
+            String playlistID = "";
+
+            for(int i=0; i < playlistJSON.size(); i++) {
+                JSONObject individual = (JSONObject)playlistJSON.get(i);
+                if (inputID.equals((String)individual.get(SONG_ID))) {
+                    UUID id = UUID.fromString((String)individual.get(PLAYLIST_ID));
+                    String title = (String)individual.get(PLAYLIST_TITLE);
+                    String author = (String)individual.get(PLAYLIST_AUTHOR);
+                    String desc = (String)individual.get(PLAYLIST_DESCRIPTION);
+                    JSONArray SongIDs = (JSONArray)individual.get(PLAYLIST_SONGS);
+                    ArrayList<Song> songOutput =  new ArrayList<Song>();
+                    for(int j=0; j < SongIDs.size(); j++) {
+                        songOutput.add(getSongFromID((String)SongIDs.get(j)));
+                    }
+                    return new Playlist(id, title, author, desc, songOutput);
+                }
+            }
+            if (playlistID == "") {
+                System.out.println("No matching playlist found for ID: " + inputID);
+                return null;
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Lesson getAllLessons() {
+        return null;
+    }
+
+    public static ArrayList<Lesson> getLessonFromID(String inputID) {
+        return null;
+    }
 }

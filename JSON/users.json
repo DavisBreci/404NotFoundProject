@@ -20,15 +20,7 @@
         "lastName": "Ferguson",
         "streak": 1,
         "songsPlayed": 13,
-        "assignedLessons": [
-            {
-                "id": "e9b9c2c5-0383-480d-b92c-2ffce330d3f1"
-            }
-        ],
-        "playlists": [
-            {
-                "id": "039a23f6-317b-4577-a78b-a9d8005adcd9"
-            }
-        ]
+        "assignedLessons": ["e9b9c2c5-0383-480d-b92c-2ffce330d3f1"],
+        "playlists": ["039a23f6-317b-4577-a78b-a9d8005adcd9"]
     }
 ]
