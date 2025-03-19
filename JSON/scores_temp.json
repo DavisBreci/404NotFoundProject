@@ -1,30 +1,61 @@
 {
     "measures": [
         {
-            "chords": {
-                "null": {
+            "chords": [
+                {
                     "notes": [
                         {
-                            "octave": 4,
-                            "string": 4,
+                            "octave": 2,
+                            "string": 0,
                             "backTie": false,
-                            "pitchClass": "A",
+                            "pitchClass": "G",
                             "frontTie": false
                         },
-                        "null",
-                        "null",
-                        "null",
-                        "null",
-                        "null"
+                        {
+                            "octave": 2,
+                            "string": 1,
+                            "backTie": false,
+                            "pitchClass": "B",
+                            "frontTie": false
+                        },
+                        {
+                            "octave": 3,
+                            "string": 2,
+                            "backTie": false,
+                            "pitchClass": "D",
+                            "frontTie": false
+                        },
+                        {
+                            "octave": 3,
+                            "string": 3,
+                            "backTie": false,
+                            "pitchClass": "G",
+                            "frontTie": false
+                        },
+                        {
+                            "octave": 3,
+                            "string": 4,
+                            "backTie": false,
+                            "pitchClass": "B",
+                            "frontTie": false
+                        },
+                        {
+                            "octave": 4,
+                            "string": 5,
+                            "backTie": false,
+                            "pitchClass": "E",
+                            "frontTie": false
+                        }
                     ],
-                    "value": "EIGHTH",
+                    "offset": "WHOLE",
+                    "value": "WHOLE",
                     "dotted": false
                 }
-            },
-            "timeSignature": "3\/4"
+            ],
+            "timeSignature": "4\/4"
         }
     ],
-    "tempo": 100,
+    "tempo": 120,
     "instrument": "GUITAR",
-    "uuid": "com.model.ID@e2144e4"
+    "uuid": "3a6c83d2-2235-4fff-84dc-7ad6ec2dabf8"
 }

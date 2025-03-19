@@ -344,7 +344,7 @@ public class DataWriter extends DataConstants {
 
             for (Measure measure : score.getMeasures()) {
                 JSONObject jsonMeasure = new JSONObject();
-
+                
                 jsonMeasure.put("timeSignature", measure.getTimeSignature().toString());
 
                 JSONArray jsonChords = new JSONArray();
@@ -369,10 +369,10 @@ public class DataWriter extends DataConstants {
                         if (note != null) {
                             JSONObject jsonNote = new JSONObject();
                             jsonNote.put("pitchClass", note.getPitchClass().toString());
-                            jsonNote.put("octave", String.valueOf(note.getOctave()).toString());
-                            jsonNote.put("string", String.valueOf(note.getString()).toString());
-                            jsonNote.put("frontTie", String.valueOf(note.hasFrontTie()).toString());
-                            jsonNote.put("backTie", String.valueOf(note.hasBackTie()).toString());
+                            // jsonNote.put("octave", String.valueOf(note.getOctave()).toString());
+                            // jsonNote.put("string", String.valueOf(note.getString()).toString());
+                            // jsonNote.put("frontTie", String.valueOf(note.hasFrontTie()).toString());
+                            // jsonNote.put("backTie", String.valueOf(note.hasBackTie()).toString());
                             jsonNotes.add(jsonNote);
                         }
                     }
@@ -415,10 +415,10 @@ public class DataWriter extends DataConstants {
 
 
         DataWriter.saveUsers(DataLoader.getUsers());
-        DataWriter.saveTeachers(DataLoader.getTeachers());
+        // DataWriter.saveTeachers(DataLoader.getTeachers());
         // DataWriter.savePlaylists(DataLoader.getPlaylists());
         // DataWriter.saveSongs(DataLoader.getSongs());
 
-        // DataWriter.saveNewScore(DataLoader.getScoreFromID("3a6c83d2-2235-4fff-84dc-7ad6ec2dabf8"), SCORE_TEMP_FILE_NAME);
+        DataWriter.saveNewScore(DataLoader.getScoreFromID("3a6c83d2-2235-4fff-84dc-7ad6ec2dabf8"), SCORE_TEMP_FILE_NAME);
     }
 }
