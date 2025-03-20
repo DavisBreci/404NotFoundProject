@@ -192,7 +192,7 @@ public class DataWriter extends DataConstants {
     public static JSONObject getPlaylistJSON(Playlist playlist, String filename) {
         JSONObject playlistDetails = new JSONObject();
 
-        playlistDetails.put(PLAYLIST_ID, playlist.id));
+        playlistDetails.put(PLAYLIST_ID, playlist.id);
         playlistDetails.put(PLAYLIST_TITLE, playlist.getTitle());
         playlistDetails.put(PLAYLIST_AUTHOR, playlist.getAuthor());
         playlistDetails.put(PLAYLIST_DESCRIPTION, playlist.getDescription());
