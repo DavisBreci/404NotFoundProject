@@ -22,7 +22,7 @@ import org.jfugue.player.Player;
  * Class representing tablature
  */
 public class Score {
-    public final String uuid;
+    public final String id;
     private Instrument instrument;
     private ArrayList<Measure> measures;
     private int tempo;
@@ -54,16 +54,14 @@ public class Score {
     
     /**
      * Constructs an object representing an emtpy sheet of tablature
-     * @param uuid the score's UUID (make null to generate a new one)
+     * @param id the score's UUID (make null to generate a new one)
      * @param instrument the score's MIDI instrument
      * @param tempo the score's tempo in beats per minute
      */
-    public Score(String uuid, Instrument instrument, int tempo){
+    public Score(String id, Instrument instrument, int tempo){
         measures = new ArrayList<Measure>();
-        if(uuid == null)
-            this.uuid = UUID.randomUUID().toString();
-        else
-            this.uuid = uuid;
+        ID temp = id == null ? new ID() : new ID(id);
+        this.id = temp.uuid;
         this.instrument = instrument;
         setTempo(tempo);
     }
@@ -504,9 +502,5 @@ public class Score {
 
     public ArrayList<Measure> getMeasures() {
         return new ArrayList<>(measures);
-    }
-
-    public String getId() {
-        return this.uuid.toString();
     }
 }

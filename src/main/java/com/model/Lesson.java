@@ -2,12 +2,13 @@ package com.model;
 import java.util.*;
 
 public class Lesson {
-    public UUID id;
+    public final String id;
     private ArrayList<Song> songs;
     private String title;
 
-    public Lesson(UUID id, ArrayList<Song> songs, String title){
-        this.id = this.id;
+    public Lesson(String id, ArrayList<Song> songs, String title){
+        ID temp = id == null ? new ID() : new ID(id);
+        this.id = temp.uuid;
         this.songs = songs;
         this.title = title;
     }
@@ -25,12 +26,6 @@ public class Lesson {
     /**
      * @author brenskrz
      */
-    public UUID getId() {
-        if(id == null) {
-            id = UUID.randomUUID();
-        }
-        return id;
-    }
     public ArrayList<Song> getSongs() {
         return songs;
     }

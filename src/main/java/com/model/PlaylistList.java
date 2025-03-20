@@ -33,8 +33,7 @@ public class PlaylistList {
     }
 
     public void addPlaylist(String title, String author, String description) {
-        Playlist newPlaylist = new Playlist(UUID.randomUUID(), title, author, description, new ArrayList<>());
-        playlists.add(newPlaylist);
+        playlists.add(new Playlist(null, title, author, description, new ArrayList<>()));
     }
 
     public void removePlaylist(Playlist playlist) {
