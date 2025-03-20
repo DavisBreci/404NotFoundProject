@@ -123,6 +123,17 @@ public class DataLoader extends DataConstants {
             e.printStackTrace();
         }
 
+        for(int i=0; i < teachers.size(); i++) {
+            System.out.println("User : "+ i);
+            System.out.println(teachers.get(i).id);
+            System.out.println(teachers.get(i).username);
+            System.out.println(teachers.get(i).password);
+            System.out.println(teachers.get(i).email);
+            System.out.println(teachers.get(i).firstName);
+            System.out.println(teachers.get(i).lastName);
+            System.out.println("\n");
+        }
+
         return teachers;
     }
 
@@ -222,7 +233,7 @@ public class DataLoader extends DataConstants {
                             String offset = (String) individualChord.get(CHORD_OFFSET); //pull offset (long -> int)
                             String value = (String) individualChord.get(CHORD_VALUE); //pull value (NoteValue Enumerator)
                             String dotted = (String) individualChord.get(CHORD_DOTTED); //pull dotted (use .valueOf to convert to boolean)
-                            Chord chord = new Chord(NoteValue.valueOf("WHOLE"), Boolean.valueOf(dotted), Instrument.valueOf(instrument));
+                            Chord chord = new Chord(NoteValue.valueOf(value), Boolean.valueOf(dotted), Instrument.valueOf(instrument));
                             
                             //for each note
                             JSONArray rawNotes = (JSONArray) individualChord.get(CHORD_NOTES);
@@ -236,7 +247,7 @@ public class DataLoader extends DataConstants {
                                     String backTie = (String) individualNote.get(NOTE_BACK_TIE); //pull backTie (use .valueOf to convert to boolean)
                                     com.model.Note note = new com.model.Note(PitchClass.valueOf(pitchClass), Integer.valueOf(octave));
                                     System.out.println("Note identified: " + note.toString() + " on string: " + stringPos);
-                                    chord.put(note, Integer.valueOf(stringPos) - 1);//add note to chord
+                                    chord.put(note, Integer.valueOf(stringPos) - 1); //add note to chord
                                 }
                             }
                             System.out.println("Chord identified: " + chord.toString() + " at offset: " + offset);

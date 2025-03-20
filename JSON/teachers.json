@@ -8,25 +8,9 @@
         "lastName": "Breci",
         "streak": 10,
         "songsPlayed": 1,
-        "assignedLessons": [
-            {
-                "id": "5c82419b-4246-40b9-9897-9e7ac9aa49bb"
-            }
-        ],
-        "playlists": [
-            {
-                "id": "39a48119-e368-40a9-9d4e-c10139338e7c"
-            }
-        ],
-	"classes": [
-	    [
-		"8d666f44-a46c-4d5d-8877-48917befec86"
-	    ]
-	],
-	"lessons": [
-            {
-                "id": "e9b9c2c5-0383-480d-b92c-2ffce330d3f1"
-            }
-	]
+        "assignedLessons": ["5c82419b-4246-40b9-9897-9e7ac9aa49bb"],
+        "playlists": ["39a48119-e368-40a9-9d4e-c10139338e7c"],
+	    "classes": ["8d666f44-a46c-4d5d-8877-48917befec86"],
+	    "lessons": ["e9b9c2c5-0383-480d-b92c-2ffce330d3f1"]
     }
 ]
