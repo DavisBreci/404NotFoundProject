@@ -281,7 +281,7 @@ public class DataLoader extends DataConstants {
             
             for(int i=0; i < playlistsJSON.size(); i++) {
                 JSONObject individual = (JSONObject)playlistsJSON.get(i);
-                UUID id = UUID.fromString((String)individual.get(PLAYLIST_ID));
+                String id = (String)individual.get(PLAYLIST_ID);
                 String title = (String)individual.get(PLAYLIST_TITLE);
                 String author = (String)individual.get(PLAYLIST_AUTHOR);
                 String desc = (String)individual.get(PLAYLIST_DESCRIPTION);
@@ -312,7 +312,7 @@ public class DataLoader extends DataConstants {
             for(int i=0; i < playlistJSON.size(); i++) {
                 JSONObject individual = (JSONObject)playlistJSON.get(i);
                 if (inputID.equals((String)individual.get(SONG_ID))) {
-                    UUID id = UUID.fromString((String)individual.get(PLAYLIST_ID));
+                    String id = (String)individual.get(PLAYLIST_ID);
                     String title = (String)individual.get(PLAYLIST_TITLE);
                     String author = (String)individual.get(PLAYLIST_AUTHOR);
                     String desc = (String)individual.get(PLAYLIST_DESCRIPTION);

@@ -26,6 +26,7 @@ public class UserList {
         return null;
         
     }
+<<<<<<< HEAD
     /**
      * @author brenskrz
      * @return users
@@ -34,14 +35,13 @@ public class UserList {
     //     return users;
         
     // }
+=======
+>>>>>>> deb9c2383da07cdd866c12cd0c816fc2536142e9
 
-    public User addUser(String first, String last, String email, String user, String pass) {
-        User toBeAdded = new User(null, first, last, email, user, pass, 0, 0,
-                                  new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN);
-        users.add(toBeAdded);
-        return toBeAdded;
+    public void createUser(String first, String last, String email, String user, String pass) {
+        users.add(new User(null, first, last, email, user, pass, 0, 0,
+                  new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
     }
-
 
     public boolean removeUser(User user) {
         if(users.contains(user)){

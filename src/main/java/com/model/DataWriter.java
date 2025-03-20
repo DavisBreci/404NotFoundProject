@@ -53,7 +53,7 @@ public class DataWriter extends DataConstants {
     public static JSONObject getUserJSON(User user) {
         
         JSONObject userDetails = new JSONObject();
-        userDetails.put(USER_ID, user.getId().toString());
+        userDetails.put(USER_ID, user.id);
         userDetails.put(USER_USERNAME, user.getUsername());
         userDetails.put(USER_PASSWORD, user.getPassword());
         userDetails.put(USER_EMAIL, user.getEmail());
@@ -65,7 +65,7 @@ public class DataWriter extends DataConstants {
         JSONArray playlistIds = new JSONArray();
     if (user.getPlaylists() != null) {  
         for (Playlist playlist : user.getPlaylists()) {
-            playlistIds.add(playlist.getId().toString());
+            playlistIds.add(playlist.id);
         }
     }
     userDetails.put(USER_PLAYLISTS, playlistIds); 
@@ -145,14 +145,14 @@ public class DataWriter extends DataConstants {
     public static JSONObject getSongJSON(Song song) {
         JSONObject songDetails = new JSONObject();
 
-        songDetails.put(SONG_ID, song.getId().toString());
+        songDetails.put(SONG_ID, song.id);
         songDetails.put(SONG_TITLE, song.getTitle());
         songDetails.put(SONG_ARTIST, song.getArtist());
         songDetails.put(SONG_GENRE, song.getGenre());
         songDetails.put(SONG_DIFFICULTY_LEVEL, song.getDifficultyLevel().toString());
         songDetails.put(SONG_KEY, song.getKey().toString());
         songDetails.put(SONG_INSTRUMENT, song.getInstrument().toString());
-        songDetails.put(SONG_SCORE, song.getScore().getId());
+        songDetails.put(SONG_SCORE, song.getScore().id);
 
         return songDetails;
     }
@@ -196,14 +196,14 @@ public class DataWriter extends DataConstants {
     public static JSONObject getPlaylistJSON(Playlist playlist, String filename) {
         JSONObject playlistDetails = new JSONObject();
 
-        playlistDetails.put(PLAYLIST_ID, playlist.getId().toString());
+        playlistDetails.put(PLAYLIST_ID, playlist.id);
         playlistDetails.put(PLAYLIST_TITLE, playlist.getTitle());
         playlistDetails.put(PLAYLIST_AUTHOR, playlist.getAuthor());
         playlistDetails.put(PLAYLIST_DESCRIPTION, playlist.getDescription());
         JSONArray songIds = new JSONArray();
         if(playlist.getSongs() != null) {
             for(Song song: playlist.getSongs()) {
-                songIds.add(song.getId());
+                songIds.add(song.id);
             }
         }
         playlistDetails.put(PLAYLIST_SONGS, songIds);
@@ -256,11 +256,11 @@ public class DataWriter extends DataConstants {
     public static JSONObject getLessonJSON(Lesson lesson) {
         JSONObject lessonDetails = new JSONObject();
 
-        lessonDetails.put(LESSONS_ID, lesson.getId().toString());
+        lessonDetails.put(LESSONS_ID, lesson.id);
         lessonDetails.put(LESSONS_TITLE, lesson.getTitle());
         ArrayList<String> songIds = new ArrayList<>();
         for(Song song : lesson.getSongs()) {
-            songIds.add(song.getId());
+            songIds.add(song.id);
         }
         lessonDetails.put(LESSONS_SONGS, songIds);
         return lessonDetails;
@@ -272,7 +272,7 @@ public class DataWriter extends DataConstants {
     public static void saveNewScore(Score newScore, String filename) {
 
         JSONObject jsonScore = new JSONObject();
-        jsonScore.put("uuid", newScore.getId());
+        jsonScore.put("uuid", newScore.id);
         jsonScore.put("instrument", newScore.getInstrument().toString());
         jsonScore.put("tempo", Integer.toString(newScore.getTempo()));
 
@@ -353,7 +353,7 @@ public class DataWriter extends DataConstants {
         for (Score score : scores) {
             JSONObject jsonScore = new JSONObject();
 
-            jsonScore.put("uuid", score.getId());
+            jsonScore.put("uuid", score.id);
             jsonScore.put("instrument", score.getInstrument().toString());
             jsonScore.put("tempo", Integer.toString(score.getTempo()));
 

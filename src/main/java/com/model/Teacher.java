@@ -27,9 +27,10 @@ public class Teacher extends User {
         for(User student : classes.get(classIndex))
             student.assignLesson(lesson);
     }
-    public void createLesson(String lessonName){
+//probably not necessary
+    // public void createLesson(String lessonName){
 
-    }
+    // }
     public ArrayList<ArrayList<User>> getClasses() {
         return classes;
     }
