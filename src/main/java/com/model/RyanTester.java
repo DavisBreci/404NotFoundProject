@@ -13,6 +13,10 @@ public class RyanTester {
         //ArrayList<Song> dummysongs = DataLoader.getAllSongs();
         //ArrayList<Playlist> dummPlaylists = DataLoader.getAllPlaylists();
 
+        //Song Alphys = DataLoader.getSongFromID("97355262-9242-4325-9d4e-4a7c3757977a");
+        Song Alphys = DataLoader.getSongFromID("8a8e7e25-b701-479d-867c-54cab7eccb92");
+        System.out.println("Alphys Score: " + Alphys.getScore().toString());
         Player p = new Player();
+        p.play(Alphys.getScore().getSequence(0, Alphys.getScore().size(), null, 0));
     }
 }
