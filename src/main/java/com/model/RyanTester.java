@@ -7,9 +7,17 @@ import org.jfugue.player.Player;
 import com.model.User;
 
 public class RyanTester {
+
+    /*
+     * ABANDON HOPE ALL YE WHO ENTER HERE
+     * FOR THIS IS THE LAND OF WEIRD-ASS ERRORS
+     * ANY MANY HOURS SPENT IN VAIN
+     */
+
     public static void main(String[] args) {
         //Score dummyscore = DataLoader.getScoreFromID("3a6c83d2-2235-4fff-84dc-7ad6ec2dabf8");
-        ArrayList<Teacher> dummyusers = DataLoader.getTeachers();
+        //ArrayList<Teacher> dummyusers = DataLoader.getTeachers();
+        //ArrayList<User> dummyusers = DataLoader.getUsers();
         //ArrayList<Song> dummysongs = DataLoader.getAllSongs();
         //ArrayList<Playlist> dummPlaylists = DataLoader.getAllPlaylists();
 
