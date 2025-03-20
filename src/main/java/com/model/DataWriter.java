@@ -86,6 +86,7 @@ public class DataWriter extends DataConstants {
 
         for(int i = 0; i<teachers.size(); i++) {
             jsonTeachers.add(getUserJSON(teachers.get(i)));
+            jsonTeachers.add(getTeacherJSON(teachers.get(i)));
         }
 
         try (FileWriter file = new FileWriter(TEACHER_TEMP_FILE_NAME)) {
@@ -101,8 +102,11 @@ public class DataWriter extends DataConstants {
     public static JSONObject getTeacherJSON(Teacher teacher) {
         
         JSONObject teacherDetails = new JSONObject();
+        
         teacherDetails.put(TEACHER_CLASSES, teacher.getClasses());
+        // teacherDetails.put(USER_ASSIGNED_LESSONS, teacher.getAssignedLessons());
         teacherDetails.put(TEACHER_LESSONS, teacher.getLessons());
+
         
 
         return teacherDetails;
@@ -270,7 +274,7 @@ public class DataWriter extends DataConstants {
         JSONObject jsonScore = new JSONObject();
         jsonScore.put("uuid", newScore.getId());
         jsonScore.put("instrument", newScore.getInstrument().toString());
-        jsonScore.put("tempo", newScore.getTempo());
+        jsonScore.put("tempo", Integer.toString(newScore.getTempo()));
 
         JSONArray jsonMeasures = new JSONArray();
         for (Measure measure : newScore.getMeasures()) {
@@ -293,7 +297,7 @@ public class DataWriter extends DataConstants {
                 JSONObject jsonChord = new JSONObject();
                 jsonChord.put("offset", chord.getValue().toString());
                 jsonChord.put("value", chord.getValue().toString());
-                jsonChord.put("dotted", chord.isDotted());
+                jsonChord.put("dotted", Boolean.toString(chord.isDotted()));
 
 
                 JSONArray jsonNotes = new JSONArray();
@@ -351,7 +355,7 @@ public class DataWriter extends DataConstants {
 
             jsonScore.put("uuid", score.getId());
             jsonScore.put("instrument", score.getInstrument().toString());
-            jsonScore.put("tempo", score.getTempo());
+            jsonScore.put("tempo", Integer.toString(score.getTempo()));
 
             JSONArray jsonMeasures = new JSONArray();
 
@@ -374,18 +378,19 @@ public class DataWriter extends DataConstants {
 
                     jsonChord.put("offset", chord.getValue().toString());
                     jsonChord.put("value", chord.getValue().toString());
-                    jsonChord.put("dotted", chord.isDotted());
+                    jsonChord.put("dotted", Boolean.toString(chord.isDotted()));
                     
                     JSONArray jsonNotes = new JSONArray();
                     for (Note note : chord.getNotes()) {
                         if (note != null) {
                             JSONObject jsonNote = new JSONObject();
-                            jsonNote.put("pitchClass", note.getPitchClass().toString());
-                            // jsonNote.put("octave", String.valueOf(note.getOctave()).toString());
-                            // jsonNote.put("string", String.valueOf(note.getString()).toString());
-                            // jsonNote.put("frontTie", String.valueOf(note.hasFrontTie()).toString());
-                            // jsonNote.put("backTie", String.valueOf(note.hasBackTie()).toString());
-                            jsonNotes.add(jsonNote);
+                           
+                        jsonNote.put("pitchClass", note.getPitchClass().toString());
+                        jsonNote.put("octave", Integer.toString(note.getOctave()));
+                        jsonNote.put("string", Integer.toString(note.getString()));
+                        jsonNote.put("frontTie", Boolean.toString(note.hasFrontTie()));
+                        jsonNote.put("backTie", Boolean.toString(note.hasBackTie()));
+                        jsonNotes.add(jsonNote);
                         }
                     }
 
@@ -402,7 +407,7 @@ public class DataWriter extends DataConstants {
             jsonScores.add(jsonScore);
         }
 
-        try (FileWriter file = new FileWriter("scores.json")) {
+        try (FileWriter file = new FileWriter("scores_temp.json")) {
             file.write(jsonScores.toJSONString());
             file.flush();
             System.out.println("Successfully wrote all scores to scores.json");
@@ -412,21 +417,7 @@ public class DataWriter extends DataConstants {
     }
 
     public static void main(String args[]) {
-        Score myNewScore = new Score("my_unique_id", Instrument.GUITAR, 100);
-        Rational testTimeSignature = new Rational(3, 4);
-        // Add test measures and chords
-        Measure measure = new Measure(Instrument.GUITAR, testTimeSignature);
-        Chord chord = new Chord(NoteValue.EIGHTH, false, Instrument.GUITAR);
-        chord.put(new Note(NoteValue.EIGHTH, false, Instrument.GUITAR, PitchClass.A, 4), 4);
-        Rational offset = new Rational(1, 2);
-        boolean success = measure.put(offset, chord);
-        if (!success) {
-            System.out.println("Failed to add chord to the measure (possible collision or out of bounds).");
-        }
-        myNewScore.add(measure);
-
-
-
+       
         DataWriter.saveUsers(DataLoader.getUsers());
         DataWriter.saveTeachers(DataLoader.getTeachers());
         DataWriter.savePlaylists(DataLoader.getAllPlaylists());
