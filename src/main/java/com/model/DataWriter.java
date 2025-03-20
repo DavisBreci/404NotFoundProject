@@ -21,6 +21,7 @@ import javafx.scene.chart.PieChart.Data;
 
 
 
+
 public class DataWriter extends DataConstants {
 
     public static void saveUsers(ArrayList<User> users) {
@@ -276,12 +277,6 @@ public class DataWriter extends DataConstants {
             System.out.println("Processing measure with time signature: " + measure.getTimeSignature());
 
             JSONObject jsonMeasure = new JSONObject();
-            Rational timeSignature = measure.getTimeSignature();
-            jsonMeasure.put("timeSignatureNumerator", timeSignature.getNumerator());
-            jsonMeasure.put("timeSignatureDenominator", timeSignature.getDenominator());
-
-            jsonMeasure.put("timeSignature", measure.getTimeSignature().toString());
-
             JSONArray jsonChords = new JSONArray();
 
             Iterator<Map.Entry<Rational, Chord>> iterator = measure.chordIterator();
@@ -322,6 +317,8 @@ public class DataWriter extends DataConstants {
                 jsonChord.put("notes", jsonNotes);
                 jsonChords.add(jsonChord);
             }
+            jsonMeasure.put("timeSignature", measure.getTimeSignatureString());
+
 
             if (jsonChords.isEmpty()) {
                 System.out.println("Warning: No chords found in measure.");
@@ -360,9 +357,6 @@ public class DataWriter extends DataConstants {
 
             for (Measure measure : score.getMeasures()) {
                 JSONObject jsonMeasure = new JSONObject();
-                Rational timeSignature = measure.getTimeSignature();
-                jsonMeasure.put("timeSignatureNumerator", timeSignature.getNumerator());
-                jsonMeasure.put("timeSignatureDenominator", timeSignature.getDenominator());
 
 
                 JSONArray jsonChords = new JSONArray();
