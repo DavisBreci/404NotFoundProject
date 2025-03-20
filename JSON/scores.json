@@ -65,7 +65,7 @@
                         ]
                     },
                     {
-                        "offset": "3/4",
+                        "offset": "5/8",
                         "value": "SIXTEENTH",
                         "dotted": "false",
                         "notes": [ 
@@ -160,7 +160,7 @@
                             "null",
                             {
                                 "pitchClass": "Db",
-                                "octave": "4",
+                                "octave": "5",
                                 "string": "3",
                                 "frontTie": "false",
                                 "backTie": "false"
@@ -171,7 +171,7 @@
                         ]
                     },
                     {
-                        "offset": "3/4",
+                        "offset": "5/8",
                         "value": "SIXTEENTH",
                         "dotted": "false",
                         "notes": [ 
