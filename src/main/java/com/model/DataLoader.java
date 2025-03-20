@@ -123,6 +123,17 @@ public class DataLoader extends DataConstants {
             e.printStackTrace();
         }
 
+        for(int i=0; i < teachers.size(); i++) {
+            System.out.println("User : "+ i);
+            System.out.println(teachers.get(i).id);
+            System.out.println(teachers.get(i).username);
+            System.out.println(teachers.get(i).password);
+            System.out.println(teachers.get(i).email);
+            System.out.println(teachers.get(i).firstName);
+            System.out.println(teachers.get(i).lastName);
+            System.out.println("\n");
+        }
+
         return teachers;
     }
 
