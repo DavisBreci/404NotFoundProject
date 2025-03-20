@@ -61,7 +61,13 @@ public class DataWriter extends DataConstants {
         userDetails.put(USER_STREAK, user.getStreak());
         userDetails.put(USER_SONGS_PLAYED, user.getSongsPlayed());
         userDetails.put(USER_ASSIGNED_LESSONS, user.getAssignedLessons());
-        userDetails.put(USER_PLAYLISTS, user.getPlaylists());
+        JSONArray playlistIds = new JSONArray();
+    if (user.getPlaylists() != null) {  
+        for (Playlist playlist : user.getPlaylists()) {
+            playlistIds.add(playlist.getId().toString());
+        }
+    }
+    userDetails.put(USER_PLAYLISTS, playlistIds); 
 
         return userDetails;
     }
@@ -168,7 +174,7 @@ public class DataWriter extends DataConstants {
 
 
         for( Playlist playlist : playlists) {
-            jsonPlaylists.add(getPlaylistJSON(playlist));
+            jsonPlaylists.add(getPlaylistJSON(playlist, PLAYLIST_FILE_TEMP_NAME));
         }
 
         try (FileWriter file = new FileWriter(PLAYLIST_FILE_TEMP_NAME)) {
@@ -182,14 +188,21 @@ public class DataWriter extends DataConstants {
         
     }
 
-    public static JSONObject getPlaylistJSON(Playlist playlist) {
+    public static JSONObject getPlaylistJSON(Playlist playlist, String filename) {
         JSONObject playlistDetails = new JSONObject();
 
         playlistDetails.put(PLAYLIST_ID, playlist.getId().toString());
         playlistDetails.put(PLAYLIST_TITLE, playlist.getTitle());
         playlistDetails.put(PLAYLIST_AUTHOR, playlist.getAuthor());
         playlistDetails.put(PLAYLIST_DESCRIPTION, playlist.getDescription());
-        playlistDetails.put(PLAYLIST_SONGS, playlist.getSongs());
+        JSONArray songIds = new JSONArray();
+        if(playlist.getSongs() != null) {
+            for(Song song: playlist.getSongs()) {
+                songIds.add(song.getId());
+            }
+        }
+        playlistDetails.put(PLAYLIST_SONGS, songIds);
+    
 
         return playlistDetails;
     }
@@ -415,9 +428,9 @@ public class DataWriter extends DataConstants {
 
 
         DataWriter.saveUsers(DataLoader.getUsers());
-        // DataWriter.saveTeachers(DataLoader.getTeachers());
-        // DataWriter.savePlaylists(DataLoader.getPlaylists());
-        // DataWriter.saveSongs(DataLoader.getSongs());
+        DataWriter.saveTeachers(DataLoader.getTeachers());
+        DataWriter.savePlaylists(DataLoader.getAllPlaylists());
+        DataWriter.saveSongs(DataLoader.getAllSongs());
 
         DataWriter.saveNewScore(DataLoader.getScoreFromID("3a6c83d2-2235-4fff-84dc-7ad6ec2dabf8"), SCORE_TEMP_FILE_NAME);
     }
