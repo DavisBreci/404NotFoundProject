@@ -2,7 +2,7 @@ package com.model;
 import java.util.*;
 
 public class Song {
-    public String id;
+    public final String id;
     private String title;
     private String artist;
     private String genre;
@@ -13,7 +13,8 @@ public class Song {
 
     public Song(String id, String title, String artist, String genre, Key key,
                 DifficultyLevel difficulty, Instrument instrument, Score score){
-        this.id = id;
+        ID temp = id == null ? new ID() : new ID(id);
+        this.id = temp.uuid;
         this.title = title;
         this.artist = artist;
         this.genre = genre;
@@ -22,18 +23,9 @@ public class Song {
         this.instrument = instrument;
         this.score = score;
     }
-
-     /**
-     * @author brenskrz
-     */
-    public String getId() {
-        return id;
-    }
-   
     public String getTitle() {
         return title;
     }
-    
     public String getArtist() {
         return artist;
     }
