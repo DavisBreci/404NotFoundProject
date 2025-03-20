@@ -148,7 +148,7 @@ public class DataWriter extends DataConstants {
         songDetails.put(SONG_DIFFICULTY_LEVEL, song.getDifficultyLevel().toString());
         songDetails.put(SONG_KEY, song.getKey().toString());
         songDetails.put(SONG_INSTRUMENT, song.getInstrument().toString());
-        songDetails.put(SONG_SCORE, song.getScore());
+        songDetails.put(SONG_SCORE, song.getScore().getId());
 
         return songDetails;
     }
@@ -304,10 +304,10 @@ public class DataWriter extends DataConstants {
 
                         JSONObject jsonNote = new JSONObject();
                         jsonNote.put("pitchClass", note.getPitchClass().toString());
-                        jsonNote.put("octave", note.getOctave());
-                        jsonNote.put("string", note.getString());
-                        jsonNote.put("frontTie", note.hasFrontTie());
-                        jsonNote.put("backTie", note.hasBackTie());
+                        jsonNote.put("octave", Integer.toString(note.getOctave()));
+                        jsonNote.put("string", Integer.toString(note.getString()));
+                        jsonNote.put("frontTie", Boolean.toString(note.hasFrontTie()));
+                        jsonNote.put("backTie", Boolean.toString(note.hasBackTie()));
                         jsonNotes.add(jsonNote);
                     } else {
                         jsonNotes.add("null");
@@ -433,6 +433,6 @@ public class DataWriter extends DataConstants {
         DataWriter.saveSongs(DataLoader.getAllSongs());
         DataWriter.saveLessons();
 
-        DataWriter.saveNewScore(DataLoader.getScoreFromID("3a6c83d2-2235-4fff-84dc-7ad6ec2dabf8"), SCORE_TEMP_FILE_NAME);
+        DataWriter.saveNewScore(DataLoader.getScoreFromID("a42d710f-afcb-4bce-bfd7-ecb43e6a5a89"), SCORE_TEMP_FILE_NAME);
     }
 }
