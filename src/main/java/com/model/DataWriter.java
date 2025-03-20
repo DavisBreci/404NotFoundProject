@@ -376,8 +376,8 @@ public class DataWriter extends DataConstants {
 
                     JSONObject jsonChord = new JSONObject();
 
-                    jsonChord.put("offset", chord.getValue().toString());
-                    jsonChord.put("value", chord.getValue().toString());
+                    jsonChord.put("offset", entry.getKey().toString());
+                    jsonChord.put("value", entry.getValue().getValue().toString());
                     jsonChord.put("dotted", Boolean.toString(chord.isDotted()));
                     
                     JSONArray jsonNotes = new JSONArray();
@@ -387,7 +387,7 @@ public class DataWriter extends DataConstants {
                            
                         jsonNote.put("pitchClass", note.getPitchClass().toString());
                         jsonNote.put("octave", Integer.toString(note.getOctave()));
-                        jsonNote.put("string", Integer.toString(note.getString()));
+                        jsonNote.put("string", Integer.toString(note.getString() + 1));
                         jsonNote.put("frontTie", Boolean.toString(note.hasFrontTie()));
                         jsonNote.put("backTie", Boolean.toString(note.hasBackTie()));
                         jsonNotes.add(jsonNote);
