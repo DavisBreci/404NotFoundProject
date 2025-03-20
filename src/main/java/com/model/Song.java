@@ -49,7 +49,7 @@ public class Song {
     public Instrument getInstrument(){
         return instrument;
     }
-    public Score getScore(){
+    public Score getScore() {
         return score;
     }
     

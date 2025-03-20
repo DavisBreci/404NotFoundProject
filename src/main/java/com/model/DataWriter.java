@@ -147,7 +147,7 @@ public class DataWriter extends DataConstants {
         songDetails.put(SONG_DIFFICULTY_LEVEL, song.getDifficultyLevel().toString());
         songDetails.put(SONG_KEY, song.getKey().toString());
         songDetails.put(SONG_INSTRUMENT, song.getInstrument().toString());
-        songDetails.put(SONG_SCORE, song.getScore().toString());
+        songDetails.put(SONG_SCORE, song.getScore());
 
         return songDetails;
     }
@@ -258,7 +258,6 @@ public class DataWriter extends DataConstants {
             songIds.add(song.getId());
         }
         lessonDetails.put(LESSONS_SONGS, songIds);
-
         return lessonDetails;
     }
     // public static void main(String args[]) {
@@ -277,6 +276,10 @@ public class DataWriter extends DataConstants {
             System.out.println("Processing measure with time signature: " + measure.getTimeSignature());
 
             JSONObject jsonMeasure = new JSONObject();
+            Rational timeSignature = measure.getTimeSignature();
+            jsonMeasure.put("timeSignatureNumerator", timeSignature.getNumerator());
+            jsonMeasure.put("timeSignatureDenominator", timeSignature.getDenominator());
+
             jsonMeasure.put("timeSignature", measure.getTimeSignature().toString());
 
             JSONArray jsonChords = new JSONArray();
@@ -357,8 +360,10 @@ public class DataWriter extends DataConstants {
 
             for (Measure measure : score.getMeasures()) {
                 JSONObject jsonMeasure = new JSONObject();
-                
-                jsonMeasure.put("timeSignature", measure.getTimeSignature().toString());
+                Rational timeSignature = measure.getTimeSignature();
+                jsonMeasure.put("timeSignatureNumerator", timeSignature.getNumerator());
+                jsonMeasure.put("timeSignatureDenominator", timeSignature.getDenominator());
+
 
                 JSONArray jsonChords = new JSONArray();
                 Iterator<Map.Entry<Rational, Chord>> iterator = measure.chordIterator();
@@ -393,6 +398,7 @@ public class DataWriter extends DataConstants {
                     jsonChord.put("notes", jsonNotes);
                     jsonChords.add(jsonChord);
                 }
+                jsonMeasure.put("timeSignature", measure.getTimeSignatureString());
 
                 jsonMeasure.put("chords", jsonChords);
                 jsonMeasures.add(jsonMeasure);
@@ -431,6 +437,7 @@ public class DataWriter extends DataConstants {
         DataWriter.saveTeachers(DataLoader.getTeachers());
         DataWriter.savePlaylists(DataLoader.getAllPlaylists());
         DataWriter.saveSongs(DataLoader.getAllSongs());
+        DataWriter.saveLessons();
 
         DataWriter.saveNewScore(DataLoader.getScoreFromID("3a6c83d2-2235-4fff-84dc-7ad6ec2dabf8"), SCORE_TEMP_FILE_NAME);
     }

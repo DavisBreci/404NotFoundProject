@@ -256,7 +256,7 @@ public class Note extends BarObj {
      * Returns a Staccato representation of the note
      */
     public String toString(){
-        return pitchClass + "" + octave + (backTie == null ? "" : "-") + timingString() + (frontTie == null ? "" : "-");
+        return pitchClass + "" + octave +  (backTie == null ? "" : "-") + timingString() + (frontTie == null ? "" : "-");
     }
     /**
      * Whether two notes have the same pitch and location
