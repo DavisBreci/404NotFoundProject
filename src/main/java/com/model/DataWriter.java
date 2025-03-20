@@ -21,6 +21,7 @@ import javafx.scene.chart.PieChart.Data;
 
 
 
+
 public class DataWriter extends DataConstants {
 
     public static void saveUsers(ArrayList<User> users) {
@@ -52,7 +53,7 @@ public class DataWriter extends DataConstants {
     public static JSONObject getUserJSON(User user) {
         
         JSONObject userDetails = new JSONObject();
-        userDetails.put(USER_ID, user.getId().toString());
+        userDetails.put(USER_ID, user.id);
         userDetails.put(USER_USERNAME, user.getUsername());
         userDetails.put(USER_PASSWORD, user.getPassword());
         userDetails.put(USER_EMAIL, user.getEmail());
@@ -61,7 +62,13 @@ public class DataWriter extends DataConstants {
         userDetails.put(USER_STREAK, user.getStreak());
         userDetails.put(USER_SONGS_PLAYED, user.getSongsPlayed());
         userDetails.put(USER_ASSIGNED_LESSONS, user.getAssignedLessons());
-        userDetails.put(USER_PLAYLISTS, user.getPlaylists());
+        JSONArray playlistIds = new JSONArray();
+    if (user.getPlaylists() != null) {  
+        for (Playlist playlist : user.getPlaylists()) {
+            playlistIds.add(playlist.id);
+        }
+    }
+    userDetails.put(USER_PLAYLISTS, playlistIds); 
 
         return userDetails;
     }
@@ -134,14 +141,14 @@ public class DataWriter extends DataConstants {
     public static JSONObject getSongJSON(Song song) {
         JSONObject songDetails = new JSONObject();
 
-        songDetails.put(SONG_ID, song.getId().toString());
+        songDetails.put(SONG_ID, song.id);
         songDetails.put(SONG_TITLE, song.getTitle());
         songDetails.put(SONG_ARTIST, song.getArtist());
         songDetails.put(SONG_GENRE, song.getGenre());
         songDetails.put(SONG_DIFFICULTY_LEVEL, song.getDifficultyLevel().toString());
         songDetails.put(SONG_KEY, song.getKey().toString());
         songDetails.put(SONG_INSTRUMENT, song.getInstrument().toString());
-        songDetails.put(SONG_SCORE, song.getScore().toString());
+        songDetails.put(SONG_SCORE, song.getScore().id);
 
         return songDetails;
     }
@@ -168,7 +175,7 @@ public class DataWriter extends DataConstants {
 
 
         for( Playlist playlist : playlists) {
-            jsonPlaylists.add(getPlaylistJSON(playlist));
+            jsonPlaylists.add(getPlaylistJSON(playlist, PLAYLIST_FILE_TEMP_NAME));
         }
 
         try (FileWriter file = new FileWriter(PLAYLIST_FILE_TEMP_NAME)) {
@@ -182,14 +189,21 @@ public class DataWriter extends DataConstants {
         
     }
 
-    public static JSONObject getPlaylistJSON(Playlist playlist) {
+    public static JSONObject getPlaylistJSON(Playlist playlist, String filename) {
         JSONObject playlistDetails = new JSONObject();
 
-        playlistDetails.put(PLAYLIST_ID, playlist.getId().toString());
+        playlistDetails.put(PLAYLIST_ID, playlist.id);
         playlistDetails.put(PLAYLIST_TITLE, playlist.getTitle());
         playlistDetails.put(PLAYLIST_AUTHOR, playlist.getAuthor());
         playlistDetails.put(PLAYLIST_DESCRIPTION, playlist.getDescription());
-        playlistDetails.put(PLAYLIST_SONGS, playlist.getSongs());
+        JSONArray songIds = new JSONArray();
+        if(playlist.getSongs() != null) {
+            for(Song song: playlist.getSongs()) {
+                songIds.add(song.id);
+            }
+        }
+        playlistDetails.put(PLAYLIST_SONGS, songIds);
+    
 
         return playlistDetails;
     }
@@ -238,14 +252,13 @@ public class DataWriter extends DataConstants {
     public static JSONObject getLessonJSON(Lesson lesson) {
         JSONObject lessonDetails = new JSONObject();
 
-        lessonDetails.put(LESSONS_ID, lesson.getId().toString());
+        lessonDetails.put(LESSONS_ID, lesson.id);
         lessonDetails.put(LESSONS_TITLE, lesson.getTitle());
         ArrayList<String> songIds = new ArrayList<>();
         for(Song song : lesson.getSongs()) {
-            songIds.add(song.getId());
+            songIds.add(song.id);
         }
         lessonDetails.put(LESSONS_SONGS, songIds);
-
         return lessonDetails;
     }
     // public static void main(String args[]) {
@@ -255,7 +268,7 @@ public class DataWriter extends DataConstants {
     public static void saveNewScore(Score newScore, String filename) {
 
         JSONObject jsonScore = new JSONObject();
-        jsonScore.put("uuid", newScore.getId());
+        jsonScore.put("uuid", newScore.id);
         jsonScore.put("instrument", newScore.getInstrument().toString());
         jsonScore.put("tempo", newScore.getTempo());
 
@@ -264,8 +277,6 @@ public class DataWriter extends DataConstants {
             System.out.println("Processing measure with time signature: " + measure.getTimeSignature());
 
             JSONObject jsonMeasure = new JSONObject();
-            jsonMeasure.put("timeSignature", measure.getTimeSignature().toString());
-
             JSONArray jsonChords = new JSONArray();
 
             Iterator<Map.Entry<Rational, Chord>> iterator = measure.chordIterator();
@@ -293,10 +304,10 @@ public class DataWriter extends DataConstants {
 
                         JSONObject jsonNote = new JSONObject();
                         jsonNote.put("pitchClass", note.getPitchClass().toString());
-                        jsonNote.put("octave", note.getOctave());
-                        jsonNote.put("string", note.getString());
-                        jsonNote.put("frontTie", note.hasFrontTie());
-                        jsonNote.put("backTie", note.hasBackTie());
+                        jsonNote.put("octave", Integer.toString(note.getOctave()));
+                        jsonNote.put("string", Integer.toString(note.getString()));
+                        jsonNote.put("frontTie", Boolean.toString(note.hasFrontTie()));
+                        jsonNote.put("backTie", Boolean.toString(note.hasBackTie()));
                         jsonNotes.add(jsonNote);
                     } else {
                         jsonNotes.add("null");
@@ -306,6 +317,8 @@ public class DataWriter extends DataConstants {
                 jsonChord.put("notes", jsonNotes);
                 jsonChords.add(jsonChord);
             }
+            jsonMeasure.put("timeSignature", measure.getTimeSignatureString());
+
 
             if (jsonChords.isEmpty()) {
                 System.out.println("Warning: No chords found in measure.");
@@ -336,7 +349,7 @@ public class DataWriter extends DataConstants {
         for (Score score : scores) {
             JSONObject jsonScore = new JSONObject();
 
-            jsonScore.put("uuid", score.getId());
+            jsonScore.put("uuid", score.id);
             jsonScore.put("instrument", score.getInstrument().toString());
             jsonScore.put("tempo", score.getTempo());
 
@@ -344,8 +357,7 @@ public class DataWriter extends DataConstants {
 
             for (Measure measure : score.getMeasures()) {
                 JSONObject jsonMeasure = new JSONObject();
-                
-                jsonMeasure.put("timeSignature", measure.getTimeSignature().toString());
+
 
                 JSONArray jsonChords = new JSONArray();
                 Iterator<Map.Entry<Rational, Chord>> iterator = measure.chordIterator();
@@ -380,6 +392,7 @@ public class DataWriter extends DataConstants {
                     jsonChord.put("notes", jsonNotes);
                     jsonChords.add(jsonChord);
                 }
+                jsonMeasure.put("timeSignature", measure.getTimeSignatureString());
 
                 jsonMeasure.put("chords", jsonChords);
                 jsonMeasures.add(jsonMeasure);
@@ -415,10 +428,11 @@ public class DataWriter extends DataConstants {
 
 
         DataWriter.saveUsers(DataLoader.getUsers());
-        // DataWriter.saveTeachers(DataLoader.getTeachers());
-        // DataWriter.savePlaylists(DataLoader.getPlaylists());
-        // DataWriter.saveSongs(DataLoader.getSongs());
+        DataWriter.saveTeachers(DataLoader.getTeachers());
+        DataWriter.savePlaylists(DataLoader.getAllPlaylists());
+        DataWriter.saveSongs(DataLoader.getAllSongs());
+        DataWriter.saveLessons();
 
-        DataWriter.saveNewScore(DataLoader.getScoreFromID("3a6c83d2-2235-4fff-84dc-7ad6ec2dabf8"), SCORE_TEMP_FILE_NAME);
+        DataWriter.saveNewScore(DataLoader.getScoreFromID("a42d710f-afcb-4bce-bfd7-ecb43e6a5a89"), SCORE_TEMP_FILE_NAME);
     }
 }

@@ -324,7 +324,7 @@ public class DataLoader extends DataConstants {
             
             for(int i=0; i < playlistsJSON.size(); i++) {
                 JSONObject individual = (JSONObject)playlistsJSON.get(i);
-                UUID id = UUID.fromString((String)individual.get(PLAYLIST_ID));
+                String id = (String)individual.get(PLAYLIST_ID);
                 String title = (String)individual.get(PLAYLIST_TITLE);
                 String author = (String)individual.get(PLAYLIST_AUTHOR);
                 String desc = (String)individual.get(PLAYLIST_DESCRIPTION);
@@ -355,7 +355,7 @@ public class DataLoader extends DataConstants {
             for(int i=0; i < playlistJSON.size(); i++) {
                 JSONObject individual = (JSONObject)playlistJSON.get(i);
                 if (inputID.equals((String)individual.get(SONG_ID))) {
-                    UUID id = UUID.fromString((String)individual.get(PLAYLIST_ID));
+                    String id = (String)individual.get(PLAYLIST_ID);
                     String title = (String)individual.get(PLAYLIST_TITLE);
                     String author = (String)individual.get(PLAYLIST_AUTHOR);
                     String desc = (String)individual.get(PLAYLIST_DESCRIPTION);
@@ -392,7 +392,7 @@ public class DataLoader extends DataConstants {
                 for(int j=0; j < songIDs.size(); j++) {
                     songs.add(getSongFromID((String)songIDs.get(j)));
                 }  
-                lessons.add(new Lesson(UUID.fromString(id), songs, title));
+                lessons.add(new Lesson(id, songs, title));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -417,7 +417,7 @@ public class DataLoader extends DataConstants {
                     for(int j=0; j < songIDs.size(); j++) {
                         songs.add(getSongFromID((String)songIDs.get(j)));
                     }  
-                    return new Lesson(UUID.fromString(id), songs, title);
+                    return new Lesson(id, songs, title);
                 }
             }
             if (lessonID == "") {

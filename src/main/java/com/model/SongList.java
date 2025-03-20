@@ -7,14 +7,13 @@ public class SongList {
     private ArrayList<Song> songs;
 
     private SongList() {
-        songs = new ArrayList<>();
+        songs = DataLoader.getAllSongs();
     }
 
     public static SongList getInstance() {
         if(songList == null) {
             songList = new SongList();
         }
-
         return songList;
     }
 
@@ -22,31 +21,39 @@ public class SongList {
         return songs;
     }
 
-    public boolean loadSong(Song s) {
-        return true;
-    }
-
-    public ArrayList<Song> getSongs() {
-        return songs;
-    }
-
     public Song getSongByTitle(String name) {
+        for(Song s : songs)
+            if(s.getTitle().equals(name))
+                return s;
         return null;
     }
 
     public ArrayList<Song> getSongsByDifficulty(DifficultyLevel dv) {
-        return null;
+        ArrayList<Song> ret = new ArrayList<Song>();
+        for(Song s : songs)
+            if(s.getDifficultyLevel() == dv)
+                ret.add(s);
+        return ret;
     }
 
     public ArrayList<Song> getSongsByKey(Key k) {
-        return null;
+        ArrayList<Song> ret = new ArrayList<Song>();
+        for(Song s : songs)
+            if(s.getKey() == k)
+                ret.add(s);
+        return ret;
     }
 
     public ArrayList<Song> getSongsByGenre(String genre) {
-        return null;
+        ArrayList<Song> ret = new ArrayList<Song>();
+        for(Song s : songs)
+            if(s.getGenre() == genre)
+                ret.add(s);
+        return ret;
     }
 
-    public void addSong(Song s) {
-        songs.add(s);
+    public void createSong(String title, String artist, String genre, Key key, DifficultyLevel difficulty,
+                        Instrument instrument, Score score) {
+        songs.add(new Song(null, title, artist, genre, key, difficulty, instrument, score));
     }
 }

@@ -85,13 +85,6 @@ public class User {
     }
     /**
      * @author brenskrz
-     * @return id
-     */
-    public String getId() {
-        return id;
-    }
-    /**
-     * @author brenskrz
      * @return firstName
      */
     public String getFirstName() {

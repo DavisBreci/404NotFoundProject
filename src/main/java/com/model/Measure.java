@@ -351,4 +351,7 @@ public class Measure {
     public Rational getTimeSignature() {
         return timeSignature;
     }
+    public String getTimeSignatureString() {
+        return timeSignature.getNumerator() + "/" + timeSignature.getDenominator();
+    }
 }
