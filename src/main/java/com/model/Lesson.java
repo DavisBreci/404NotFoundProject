@@ -9,7 +9,10 @@ public class Lesson {
     public Lesson(String id, ArrayList<Song> songs, String title){
         ID temp = id == null ? new ID() : new ID(id);
         this.id = temp.uuid;
-        this.songs = songs;
+        if(songs != null)
+            this.songs = songs;
+        else 
+            this.songs = new ArrayList<Song>();
         this.title = title;
     }
     public void addSong(Song song){

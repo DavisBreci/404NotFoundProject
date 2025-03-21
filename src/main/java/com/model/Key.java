@@ -8,5 +8,5 @@ public enum Key {
     EMAJOR_DbMINOR,
     BMAJOR_AbMINOR,
     GbMAJOR_EbMINOR,
-    DbMAJOR_BbMINOR
+    DbMAJOR_BbMINOR,
 }
