@@ -4,9 +4,41 @@ import java.util.ArrayList;
 
 public class MusicSystemFACADE {
     private User user;
-    public boolean login(String username, String password){
-        return false;
+    private static MusicSystemFACADE musicSystemFACADE;
+    private UserList userList;
+    private LessonList lessonList;
+    private SongList songList;
+    private PlaylistList playlistList;
+
+    public static void main(String[] args){
+        MusicSystemFACADE prog = MusicSystemFACADE.getInstance();
+        System.out.println("/////////////////////////////////");
+        String username = "ctferg";
+        String password = "247sucks";
+        System.out.println("Attempting to login as \"" + username + "\"...");
+        System.out.println("Login success: " + prog.login(username, password));
     }
+    private MusicSystemFACADE(){
+        userList = UserList.getInstance();
+        lessonList = LessonList.getInstance();
+        songList = SongList.getInstance();
+        playlistList = PlaylistList.getInstance();
+    }
+
+    public static MusicSystemFACADE getInstance(){
+        if(musicSystemFACADE == null)
+            musicSystemFACADE = new MusicSystemFACADE();
+        return musicSystemFACADE;
+    }
+
+    public boolean login(String username, String password){
+        User user = userList.getUser(username, password);
+        if(user == null)
+            return false;
+        this.user = user;
+        return true;
+    }
+
     public boolean signUp(String username){
         return false;
     }

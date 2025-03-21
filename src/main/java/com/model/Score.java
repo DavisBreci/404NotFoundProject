@@ -38,7 +38,7 @@ public class Score {
         // System.out.println("Now playing \"Teen Town\" by Jaco Pastorius");
         // p.play(reproduced);
 
-        Sequence seq =  loadSequence("src\\main\\midi\\Teen_Town.mid"); // To be replaced by DataLoader method
+        Sequence seq =  DataLoader.loadSequence("Teen_Town.mid"); // To be replaced by DataLoader method
         Score score = Score.midiToScore(
             seq, 0, Instrument.FRETLESS_BASS
         );
@@ -273,17 +273,18 @@ public class Score {
         return temp.toArray(ret);
     }
     
-    public static Sequence loadSequence(String filename){ // For testing only. To be moved to dataLoader
-		Sequence loadedSequence = null;
-		try {
-			loadedSequence = MidiSystem.getSequence(new File(filename));
-		} catch(IOException e) {
-			e.printStackTrace();
-		} catch (InvalidMidiDataException e) {
-			e.printStackTrace();
-		}
-		return loadedSequence;
-	}
+    // public static Sequence loadSequence(String filename){ // For testing only. To be moved to dataLoader
+	// 	Sequence loadedSequence = null;
+	// 	try {
+	// 		loadedSequence = MidiSystem.getSequence(new File(filename));
+	// 	} catch(IOException e) {
+	// 		e.printStackTrace();
+	// 	} catch (InvalidMidiDataException e) {
+	// 		e.printStackTrace();
+	// 	}
+	// 	return loadedSequence;
+	// }
+    
     /**
      * Converts a MIDI Sequence into a Score object
      * @param src MIDI sequence for conversion

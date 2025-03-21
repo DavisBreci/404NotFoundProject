@@ -48,7 +48,7 @@ public class DataConstants {
     protected static final String LESSONS_SONGS = "songs";
     protected static final String LESSONS_TITLE = "title";
 
-    /* 
+    /**
      * Additional data constants
      * @author ryanMazz
      */
@@ -72,5 +72,7 @@ public class DataConstants {
     protected static final String NOTE_OCTAVE = "octave"; 
     protected static final String NOTE_STRING_POSITION = "string";
     protected static final String NOTE_FRONT_TIE = "frontTie";
-    protected static final String NOTE_BACK_TIE = "backTie";    
+    protected static final String NOTE_BACK_TIE = "backTie"; 
+    /**@author Christopher Ferguson */  
+    protected static final String MIDI_FOLDER = "src/main/midi/";
 }

@@ -63,34 +63,35 @@ public class ChristopherTester {
         // p.play(smokeOnTheWater.getSequence(0, smokeOnTheWater.size(), null, 0));
         // ArrayList<Score> dummyScores = new ArrayList<Score>();
         //  Sequence rawMidi;
-        Sequence rawMidi = Score.loadSequence("src\\main\\midi\\Teen_Town.mid");
+        Sequence rawMidi = DataLoader.loadSequence("Teen_Town.mid");
         Score teenTown = Score.midiToScore(rawMidi, 0, Instrument.FRETLESS_BASS);
         // dummyScores.add(teenTown);
         // dummyScores.add(smokeOnTheWater);
         
         // DataWriter.getScoreJSON(dummyScores);
-       
+        p.play(teenTown.getSequence(0, teenTown.size(), null, 1));
         // Score loadedWater = DataLoader.getScoreFromID("d6fa1a09-c61c-449c-ad16-9ca3f87ebf2c");
         // Score loadedTown = DataLoader.getScoreFromID("029746af-3aea-419b-bd1b-fd7b85a902ac");
         // ArrayList<Song> mySongs = DataLoader.getAllSongs();
         // for(Song s : mySongs){
         //     System.out.println("\"" + s.getTitle() + "\" by " + s.getArtist());
         // }
-        SongList sl = SongList.getInstance();
-        sl.createSong("Teen Town", 
-            "Jaco Pastorius", 
-            "Jazz Fusion", 
-            Key.DMAJOR_BMINOR, 
-            DifficultyLevel.ADVANCED, 
-            Instrument.FRETLESS_BASS, 
-            teenTown
-        );
 
-        for(Song s : sl.getSongList()){
-            System.out.println("\"" + s.getTitle() + "\" by " + s.getArtist());
-        }
+        // SongList sl = SongList.getInstance();
+        // sl.createSong("Teen Town", 
+        //     "Jaco Pastorius", 
+        //     "Jazz Fusion", 
+        //     Key.DMAJOR_BMINOR, 
+        //     DifficultyLevel.ADVANCED, 
+        //     Instrument.FRETLESS_BASS, 
+        //     teenTown
+        // );
 
-        DataWriter.saveSongs(sl.getSongList());
+        // for(Song s : sl.getSongList()){
+        //     System.out.println("\"" + s.getTitle() + "\" by " + s.getArtist());
+        // }
+
+        // DataWriter.saveSongs(sl.getSongList());
         
         // p.play(loadedTown.getSequence(0, loadedTown.size(), null, 1));
 

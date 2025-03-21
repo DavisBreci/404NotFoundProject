@@ -1,9 +1,15 @@
 package com.model;
 
+import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.regex.Pattern;
+
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Sequence;
 
 import org.jfugue.theory.Note;
 import org.jfugue.theory.TimeSignature;
@@ -137,9 +143,23 @@ public class DataLoader extends DataConstants {
         return teachers;
     }
 
-    public static Score midiToScore(String filename, Instrument instrument) {
-        return null;
-    }
+    /**
+     * Imports a MIDI file using Java's MIDI package. 
+     * @author Christopher Ferguson
+     * @param filename a MIDI File (includes extension)
+     * @return the MIDI file as a Sequence (can be null)
+     */
+   public static Sequence loadSequence(String filename){ // For testing only. To be moved to dataLoader
+		Sequence loadedSequence = null;
+		try {
+			loadedSequence = MidiSystem.getSequence(new File(MIDI_FOLDER + filename));
+		} catch(IOException e) {
+			e.printStackTrace();
+		} catch (InvalidMidiDataException e) {
+			e.printStackTrace();
+		}
+		return loadedSequence;
+	}
 
     public static ArrayList<Song> getAllSongs() {
         ArrayList<Song> songs = new ArrayList<Song>();
