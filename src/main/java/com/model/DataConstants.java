@@ -1,5 +1,8 @@
-package com.model;
+/**
+ * @author brenskrz
+ */
 
+package com.model;
 
 
 public class DataConstants {

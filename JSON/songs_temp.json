@@ -18,15 +18,5 @@
         "id": "97355262-9242-4325-9d4e-4a7c3757977a",
         "title": "G Major Chord",
         "key": "GMAJOR_EMINOR"
-    },
-    {
-        "score": "7ac2e4a5-e991-434d-964c-ccd4f9e41a77",
-        "artist": "Jaco Pastorius",
-        "difficultyLevel": "ADVANCED",
-        "genre": "Jazz Fusion",
-        "instrument": "FRETLESS_BASS",
-        "id": "46759f6c-dbed-4fbf-b7ee-a7a070853d08",
-        "title": "Teen Town",
-        "key": "DMAJOR_BMINOR"
     }
 ]

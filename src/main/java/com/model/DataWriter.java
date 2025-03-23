@@ -25,12 +25,6 @@ import javafx.scene.chart.PieChart.Data;
 public class DataWriter extends DataConstants {
 
     public static void saveUsers(ArrayList<User> users) {
-        // UserList userList = UserList.getInstance();
-        // ArrayList<User> users = userList.getUsers();
-
-        // hard code testing
-        // ArrayList<User> users = new ArrayList<>();
-        // users.add(new User(USER_ID, USER_FIRST_NAME, USER_LAST_NAME, USER_EMAIL, USER_USERNAME, USER_PASSWORD, 0, 0, null, null, null));
 
         JSONArray jsonUsers = new JSONArray();
 
@@ -73,14 +67,9 @@ public class DataWriter extends DataConstants {
         return userDetails;
     }
 
-    // public static void main(String args[]) {
-    //     DataWriter.saveUsers();
-    // }
 
 
     public static void saveTeachers(ArrayList<Teacher> teachers) {
-        // UserList teacherList = UserList.getInstance();
-        // ArrayList<User> teachers = teacherList.getUsers();
         
         JSONArray jsonTeachers = new JSONArray();
 
@@ -111,20 +100,8 @@ public class DataWriter extends DataConstants {
 
         return teacherDetails;
     }
-    // public static void main(String args[]) {
-    //     DataWriter.saveTeachers();
-    // }
 
     public static void saveSongs(ArrayList<Song> songs) {
-        // SongList songList = SongList.getInstance();
-        // ArrayList<Song> songs = songList.getSongs();
-
-         // hard code testing
-        // ArrayList<Song> songs = new ArrayList<>();
-        // Instrument testInstrument = Instrument.ACOUSTIC_BASS;
-        // int testTempo = 120;
-        // Score testScore = new Score("id", testInstrument, testTempo);
-        // songs.add(new Song(SONG_ID, SONG_TITLE, SONG_ARTIST, SONG_GENRE, Key.AMAJOR_GbMINOR, DifficultyLevel.ADVANCED, Instrument.ACOUSTIC_BASS, testScore));
 
         JSONArray jsonSongs = new JSONArray();
         JSONArray jsonScores = new JSONArray();
@@ -164,23 +141,10 @@ public class DataWriter extends DataConstants {
         return songDetails;
     }
 
-    // public static void main(String args[]) {
-    //     DataWriter.saveSongs();
-    // }
+
     
 
     public static void savePlaylists(ArrayList<Playlist> playlists) {
-        // PlaylistList playlistList = PlaylistList.getInstance();
-        // ArrayList<Playlist> playlists = playlistList.getPlaylists();
-
-        //hard code testing
-        // PlaylistList playlistList = new PlaylistList();
-        // Playlist playlist1 = new Playlist(UUID.randomUUID(), "brendan's playlist", "brendan", "a great playlist", new ArrayList<>());
-        // Playlist playlist2 = new Playlist(UUID.randomUUID(), "ryan's playlist", "ryan", "an amazing playlist", new ArrayList<>());
-
-        // playlistList.addPlaylist(playlist1.getTitle(), playlist1.getAuthor(), playlist1.getDescription());
-        // playlistList.addPlaylist(playlist2.getTitle(), playlist2.getAuthor(), playlist2.getDescription());
-        // ArrayList<Playlist> playlists = playlistList.getPlaylists();
 
         JSONArray jsonPlaylists = new JSONArray();
 
@@ -219,9 +183,6 @@ public class DataWriter extends DataConstants {
         return playlistDetails;
     }
 
-    // public static void main(String args[]) {
-    //         DataWriter.savePlaylists(DataLoader.getPlaylists());
-    //     }
 
     public static void saveLessons() {
         // LessonList lessonList = LessonList.getInstance();
@@ -272,9 +233,7 @@ public class DataWriter extends DataConstants {
         lessonDetails.put(LESSONS_SONGS, songIds);
         return lessonDetails;
     }
-    // public static void main(String args[]) {
-    //     DataWriter.saveLessons();
-    // }
+
 
     public static void saveNewScore(Score newScore, String filename) {
 

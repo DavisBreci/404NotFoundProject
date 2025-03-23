@@ -25,7 +25,8 @@ public class LessonList {
     
         /**
          * @author brenskrz
-         * @return lessons
+         * Getter for the lessons
+         * @return The arrayList of lessons
          */
         public ArrayList<Lesson> getLessons() {
             return lessons;

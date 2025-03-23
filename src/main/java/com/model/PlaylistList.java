@@ -25,7 +25,8 @@ public class PlaylistList {
     }
 
     /**
-     * @authro brenskrz
+     * @author brenskrz
+     * Getter for the Array List of playlists
      * @return playlists
      */
     public ArrayList<Playlist> getPlaylists() {

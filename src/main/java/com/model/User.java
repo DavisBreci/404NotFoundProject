@@ -85,40 +85,74 @@ public class User {
     }
     /**
      * @author brenskrz
-     * @return firstName
+     * Authored the following methods
+     * Getter for firstame
+     * @return the user's first name
      */
     public String getFirstName() {
-        return "firstname1";
+        return this.firstName;
     }
     /**
      * @author brenskrz
-     * @return lastName
+     * Getter for lastName
+     * @return the users's last name
      */
     public String getLastName() {
         return this.lastName;
     }
+    /**
+     * @author brenskrz
+     * Getter for username
+     * @return the users's username
+     */
     public String getUsername(){
         return username;
     }
+    /**
+     * @author brenskrz
+     * Getter for password
+     * @return the users's password
+     */
     public String getPassword(){
         return password;
     }
+    /**
+     * @author brenskrz
+     * Getter for e-mail
+     * @return the users's email
+     */
     public String getEmail(){
         return email;
     }
+    /**
+     * @author brenskrz
+     * Getter for streak
+     * @return the users's streak
+     */
     public int getStreak(){
         return streak;
     }
+    /**
+     * @author brenskrz
+     * Getter for songsPlayed
+     * @return the songs the user has played
+     */
     public int getSongsPlayed(){
         return songsPlayed;
     }
     /**
      * @author brenskrz
-     * @return assignedLessons
+     * Getter for assignedLessons
+     * @return the Array List of the users's assigned lessons
      */
     public ArrayList<Lesson> getAssignedLessons() {
         return assignedLessons;
     }
+    /**
+     * @author brenskrz
+     * Getter for playlists
+     * @return the Array List of the  users's playlists
+     */
     public ArrayList<Playlist> getPlaylists(){
         return playlists;
     }
