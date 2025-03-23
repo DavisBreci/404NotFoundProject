@@ -26,17 +26,6 @@ public class UserList {
         return null;
         
     }
-<<<<<<< HEAD
-    /**
-     * @author brenskrz
-     * @return users
-     */
-    // public ArrayList<User> getUsers() {
-    //     return users;
-        
-    // }
-=======
->>>>>>> deb9c2383da07cdd866c12cd0c816fc2536142e9
 
     public void createUser(String first, String last, String email, String user, String pass) {
         users.add(new User(null, first, last, email, user, pass, 0, 0,
