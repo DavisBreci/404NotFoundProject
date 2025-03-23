@@ -28,10 +28,16 @@ public class Lesson {
     }
     /**
      * @author brenskrz
+     * Getter for the Songs in the lessons
+     * @return the arrayList of songs
      */
     public ArrayList<Song> getSongs() {
         return songs;
     }
+    /**
+     * Getter for the Lesson Title
+     * @return The Lesson title
+     */
     public String getTitle() {
         return title;
     }

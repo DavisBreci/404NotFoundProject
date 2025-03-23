@@ -1,3 +1,6 @@
+/**
+ * @author brenskrz
+ */
 package com.model;
 
 

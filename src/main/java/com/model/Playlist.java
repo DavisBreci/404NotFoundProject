@@ -62,18 +62,40 @@ public class Playlist {
         Comparator<Song> sortByKey = Comparator.comparingInt(s -> s.getDifficultyLevel().ordinal());
         Collections.sort(songs, sortByKey);
     }
+    /**
+     * @author brenskrz 
+     * Authored the following methods
+     * Getter for ID
+     * @return the UUID for the playlist
+     */
     public String getId() {
         return this.id;
      }
+     /**
+      * Getter for Title
+      * @return the title for the playlist
+      */
      public String getTitle() {
         return title;
      }
+     /**
+      * Getter for Author
+      * @return the author of the playlist
+      */
      public String getAuthor() {
         return author;
      }
+     /**
+      * Getter for Description
+      * @return the description for the playlist
+      */
      public String getDescription() {
         return description;
      }
+     /**
+      * Getter for the songs in the playlist
+      * @return the Array List of songs in the playlist
+      */
      public ArrayList<Song> getSongs() {
         return songs;
      }
