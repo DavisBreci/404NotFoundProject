@@ -48,7 +48,7 @@ public class DataLoader extends DataConstants {
                 }  
                 // JSONArray rawAssignedLessonsIDs = (JSONArray)individual.get(USER_ASSIGNED_LESSONS);
                 // String[] assignedLessonsIDs = new String[rawAssignedLessonsIDs.size()];
-                // for(int j=0; j < rawAssignedLessonsIDs.size(); j++) {
+                // for(int j=0; j < rawAssignedLessonsIDs.size();f j++) {
                 //     assignedLessonsIDs[j] = (String)rawAssignedLessonsIDs.get(j);
                 // }
                 //Following line currently loads empty data while I work on the data loaders.
@@ -355,8 +355,8 @@ public class DataLoader extends DataConstants {
         return null;
     }
 
-    public static Lesson getAllLessons() {
-        return null;
+    public static ArrayList<Lesson> getAllLessons() {
+        return new ArrayList<Lesson>();
     }
 
     public static ArrayList<Lesson> getLessonFromID(String inputID) {

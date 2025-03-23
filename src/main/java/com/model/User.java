@@ -88,7 +88,7 @@ public class User {
      * @return firstName
      */
     public String getFirstName() {
-        return "firstname1";
+        return firstName;
     }
     /**
      * @author brenskrz

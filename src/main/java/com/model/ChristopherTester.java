@@ -1,9 +1,13 @@
 package com.model;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Scanner;
 
 import javax.sound.midi.Sequence;
 
@@ -105,5 +109,4 @@ public class ChristopherTester {
         // p.play(loadedWater.getSequence(0, loadedWater.size(), null, 0));
         
     }
-
-}
+}   

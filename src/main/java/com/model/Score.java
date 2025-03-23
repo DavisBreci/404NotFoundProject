@@ -3,17 +3,11 @@
  */
 package com.model;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.Map.Entry;
-
-import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
-import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Track;
 import org.jfugue.player.Player;
@@ -26,31 +20,6 @@ public class Score {
     private Instrument instrument;
     private ArrayList<Measure> measures;
     private int tempo;
-
-    public static void main(String[] args) {
-        // Sequence seq =  loadSequence("src\\main\\midi\\Teen_Town.mid"); // To be replaced by DataLoader method
-        // Score score = Score.midiToScore(
-        //     seq, 0, Instrument.FRETLESS_BASS
-        // );
-        // Player p = new Player();
-        // // MIDI files for basses are written an octave lower than they're played
-        // Sequence reproduced = score.getSequence(0, score.size(), null, 1);
-        // System.out.println("Now playing \"Teen Town\" by Jaco Pastorius");
-        // p.play(reproduced);
-
-        Sequence seq =  DataLoader.loadSequence("Teen_Town.mid"); // To be replaced by DataLoader method
-        Score score = Score.midiToScore(
-            seq, 0, Instrument.FRETLESS_BASS
-        );
-        Player p = new Player();
-        // MIDI files for basses/guitars are written an octave lower than they're played
-        System.out.println(score);
-        Sequence reproduced = score.getSequence(0, score.size(), null, 1);
-       
-        p.play(reproduced);
-        System.out.println(score + "\n\n\n");
-        System.out.println(Score.transposeStaccato(score.toString(), 1));
-    }   
     
     /**
      * Constructs an object representing an emtpy sheet of tablature
@@ -58,6 +27,7 @@ public class Score {
      * @param instrument the score's MIDI instrument
      * @param tempo the score's tempo in beats per minute
      */
+
     public Score(String id, Instrument instrument, int tempo){
         measures = new ArrayList<Measure>();
         ID temp = id == null ? new ID() : new ID(id);
@@ -273,18 +243,6 @@ public class Score {
         return temp.toArray(ret);
     }
     
-    // public static Sequence loadSequence(String filename){ // For testing only. To be moved to dataLoader
-	// 	Sequence loadedSequence = null;
-	// 	try {
-	// 		loadedSequence = MidiSystem.getSequence(new File(filename));
-	// 	} catch(IOException e) {
-	// 		e.printStackTrace();
-	// 	} catch (InvalidMidiDataException e) {
-	// 		e.printStackTrace();
-	// 	}
-	// 	return loadedSequence;
-	// }
-    
     /**
      * Converts a MIDI Sequence into a Score object
      * @param src MIDI sequence for conversion
@@ -373,14 +331,7 @@ public class Score {
 			} else if(MIDIHelper.isNoteOn(currentMessage[0]) || MIDIHelper.isNoteOff(currentMessage[0])) {
 				noteNum = currentMessage[1];
 				if(noteMemo[noteNum] != null) { // Note off
-					System.out.println("\tNote off event detected...");
 					duration = MIDIHelper.midiQuantize(noteMemo[noteNum].noteEvent, currentEvent, resolution);
-					System.out.print(
-							Note.noteNumToPitchClass(noteNum) + "" + Note.noteNumToOctave(noteNum) +
-							" of length " + duration + 
-							" at an offset of " + noteMemo[noteNum].offset + 
-							" from the start of bar " + barCount + "\n"
-					);
                     duration.times(new Rational(64 / duration.getDenominator()));
                     double lg = Math.log(duration.getNumerator())/ Math.log(2); // Index NoteValue via log2
                     Note n = new Note(
@@ -402,18 +353,9 @@ public class Score {
 					m.put(noteMemo[noteNum].offset.deepCopy(), n, string); // Add note to measure
 					noteMemo[noteNum] = null;
 				} else { // Note on
-					System.out.println("\tNote on event detected...");
                     if(currentEvent.getTick() != lastNoteOnTick){ // On different chord 
-                        System.out.println("Change of chord " + lastNoteOnTick + " -> " + currentEvent.getTick() + ". " + Note.noteNumToPitchClass(noteNum) + "" + Note.noteNumToOctave(noteNum));
-                        currentChord.clear();
                         lastNoteOnTick = currentEvent.getTick();
-                        System.out.println("The bar starts at " + barStart);
-                        // offset = Rational.sternBrocot( 
-                        // (double)(currentEvent.getTick() - barStart) / (4 * resolution), 0.001
-                        // );
                         offset = MIDIHelper.midiQuantize(barStart, currentEvent, resolution);
-                    } else {
-                        System.out.println("\tSame chord. " + Note.noteNumToPitchClass(noteNum) + "" + Note.noteNumToOctave(noteNum) + " " + offset);
                     }
 					noteMemo[noteNum] = new MemoEntry(currentEvent, barCount, offset.deepCopy());
 				}
@@ -469,7 +411,6 @@ public class Score {
                 transposedChordComponents = new String [chordComponents.length];
                 for(int j = 0; j < chordComponents.length; j++){
                     noteComponents = chordComponents[j].split("");
-                    // System.out.println(Arrays.toString(noteComponents));
                     if(noteComponents[1].equals("b")){
                         noteComponents[2] = (Integer.parseInt(noteComponents[2]) + octaves) + "";
                     } else {
@@ -494,12 +435,6 @@ public class Score {
         }
         return transposed.toString();
     }
-    private static MidiEvent [] initNoteMemo(){
-		MidiEvent [] memo = new MidiEvent[MIDIHelper.MIDI_NOTE_RANGE];
-		for(int i = 0; i < MIDIHelper.MIDI_NOTE_RANGE; i++) 
-				memo[i]= null;
-		return memo;
-	}
 
     public ArrayList<Measure> getMeasures() {
         return new ArrayList<>(measures);

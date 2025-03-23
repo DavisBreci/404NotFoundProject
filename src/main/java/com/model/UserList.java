@@ -1,6 +1,7 @@
 package com.model;
 
 import java.util.ArrayList;
+import java.util.function.Predicate;
 import java.time.LocalDate;
 
 public class UserList {
@@ -10,6 +11,7 @@ public class UserList {
 
     private UserList() {
         users = DataLoader.getUsers();
+        users.addAll(DataLoader.getTeachers());
     }
 
     public static UserList getInstance() {
@@ -27,12 +29,18 @@ public class UserList {
         
     }
 
-    public void createUser(String first, String last, String email, String user, String pass) {
-        users.add(new User(null, first, last, email, user, pass, 0, 0,
+    public void createUser(boolean teacher, String first, String last, String email, String user, String pass) {
+        if(teacher)
+            users.add(new Teacher(null, first, last, email, user, pass, 0, 0,
+            new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN,
+            new ArrayList<ArrayList<User>>(), new ArrayList<Lesson>()));
+        else
+            users.add(new User(null, first, last, email, user, pass, 0, 0,
                   new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
     }
 
     public boolean removeUser(User user) {
+         ArrayList<User> copy = (ArrayList<User>)users.clone();
         if(users.contains(user)){
             users.remove(user);
             return true;
@@ -41,5 +49,21 @@ public class UserList {
     }
     public ArrayList<User> getAllUsers(){
         return users;
+    }
+
+    public ArrayList<Teacher> getTeachers(){
+        ArrayList<Teacher> teachers = new ArrayList<Teacher>();
+        for(User user : users)
+            if(user instanceof Teacher)
+                teachers.add((Teacher) user);
+        return teachers;
+    }
+
+    public ArrayList<User> getUsers(){
+        ArrayList<User> students = new ArrayList<User>();
+        for(User user : users)
+            if(!(user instanceof Teacher))
+                students.add(user);
+        return students;
     }
 }

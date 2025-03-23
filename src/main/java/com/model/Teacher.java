@@ -24,6 +24,7 @@ public class Teacher extends User {
         return false;
     }
     public void assignLessons(int classIndex, Lesson lesson){
+        lessons.add(lesson);
         for(User student : classes.get(classIndex))
             student.assignLesson(lesson);
     }
