@@ -1,7 +1,7 @@
 module com.urock {
     requires javafx.controls;
     requires javafx.fxml;
-    requires json.simple;
+    requires transitive json.simple;
     requires jfugue;
     requires transitive java.desktop;
     

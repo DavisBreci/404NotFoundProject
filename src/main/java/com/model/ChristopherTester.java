@@ -1,6 +1,11 @@
 package com.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Map.Entry;
+
+import javax.sound.midi.Sequence;
 
 import org.jfugue.pattern.Pattern;
 import org.jfugue.player.Player;
@@ -55,7 +60,49 @@ public class ChristopherTester {
         
 
         Player p = new Player(); // Play it!
-        p.play(smokeOnTheWater.getSequence(0, smokeOnTheWater.size(), null, 0));
+        // p.play(smokeOnTheWater.getSequence(0, smokeOnTheWater.size(), null, 0));
+        // ArrayList<Score> dummyScores = new ArrayList<Score>();
+        //  Sequence rawMidi;
+        Sequence rawMidi = Score.loadSequence("src\\main\\midi\\Teen_Town.mid");
+        Score teenTown = Score.midiToScore(rawMidi, 0, Instrument.FRETLESS_BASS);
+        // dummyScores.add(teenTown);
+        // dummyScores.add(smokeOnTheWater);
+        
+        // DataWriter.getScoreJSON(dummyScores);
+       
+        // Score loadedWater = DataLoader.getScoreFromID("d6fa1a09-c61c-449c-ad16-9ca3f87ebf2c");
+        // Score loadedTown = DataLoader.getScoreFromID("029746af-3aea-419b-bd1b-fd7b85a902ac");
+        // ArrayList<Song> mySongs = DataLoader.getAllSongs();
+        // for(Song s : mySongs){
+        //     System.out.println("\"" + s.getTitle() + "\" by " + s.getArtist());
+        // }
+        SongList sl = SongList.getInstance();
+        sl.createSong("Teen Town", 
+            "Jaco Pastorius", 
+            "Jazz Fusion", 
+            Key.DMAJOR_BMINOR, 
+            DifficultyLevel.ADVANCED, 
+            Instrument.FRETLESS_BASS, 
+            teenTown
+        );
+
+        for(Song s : sl.getSongList()){
+            System.out.println("\"" + s.getTitle() + "\" by " + s.getArtist());
+        }
+
+        DataWriter.saveSongs(sl.getSongList());
+        
+        // p.play(loadedTown.getSequence(0, loadedTown.size(), null, 1));
+
+        // for(Measure measure : loadedWater.getMeasures()){
+        //     Iterator<Entry<Rational, Chord>> chords = measure.chordIterator();
+        //     while(chords.hasNext()){
+        //         System.out.println(chords.next().getValue());
+        //     }
+        //     System.out.println("");
+        // }
+        // p.play(loadedWater.getSequence(0, loadedWater.size(), null, 0));
+        
     }
 
 }
