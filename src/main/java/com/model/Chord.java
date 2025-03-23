@@ -186,10 +186,19 @@ public class Chord extends BarObj{
     public void clear(){
         notes = new Note[instrument.tuning.length];
     }
+    /**
+     * @author brenskrz
+     * Returns the chord offset
+     * @return the offset
+     */
     public Rational getOffset() {
         return offset;
     }
     
+    /**
+     * @author brenskrz
+     * @return the notelist of notes
+     */
     public ArrayList<Note> getNotes(){
         ArrayList<Note> noteList = new ArrayList<>();
         for(int i = 0; i < this.notes.length; i++){

@@ -348,9 +348,19 @@ public class Measure {
         return new ArrayList<>(chordCollection);
     }
 
+    /**
+     * @author brenskrz
+     * Getter for Time Signature
+     * @return the rational Time Signature
+     */
     public Rational getTimeSignature() {
         return timeSignature;
     }
+    /**
+     * @author brenskrz
+     * Getter for Time Signature as a String
+     * @return TIme Signature as a String
+     */
     public String getTimeSignatureString() {
         return timeSignature.getNumerator() + "/" + timeSignature.getDenominator();
     }

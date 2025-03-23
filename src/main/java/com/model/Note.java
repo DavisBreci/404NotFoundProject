@@ -289,6 +289,10 @@ public class Note extends BarObj {
     }
 
 
+	/**
+     * @author brenskrz
+     * @return Whether the note is tied in the front
+     */
 	public boolean hasFrontTie() {
 		if(frontTie != null) {
             return true;
@@ -296,6 +300,10 @@ public class Note extends BarObj {
         return false;
 	}
 
+    /**
+     * @author brenskrz
+     * @return Whether the note is ties in the back
+     */
 	public boolean hasBackTie() {
 		if(backTie != null) {
             return true;
