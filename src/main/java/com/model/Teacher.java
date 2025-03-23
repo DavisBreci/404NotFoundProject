@@ -42,4 +42,13 @@ public class Teacher extends User {
         return super.getAssignedLessons();
     }
     
+    /**
+     * @author Christopher Ferguson
+     * Allows the teacher to create a new class
+     * @return the new class's number.
+     */
+    public int createClass(){
+        classes.add(new ArrayList<User>());
+        return classes.size() - 1;
+    }
 }

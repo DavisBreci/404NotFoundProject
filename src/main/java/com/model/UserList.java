@@ -28,6 +28,19 @@ public class UserList {
         return null;
         
     }
+    
+    /**
+     * @author Christopher Ferguson
+     * Retrieves a user by their username alone
+     * @param username the user's handle
+     * @return the user or null
+     */
+    public User getUser(String username){
+        for(User u : users)
+            if(u.username.equals(username))
+                return u;
+        return null;
+    }
 
     public void createUser(boolean teacher, String first, String last, String email, String user, String pass) {
         if(teacher)

@@ -84,6 +84,8 @@ public class MusicSystemFACADE {
         if(user instanceof Teacher){
             Teacher myself = (Teacher)user;
             myself.assignLessons(classNumber, lesson);
+            saveUserRelatedData();
+            DataWriter.saveLessons(lessonList.getLessons());
             return true;
         }
         return false;
@@ -140,6 +142,9 @@ public class MusicSystemFACADE {
         return false;
     }
 
+    public Song getSong(String title){
+        return songList.getSongByTitle(title);
+    }
     public ArrayList<Playlist> getMyPlaylists(){
         if(user != null)
             return user.getPlaylists();
@@ -148,9 +153,42 @@ public class MusicSystemFACADE {
 
     public void logout(){
         if(user == null) return;
-        DataWriter.saveUsers(userList.getUsers());
-        DataWriter.saveTeachers(userList.getTeachers());
+        saveUserRelatedData();
         DataWriter.savePlaylists(playlistList.getPlaylists());
         DataWriter.saveLessons(lessonList.getLessons());
+        DataWriter.saveSongs(songList.getSongList());
+    }
+    
+    public int createClass(){
+        if(user instanceof Teacher)
+            return ((Teacher)user).createClass();
+        else
+            return -1;
+    }
+
+    public void addToClass(int classNumber, User... students){
+        if(user instanceof Teacher){
+            for(User student : students)
+                ((Teacher)user).addStudent(classNumber, student);
+            saveUserRelatedData();
+        }
+    }
+
+    private void saveUserRelatedData(){
+        DataWriter.saveUsers(userList.getUsers());
+        DataWriter.saveTeachers(userList.getTeachers());
+    }
+    public ArrayList<User> getUser(){
+        return userList.getAllUsers();
+    }
+
+    public User fetchUser(String username){
+        return userList.getUser(username);
+    }
+
+    public ArrayList<User> getRoster(int classNumber){
+        if(user instanceof Teacher)
+            return ((Teacher)user).getClasses().get(classNumber);
+        return null;
     }
 }
