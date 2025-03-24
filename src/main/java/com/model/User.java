@@ -1,23 +1,44 @@
+/**
+ * Class for the end user, containing all their personal data and some managerial methods
+ * @author Davis Breci
+ */
 package com.model;
 import java.time.LocalDate;
 import java.util.*;
 
 public class User {
+// UUID for json storage, constant
     public final String id;
+// user's first name
     protected String firstName;
+// user's last name
     protected String lastName;
+// user's email address
     protected String email;
+// user's selected username. must be unique.
     protected String username;
+// user's selected password.
     protected String password;
-    private int streak;
-    private int songsPlayed;
-    private ArrayList<Playlist> playlists;
-    private ArrayList<Lesson> assignedLessons;
-    private LocalDate lastPlayed;
-
+// amount of days in a row a user has played
+    protected int streak;
+// total number of songs played by a user
+    protected int songsPlayed;
+// all of a user's playlists
+    protected ArrayList<Playlist> playlists;
+// all lessons assigned to a user from their enrolled classes
+    protected ArrayList<Lesson> assignedLessons;
+// last day that a user has played a song
+    protected LocalDate lastPlayed;
+    /**
+     * @author Davis Breci
+     * constructor. In all but one case, this is called by DataLoader, and thus expects every
+     * instance variable as parameters
+     * @param * every instance variable listed above
+     */
     public User(String id, String first, String last, String email, String user,
              String pass, int streak, int songsPlayed, ArrayList<Playlist> playlists,
              ArrayList<Lesson> assignedLessons, LocalDate lastPlayed){
+// when new users are created, a uuid must be created for them
         ID temp = id == null ? new ID() : new ID(id);
         this.id = temp.uuid;
         this.firstName = first;
@@ -31,21 +52,42 @@ public class User {
         this.assignedLessons = assignedLessons;
         this.lastPlayed = lastPlayed;
     }
+    /**
+     * @author Davis Breci
+     * changes the password instance variable if the correct username is entered.
+     * admittedly not super helpful because you must be logged in to change your password
+     * @param email user entered email address. must match the instance variable
+     * @param newPass new desired password
+     */
     public void resetPassword(String email, String newPass){
         if(this.email == email && isValidPassword(newPass))
             this.password = newPass;
     }
-    public boolean isValidUsername(String user){
-        if(user.length()<5 || user.length()>20)
+    /**
+     * @author Davis Breci
+     * checks if a username is 1. unique 
+     *                         2. within an acceptable amount of characters
+     *                         3. contains no illegal characters
+     * @param user String proposed username
+     * @return boolean whether the name is valid or not
+     */
+    public static boolean isValidUsername(String user){
+        if(user.length()<5 || user.length()>30)
             return false;
         for( char c : user.toCharArray())
             if(c < 33)
                 return false;
-//      return !UserList.getInstance().contains(user); //re-add when UserList is written
-        return true;
+        return !UserList.getInstance().contains(user);
     }
-    public boolean isValidPassword(String pass){
-        if(pass.length()<5 || pass.length()>20)
+    /**
+     * @author Davis Breci
+     * checks is password is 1. within acceptable amount of characters 
+     *                       2. contains a capital letter, special character, and number
+     * @param pass proposed password. need not be unique
+     * @return boolean whether or not the password is acceptable
+     */
+    public static boolean isValidPassword(String pass){
+        if(pass.length()<5 || pass.length()>30)
             return false;
         boolean capitalLetter = false;
         boolean specialCharacter = false;
@@ -64,6 +106,10 @@ public class User {
         }
         return number && capitalLetter && specialCharacter;
     }
+    /**
+     * @author Davis Breci
+     * updates user streak, either keeping the same day, incrementing by one, or resetting to 0
+     */
     public void updateStreak(){
 //same day
         if(lastPlayed.compareTo(LocalDate.now()) == 0){
@@ -77,15 +123,23 @@ public class User {
             streak = 0;
         }
     }
+    /**
+     * @author Davis Breci
+     * increments every time a song is played
+     */
     public void addPlayedSong(){
         ++songsPlayed;
     }
+    /**
+     * @author Davis Breci
+     * adds a copy of a lesson to the user's assigned lessons list
+     * @param lesson Lesson object created and assigned by teacher
+     */
     public void assignLesson(Lesson lesson){
         assignedLessons.add(lesson);
     }
     /**
      * @author brenskrz
-     * Authored the following methods
      * Getter for firstame
      * @return the user's first name
      */
