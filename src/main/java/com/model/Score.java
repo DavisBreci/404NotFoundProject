@@ -354,9 +354,10 @@ public class Score {
 					noteMemo[noteNum] = null;
 				} else { // Note on
                     if(currentEvent.getTick() != lastNoteOnTick){ // On different chord 
+                        currentChord.clear();
                         lastNoteOnTick = currentEvent.getTick();
                         offset = MIDIHelper.midiQuantize(barStart, currentEvent, resolution);
-                    }
+                    } 
 					noteMemo[noteNum] = new MemoEntry(currentEvent, barCount, offset.deepCopy());
 				}
 			}
