@@ -304,7 +304,7 @@ public class DataWriter extends DataConstants {
                     System.out.println("Warning: Null offset found, skipping chord.");
                     continue;
                 }
-                System.out.println("Processing chord at offset: " + chord.getOffset());
+                System.out.println("Processing chord at offset: " + offset);
 
                 JSONObject jsonChord = new JSONObject();
                 jsonChord.put("offset", chord.getValue().toString());
