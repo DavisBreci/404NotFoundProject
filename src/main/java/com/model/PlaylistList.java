@@ -8,15 +8,14 @@ public class PlaylistList {
     private static PlaylistList playlistList;
     private ArrayList<Playlist> playlists;
 
-    PlaylistList() {
+    private PlaylistList() {
         playlists = new ArrayList<>();
     }
 
     public static PlaylistList getInstance() {
-        // if(playlistList == null) {
-        //     playlistList = new ArrayList<>();
-        // }
-
+        if(playlistList == null) {
+            playlistList = new PlaylistList();
+        }
         return playlistList;
     }
 
@@ -33,8 +32,8 @@ public class PlaylistList {
         return playlists;
     }
 
-    public void addPlaylist(String title, String author, String description) {
-        playlists.add(new Playlist(null, title, author, description, new ArrayList<>()));
+    public void createPlaylist(String title, String author, String description) {
+        playlists.add(new Playlist(null, title, author, description, new ArrayList<Song>()));
     }
 
     public void removePlaylist(Playlist playlist) {

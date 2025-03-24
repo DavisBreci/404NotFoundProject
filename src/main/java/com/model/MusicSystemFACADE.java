@@ -61,7 +61,7 @@ public class MusicSystemFACADE {
      * @return whether the account was registered
      */
     public boolean signUp(boolean teacher, String first, String last, String email, String username, String password){
-        if(userList.getUser(username) != null) return false; // This user exists
+        if(userList.contains(username)) return false; // This user exists
         if(!userList.createUser(teacher, first, last, email, username, password)) return false;
         DataWriter.saveTeachers(userList.getTeachers());
         DataWriter.saveUsers(userList.getUsers());
@@ -169,7 +169,7 @@ public class MusicSystemFACADE {
      */
     public void addPlaylist(String title, String description){
         if(user == null) return;
-        playlistList.addPlaylist(title, user.getFirstName() + " " + user.getLastName(), description);
+        playlistList.createPlaylist(title, user.getFirstName() + " " + user.getLastName(), description);
         user.getPlaylists().add(playlistList.getPlaylist(title, title, description, getLibrary(), 0));
     }
 
@@ -248,6 +248,8 @@ public class MusicSystemFACADE {
         DataWriter.savePlaylists(playlistList.getPlaylists());
         DataWriter.saveLessons(lessonList.getLessons());
         DataWriter.saveSongs(songList.getSongList());
+// I added this because I'm pretty sure there'd be a data leak otherwise -Davis
+        user = null;
     }
     
     /**

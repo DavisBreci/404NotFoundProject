@@ -139,6 +139,14 @@ public class User {
         assignedLessons.add(lesson);
     }
     /**
+     * formats user data when printing User objects
+     * @author Davis Breci
+     * @return String including username and full name
+     */
+    public String toString(){
+        return username+": "+firstName+" "+lastName;
+    }
+    /**
      * Getter for firstame
      * @author brenskrz
      * @return the user's first name

@@ -1,10 +1,12 @@
 package com.model;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class UserInterface {
     public static void main(String[] args) {
         teacherSignUpScenario();
+        fredSignUpScenario();
     }
     /**
      * @author Christopher Ferguson
@@ -37,7 +39,7 @@ public class UserInterface {
         System.out.println("Printing roster for class #" + classNumber + "...");
         for(User user : system.getRoster(classNumber))
             System.out.println("\t" + user.getUsername());
-        String lessonName = "Learning Songs From Vide Games: 'Alphys' by Toby Fox";
+        String lessonName = "Learning Songs From Video Games: 'Alphys' by Toby Fox";
         System.out.println("Attempting to create a lesson \"" + lessonName + "\"...");
         Lesson firstLesson = system.createLesson(lessonName); // Doesn't work yet because LessonList isn't done
         firstLesson.addSong(system.getSong("Alphys"));
@@ -51,7 +53,51 @@ public class UserInterface {
         System.out.println("Logging out now");
         system.logout();
     }
-
+    /**
+     * Fred attempts to sign up but must change his username to something unique
+     * @author Davis Breci
+     */
+    public static void fredSignUpScenario(){
+        MusicSystemFACADE system = MusicSystemFACADE.getInstance();
+        // boolean teacher = false;
+        // String first = "Fellicia";
+        // String last = "Fredrickson";
+        // String email = "fellicia@gmail.com";
+        // String user = "ffredrickson";
+        // String pass = "iHaTeMyBr0tHeR*";
+        // system.signUp(teacher,first,last,email,user,pass);
+        // system.logout();
+        boolean teacher = false;
+        String first = "Fred";
+        String last = "Fredrickson";
+        String email = "fred^2@gmail.com";
+        String user = "ffredrickson";
+        String pass = "I<3mysister";
+        ArrayList<User> userList = UserList.getInstance().getAllUsers();
+        for(User u : userList)
+            System.out.println(u.toString());
+        System.out.println("UserList "+(UserList.getInstance().contains(user)
+                           ? "contains " : "does not contain ")+user);
+        System.out.println("Attempting to sign up as "+user+"...");
+        if(system.signUp(teacher, first, last, email, user, pass))
+            System.out.println("\tSign-up successful!");
+        else {
+            System.out.println("\tSign-up failed.");
+            user = "ffred";
+            System.out.println("Attempting to sign up as "+user+"...");
+            System.out.println("\tSign-up "+(system.signUp(teacher, first, last, email, user, pass)
+                               ? "success!" : "failed."));
+        }
+        system.logout();
+        userList = UserList.getInstance().getAllUsers();
+        for(User u : userList)
+            System.out.println(u.toString());
+        System.out.println("UserList "+(UserList.getInstance().contains(user)
+                           ? "contains " : "does not contain ")+user);
+        System.out.println("Attempting to login as "+user+"...");
+        System.out.println("Login "+(system.login(user, pass) ? "success!" : "failed."));
+        system.logout();
+    }
     /**
      * @author Christopher Ferguson
      */
