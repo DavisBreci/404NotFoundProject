@@ -35,8 +35,8 @@ public class MusicSystemFACADE {
     }
 
     public boolean signUp(boolean teacher, String first, String last, String email, String username, String password){
-        if(userList.getUser(username, password) != null) return false; // This user exists
-        userList.createUser(teacher, first, last, email, username, password);
+        if(userList.getUser(username) != null) return false; // This user exists
+        if(!userList.createUser(teacher, first, last, email, username, password)) return false;
         DataWriter.saveTeachers(userList.getTeachers());
         DataWriter.saveUsers(userList.getUsers());
         return login(username, password);

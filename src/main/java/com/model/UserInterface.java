@@ -1,8 +1,10 @@
 package com.model;
 
+import java.util.Random;
+
 public class UserInterface {
     public static void main(String[] args) {
-        writingASongScenario();
+        teacherSignUpScenario();
     }
     /**
      * @author Christopher Ferguson
@@ -12,20 +14,20 @@ public class UserInterface {
         String firstName = "Valerie";
         String lastName = "Frizzle";
         String email = "valeriefrizzle@yahoo.com";
-        String username = "MzFrizz";
-        String password = "abc123";
+        String username = "MzFrizz" + (new Random().nextInt(2025) + 1);
+        String password = "@Bc123";
         System.out.println("Attempting to sign up as " + username + "...");
         if(system.signUp(true, firstName, lastName, email, username, password))
-            System.out.println("Sign-up successful!");
+            System.out.println("\tSign-up successful!");
         else
-            System.out.println("Sign-up failed.");
+            System.out.println("\tSign-up failed.");
 
         System.out.println("Attempting to create a class...");
         int classNumber = system.createClass();
         if(classNumber >= 0)
-            System.out.println("Successfully created class #" + classNumber + "!");
+            System.out.println("\tSuccessfully created class #" + classNumber + "!");
         else
-            System.out.println("Class creation failed.");
+            System.out.println("\tClass creation failed.");
         System.out.println("Attempting to add Students to class...");
         system.addToClass(
                 classNumber,
@@ -44,7 +46,7 @@ public class UserInterface {
         for(User user : system.getRoster(classNumber)){
             System.out.println("\t" + user.getUsername() + "'s assigned lessons:");
             for(Lesson lesson : user.getAssignedLessons())
-                System.out.println(lesson.getTitle());
+                System.out.println("\t\t" + lesson.getTitle());
         }
         System.out.println("Logging out now");
         system.logout();
