@@ -169,7 +169,7 @@ public class MusicSystemFACADE {
      */
     public void addPlaylist(String title, String description){
         if(user == null) return;
-        playlistList.addPlaylist(title, user.getFirstName() + " " + user.getLastName(), description);
+        playlistList.createPlaylist(title, user.getFirstName() + " " + user.getLastName(), description);
         user.getPlaylists().add(playlistList.getPlaylist(title, title, description, getLibrary(), 0));
     }
 

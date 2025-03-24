@@ -1,1 +1,20 @@
-[{"firstName":"Davis","lastName":"Breci","password":"404nf","songsPlayed":1,"playlists":["39a48119-e368-40a9-9d4e-c10139338e7c"],"id":"d22d8a52-6b53-4508-b3e6-7c1e5d51fc1c","streak":10,"email":"dbreci@email.sc.edu","assignedLessons":[],"username":"dbreci"},{"classes":[],"lessons":[]},{"firstName":"Valerie","lastName":"Frizzle","password":"@Bc123","songsPlayed":0,"playlists":[],"id":"7a256fda-19c2-4d33-9af5-8a6dd0b81680","streak":0,"email":"valeriefrizzle@yahoo.com","assignedLessons":[],"username":"MzFrizz865"},{"classes":[[com.model.User@629f0666,com.model.User@1bc6a36e]],"lessons":[com.model.Lesson@73035e27]}]
+[
+    {
+        "firstName": "Davis",
+        "lastName": "Breci",
+        "password": "404nf",
+        "songsPlayed": 1,
+        "playlists": [
+            "39a48119-e368-40a9-9d4e-c10139338e7c"
+        ],
+        "id": "d22d8a52-6b53-4508-b3e6-7c1e5d51fc1c",
+        "streak": 10,
+        "email": "dbreci@email.sc.edu",
+        "assignedLessons": [],
+        "username": "dbreci"
+    },
+    {
+        "classes": [],
+        "lessons": []
+    }
+]
