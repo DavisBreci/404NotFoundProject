@@ -13,7 +13,6 @@ public class Chord extends BarObj{
     private Instrument instrument;
     private Note [] notes;
     private int noteCount;
-    private Rational offset;
     /**
      * Constructs an empty chord with the given duration and instrument
      * @param value the note's base duration
@@ -185,14 +184,6 @@ public class Chord extends BarObj{
      */
     public void clear(){
         notes = new Note[instrument.tuning.length];
-    }
-    /**
-     * @author brenskrz
-     * Returns the chord offset
-     * @return the offset
-     */
-    public Rational getOffset() {
-        return offset;
     }
     
     /**

@@ -1,5 +1,8 @@
 package com.model;
-
+/**
+ * @author Christopher Ferguson
+ * Class that represents a note on a fretted instrument
+ */
 public class Note extends BarObj {
     private Instrument instrument;
     private int fret;
@@ -31,6 +34,20 @@ public class Note extends BarObj {
         setOctave(octave);
     }
 
+    /**
+     * Constructs a note without specifying its duration. This is useful when pitch content is all that matters
+     * @param pitchClass the letter name of the note
+     * @param octave which octave the note is in
+     */
+    public Note(PitchClass pitchClass, int octave){ // For situations where pitch content is all that matters
+        super(NoteValue.WHOLE, false);
+        this.string = 0;
+        this.fret = 0;
+        this.instrument = Instrument.GUITAR;
+        this.pitchClass = pitchClass;
+        setOctave(octave);
+    }
+
      /**
      * Retrieves the instrument the note belongs to
      * @return the fretted instrument
@@ -47,19 +64,6 @@ public class Note extends BarObj {
         this.instrument = instrument;
     }
 
-    /**
-     * Constructs a note without specifying its duration. This is useful when pitch content is all that matters
-     * @param pitchClass
-     * @param octave
-     */
-    public Note(PitchClass pitchClass, int octave){ // For situations where pitch content is all that matters
-        super(NoteValue.WHOLE, false);
-        this.string = 0;
-        this.fret = 0;
-        this.instrument = Instrument.GUITAR;
-        this.pitchClass = pitchClass;
-        setOctave(octave);
-    }
     /**
      * Creates a new note object with the same values as this
      * @return the copy

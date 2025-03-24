@@ -22,8 +22,6 @@ public class Measure {
     private Rational timeSignature;
     private TreeMap<Rational, Chord> chords;
     private TreeMap<Rational, Rest> rests;
-    
-    
 
     /**
      * Creates an empty measure
@@ -38,6 +36,7 @@ public class Measure {
         this.rests = new TreeMap<Rational, Rest>();
         greedyRestFill(new Rational(0, 1), timeSignature);
     }
+
     /**
      * Calculates whether two notes are overlapping. The order of the input doesn't matter.
      * @param a note for collision check
@@ -126,7 +125,11 @@ public class Measure {
      * @return whether the removal was successful
      */
     public boolean remove(Rational offset, Chord chord){
-        return chords.remove(offset, chord);
+        if(chords.remove(offset, chord)){
+            rests.put(offset, new Rest(chord.getValue(), chord.isDotted()));
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -139,7 +142,13 @@ public class Measure {
         Chord container = chords.get(offset);
         if(container == null)
             return false;
-        return container.remove(n);
+        
+        if(container.remove(n)){
+            if(container.getNoteCount() == 0)
+                remove(offset, container);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -233,9 +242,7 @@ public class Measure {
             temp.minus(dot);
             if(dotted = (remainder.compareTo(dot) <= 0) && temp.compareTo(new Rational("0/1")) == 1)
                 remainder = temp;
-            // System.out.println("Bottom Remainder " + remainder);
             rest = new Rest(value, dotted);
-            // System.out.println("Top Remainder " + remainder);
             offset.simplify();
             rests.put(offset.deepCopy(), rest);
             offset.plus(rest.getDuration());
@@ -343,6 +350,10 @@ public class Measure {
         return ts.iterator();
     }
 
+    /**
+     * Retrieves an array list of the measure's chords
+     * @return chord arra
+     */
     public ArrayList<Chord> getChords() {
         Collection<Chord> chordCollection = chords.values();
         return new ArrayList<>(chordCollection);

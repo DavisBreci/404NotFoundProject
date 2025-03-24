@@ -56,4 +56,8 @@ public class SongList {
                         Instrument instrument, Score score) {
         songs.add(new Song(null, title, artist, genre, key, difficulty, instrument, score));
     }
+
+    public boolean add(Song s){
+        return songs.add(s);
+    }
 }

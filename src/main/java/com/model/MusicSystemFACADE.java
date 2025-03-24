@@ -13,40 +13,6 @@ public class MusicSystemFACADE {
     private SongList songList;
     private PlaylistList playlistList;
 
-    public static void main(String[] args){
-        MusicSystemFACADE prog = MusicSystemFACADE.getInstance();
-        System.out.println("/////////////////////////////////");
-        String username = "ctferg";
-        String password = "247sucks";
-        System.out.println("Attempting to login as \"" + username + "\"...");
-        System.out.println("Login success: " + prog.login(username, password));
-        System.out.println("Printing all users...");
-        for (User u : prog.userList.getAllUsers()){
-            System.out.println("\t" + (u instanceof Teacher ? "Teacher: " : "Student: ") +
-                u.getFirstName() + " " + u.getLastName());
-        }   
-        System.out.println("Printing all teachers...");
-        for (User u : prog.userList.getTeachers()){
-            System.out.println("\t" + (u instanceof Teacher ? "Teacher: " : "Student: ") +
-                u.getFirstName() + " " + u.getLastName());
-        }
-        System.out.println("Printing all non-teachers...");
-        for (User u : prog.userList.getUsers()){
-            System.out.println("\t" + (u instanceof Teacher ? "Teacher: " : "Student: ") +
-                u.getFirstName() + " " + u.getLastName());
-        }
-        System.out.println("Checking for lessons...");
-        {
-            for (User u : prog.userList.getAllUsers()){
-                System.out.println("\t" + (u instanceof Teacher ? "Teacher: " : "Student: ") +
-                    u.getFirstName() + " " + u.getLastName());
-                    System.out.println(u.getAssignedLessons());
-            }   
-            
-        }
-
-       
-    }
     private MusicSystemFACADE(){
         userList = UserList.getInstance();
         lessonList = LessonList.getInstance();
@@ -128,6 +94,13 @@ public class MusicSystemFACADE {
 
     public ArrayList<Lesson> getLessons(){
         return lessonList.getLessons();
+    }
+
+    public boolean addSongToLibrary(Song s){
+        if(!songList.add(s))
+            return false;
+        DataWriter.saveSongs(songList.getSongList());
+        return true;
     }
 
     public void addPlaylist(String title, String description){
