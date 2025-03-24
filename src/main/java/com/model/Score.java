@@ -334,6 +334,7 @@ public class Score {
 					duration = MIDIHelper.midiQuantize(noteMemo[noteNum].noteEvent, currentEvent, resolution);
                     duration.times(new Rational(64 / duration.getDenominator()));
                     double lg = Math.log(duration.getNumerator())/ Math.log(2); // Index NoteValue via log2
+                    // System.out.println("Barcount: " + barCount + " Duration: " + duration + " Offset: " + offset);
                     Note n = new Note(
                         NoteValue.values()[(int)lg],
                         lg % 1 != 0, // lg will be fractional if there's a dot

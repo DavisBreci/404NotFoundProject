@@ -27,6 +27,7 @@ public class SongList {
                 return s;
         return null;
     }
+    
 
     public ArrayList<Song> getSongsByDifficulty(DifficultyLevel dv) {
         ArrayList<Song> ret = new ArrayList<Song>();
@@ -48,6 +49,20 @@ public class SongList {
         ArrayList<Song> ret = new ArrayList<Song>();
         for(Song s : songs)
             if(s.getGenre() == genre)
+                ret.add(s);
+        return ret;
+    }
+
+    /**
+     * @author Christopher Ferguson
+     * Retrieves all songs by an artist
+     * @param artist the artis whose songs you want
+     * @return the songs by the artist
+     */
+    public ArrayList<Song> getSongsByArtist(String artist){
+        ArrayList<Song> ret = new ArrayList<Song>();
+        for(Song s : songs)
+            if(s.getArtist() == artist)
                 ret.add(s);
         return ret;
     }
