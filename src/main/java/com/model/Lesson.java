@@ -13,7 +13,15 @@ public class Lesson {
             this.songs = songs;
         else 
             this.songs = new ArrayList<Song>();
-        this.title = title;
+        if(title.charAt(0) == '~'){
+            this.title = title;
+        }else{
+            int tempNum = 0;
+            char[] tempArr = this.id.toCharArray();
+            for(Character c : tempArr)
+                tempNum += (int)((1.0 + Math.random())*c);
+            this.title = "~"+(tempNum)+"~ "+title;
+        }
     }
     public void addSong(Song song){
         songs.add(song);
@@ -27,8 +35,8 @@ public class Lesson {
         }
     }
     /**
-     * @author brenskrz
      * Getter for the Songs in the lessons
+     * @author brenskrz
      * @return the arrayList of songs
      */
     public ArrayList<Song> getSongs() {
@@ -36,6 +44,7 @@ public class Lesson {
     }
     /**
      * Getter for the Lesson Title
+     * @author brenskrz
      * @return The Lesson title
      */
     public String getTitle() {

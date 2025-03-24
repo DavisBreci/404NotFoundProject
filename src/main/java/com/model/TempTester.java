@@ -16,13 +16,13 @@ public class TempTester {
         p.play(gMajChord.getSequence(0, gMajChord.size(), null, 1));
         // // Loading a score w/out chords from a MIDI file
         Sequence rawMidi;
-        rawMidi = Score.loadSequence("src\\main\\midi\\Teen_Town.mid");
+        rawMidi = DataLoader.loadSequence("Teen_Town.mid");
         Score teenTown = Score.midiToScore(rawMidi, 0, Instrument.FRETLESS_BASS);
         p.play(teenTown.getSequence(0, teenTown.size(), null, 1));
         // // Loading a chordal score from a MIDI file        
-        // rawMidi = Score.loadSequence("src\\main\\midi\\Larks_II_GuitarOnly.mid");
-        // Score ltia = Score.midiToScore(rawMidi, 0, Instrument.DISTORTION_GUITAR);
-        // p.play(ltia.getSequence(0, ltia.size(), null, 1));
+        rawMidi = DataLoader.loadSequence("Larks_II_GuitarOnly.mid");
+        Score ltia = Score.midiToScore(rawMidi, 0, Instrument.DISTORTION_GUITAR);
+        p.play(ltia.getSequence(0, ltia.size(), null, 1));
         // ArrayList<User> test = new ArrayList<User>();
         // test.sort(new Comparator<User>(){
         //     @Override
