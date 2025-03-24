@@ -21,9 +21,15 @@ import javafx.scene.chart.PieChart.Data;
 
 
 
-
+/**
+ * A class that writes data to JSON files and saves the data for Users, Teachers, Songs, Scores, Playlists and Lessons
+ */
 public class DataWriter extends DataConstants {
 
+    /**
+     * Saves a list of users to a JSON file
+     * @param users the user ArrayList
+     */
     public static void saveUsers(ArrayList<User> users) {
 
         JSONArray jsonUsers = new JSONArray();
@@ -44,6 +50,11 @@ public class DataWriter extends DataConstants {
 
     }
 
+    /**
+     * Takes a User object and turns it into a JSONObject
+     * @param user the user Object
+     * @return The user JSONObject
+     */
     public static JSONObject getUserJSON(User user) {
         
         JSONObject userDetails = new JSONObject();
@@ -69,6 +80,10 @@ public class DataWriter extends DataConstants {
 
 
 
+    /**
+     * Saves a list of teachers to a JSON file
+     * @param teacher the teacher ArrayList
+     */
     public static void saveTeachers(ArrayList<Teacher> teachers) {
         
         JSONArray jsonTeachers = new JSONArray();
@@ -88,6 +103,11 @@ public class DataWriter extends DataConstants {
         }
     }
 
+    /**
+     * Takes a teacher object and turns it into a JSONObject
+     * @param teacher the teacher object
+     * @return The teacher JSONObject
+     */
     public static JSONObject getTeacherJSON(Teacher teacher) {
         
         JSONObject teacherDetails = new JSONObject();
@@ -101,6 +121,10 @@ public class DataWriter extends DataConstants {
         return teacherDetails;
     }
 
+    /**
+     * Saves a list of songs to a JSON file
+     * @param songs the song ARrayList
+     */
     public static void saveSongs(ArrayList<Song> songs) {
 
         JSONArray jsonSongs = new JSONArray();
@@ -126,6 +150,11 @@ public class DataWriter extends DataConstants {
         }
     }
 
+    /**
+     * Takes a song object and turns it into a JSONObject
+     * @param song the song ArrayList
+     * @return the song JSONObject
+     */
     public static JSONObject getSongJSON(Song song) {
         JSONObject songDetails = new JSONObject();
 
@@ -141,9 +170,10 @@ public class DataWriter extends DataConstants {
         return songDetails;
     }
 
-
-    
-
+    /**
+     * Saves a list of Playlists to a JSON file
+     * @param playlists the playlist ArrayList
+     */
     public static void savePlaylists(ArrayList<Playlist> playlists) {
 
         JSONArray jsonPlaylists = new JSONArray();
@@ -164,6 +194,12 @@ public class DataWriter extends DataConstants {
         
     }
 
+    /**
+     * Takes a Playlist Object and turns it into a JSONObject
+     * @param playlist the playlist ArrayList
+     * @param filename the name of the file
+     * @return the playlist JSONObject
+     */
     public static JSONObject getPlaylistJSON(Playlist playlist, String filename) {
         JSONObject playlistDetails = new JSONObject();
 
@@ -183,7 +219,10 @@ public class DataWriter extends DataConstants {
         return playlistDetails;
     }
 
-
+    /**
+     * Saves a list of lessons to a JSON file
+     * @param lessons the lesson ArrayList 
+     */
     public static void saveLessons(ArrayList<Lesson> lessons) {
 
         JSONArray jsonLessons = new JSONArray();
@@ -219,6 +258,11 @@ public class DataWriter extends DataConstants {
 
     }
 
+    /**
+     * Takes a lesson Object and turns it into a JSONObject
+     * @param lesson the lesson ArrayList
+     * @return the lesson JSONObject
+     */
     public static JSONObject getLessonJSON(Lesson lesson) {
         JSONObject lessonDetails = new JSONObject();
 
@@ -232,7 +276,11 @@ public class DataWriter extends DataConstants {
         return lessonDetails;
     }
 
-
+    /**
+     * Saves a score Object to a JSON file
+     * @param newScore The score Object
+     * @param filename the name of the destination file
+     */
     public static void saveNewScore(Score newScore, String filename) {
 
         JSONObject jsonScore = new JSONObject();
@@ -311,6 +359,10 @@ public class DataWriter extends DataConstants {
         }
     }
 
+    /**
+     * Saves a list of scores to a JSON file
+     * @param scores the score ArrayList
+     */
     public static void saveScores(ArrayList<Score> scores) { // deprecated
         JSONArray jsonScores = new JSONArray();
 
@@ -380,6 +432,11 @@ public class DataWriter extends DataConstants {
         }
     }
 
+    /**
+     * takes a Score Object and turns it into a JSONObject
+     * @param score the score Object
+     * @return the score JSONObject
+     */
     public static JSONObject getScoreJSON(Score score) {
             JSONObject jsonScore = new JSONObject();
 
@@ -436,6 +493,10 @@ public class DataWriter extends DataConstants {
          return jsonScore;
     }
 
+    /**
+     * A main method to test all methods of DataWriter
+     * @param args the arguments that are passed in
+     */
     public static void main(String args[]) {
        
         DataWriter.saveUsers(DataLoader.getUsers());

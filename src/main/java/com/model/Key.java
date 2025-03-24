@@ -9,4 +9,8 @@ public enum Key {
     BMAJOR_AbMINOR,
     GbMAJOR_EbMINOR,
     DbMAJOR_BbMINOR,
+    AbMAJOR_FMINOR,
+    EbMAJOR_CMINOR,
+    BbMAJOR_GMINOR,
+    FMAJOR_DMINOR
 }

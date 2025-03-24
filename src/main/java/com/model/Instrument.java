@@ -1,5 +1,6 @@
 package com.model;
 /**
+ * @author Christopher Ferguson
  * Enum that contains representations of fretted MIDI instruments
  */
 public enum Instrument {
@@ -77,7 +78,7 @@ public enum Instrument {
     }
 
      /**
-     * Returns the most least byte of the instrument's bank number
+     * Returns the least significant byte of the instrument's bank number
      * @return
      */
     public int lsb(){
