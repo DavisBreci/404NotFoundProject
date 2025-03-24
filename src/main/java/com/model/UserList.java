@@ -30,8 +30,8 @@ public class UserList {
     }
     
     /**
-     * @author Christopher Ferguson
      * Retrieves a user by their username alone
+     * @author Christopher Ferguson
      * @param username the user's handle
      * @return the user or null
      */
@@ -42,7 +42,9 @@ public class UserList {
         return null;
     }
 
-    public void createUser(boolean teacher, String first, String last, String email, String user, String pass) {
+    public boolean createUser(boolean teacher, String first, String last, String email, String user, String pass) {
+        if(!User.isValidUsername(user) || !User.isValidPassword(pass))
+            return false;
         if(teacher)
             users.add(new Teacher(null, first, last, email, user, pass, 0, 0,
             new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN,
@@ -50,6 +52,7 @@ public class UserList {
         else
             users.add(new User(null, first, last, email, user, pass, 0, 0,
                   new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
+        return true;
     }
 
     public boolean removeUser(User user) {
@@ -78,5 +81,17 @@ public class UserList {
             if(!(user instanceof Teacher))
                 students.add(user);
         return students;
+    }
+    /**
+     * checks if a username already exists
+     * @author Davis Breci
+     * @param username String proposed username
+     * @return boolean if someone already has the username
+     */
+    public boolean contains(String username){
+        ArrayList<String> usernames = new ArrayList<String>();
+        for(User u : users)
+            usernames.add(u.getUsername());
+        return usernames.contains(username);
     }
 }

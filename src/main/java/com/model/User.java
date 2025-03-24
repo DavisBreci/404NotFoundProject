@@ -30,9 +30,9 @@ public class User {
 // last day that a user has played a song
     protected LocalDate lastPlayed;
     /**
-     * @author Davis Breci
      * constructor. In all but one case, this is called by DataLoader, and thus expects every
      * instance variable as parameters
+     * @author Davis Breci
      * @param * every instance variable listed above
      */
     public User(String id, String first, String last, String email, String user,
@@ -53,9 +53,9 @@ public class User {
         this.lastPlayed = lastPlayed;
     }
     /**
-     * @author Davis Breci
      * changes the password instance variable if the correct username is entered.
      * admittedly not super helpful because you must be logged in to change your password
+     * @author Davis Breci
      * @param email user entered email address. must match the instance variable
      * @param newPass new desired password
      */
@@ -64,10 +64,10 @@ public class User {
             this.password = newPass;
     }
     /**
-     * @author Davis Breci
      * checks if a username is 1. unique 
      *                         2. within an acceptable amount of characters
      *                         3. contains no illegal characters
+     * @author Davis Breci
      * @param user String proposed username
      * @return boolean whether the name is valid or not
      */
@@ -80,9 +80,9 @@ public class User {
         return !UserList.getInstance().contains(user);
     }
     /**
-     * @author Davis Breci
      * checks is password is 1. within acceptable amount of characters 
      *                       2. contains a capital letter, special character, and number
+     * @author Davis Breci
      * @param pass proposed password. need not be unique
      * @return boolean whether or not the password is acceptable
      */
@@ -107,8 +107,8 @@ public class User {
         return number && capitalLetter && specialCharacter;
     }
     /**
-     * @author Davis Breci
      * updates user streak, either keeping the same day, incrementing by one, or resetting to 0
+     * @author Davis Breci
      */
     public void updateStreak(){
 //same day
@@ -124,87 +124,87 @@ public class User {
         }
     }
     /**
-     * @author Davis Breci
      * increments every time a song is played
+     * @author Davis Breci
      */
     public void addPlayedSong(){
         ++songsPlayed;
     }
     /**
-     * @author Davis Breci
      * adds a copy of a lesson to the user's assigned lessons list
+     * @author Davis Breci
      * @param lesson Lesson object created and assigned by teacher
      */
     public void assignLesson(Lesson lesson){
         assignedLessons.add(lesson);
     }
     /**
-     * @author brenskrz
      * Getter for firstame
+     * @author brenskrz
      * @return the user's first name
      */
     public String getFirstName() {
         return this.firstName;
     }
     /**
-     * @author brenskrz
      * Getter for lastName
+     * @author brenskrz
      * @return the users's last name
      */
     public String getLastName() {
         return this.lastName;
     }
     /**
-     * @author brenskrz
      * Getter for username
+     * @author brenskrz
      * @return the users's username
      */
     public String getUsername(){
         return username;
     }
     /**
-     * @author brenskrz
      * Getter for password
+     * @author brenskrz
      * @return the users's password
      */
     public String getPassword(){
         return password;
     }
     /**
-     * @author brenskrz
      * Getter for e-mail
+     * @author brenskrz
      * @return the users's email
      */
     public String getEmail(){
         return email;
     }
     /**
-     * @author brenskrz
      * Getter for streak
+     * @author brenskrz
      * @return the users's streak
      */
     public int getStreak(){
         return streak;
     }
     /**
-     * @author brenskrz
      * Getter for songsPlayed
+     * @author brenskrz
      * @return the songs the user has played
      */
     public int getSongsPlayed(){
         return songsPlayed;
     }
     /**
-     * @author brenskrz
      * Getter for assignedLessons
+     * @author brenskrz
      * @return the Array List of the users's assigned lessons
      */
     public ArrayList<Lesson> getAssignedLessons() {
         return assignedLessons;
     }
     /**
-     * @author brenskrz
      * Getter for playlists
+     * @author brenskrz
      * @return the Array List of the  users's playlists
      */
     public ArrayList<Playlist> getPlaylists(){
