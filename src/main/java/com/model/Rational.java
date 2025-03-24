@@ -2,20 +2,36 @@
  * @author Christopher Ferguson
  */
 package com.model;
-
+/**
+ * @author Christopher Ferguson
+ * Class representing rational numbers
+ */
 public class Rational implements Comparable<Rational>{
     private int numerator;
     private int denominator;
 
+    /**
+     * Constructs a rational number
+     * @param numerator the numerator
+     * @param denominator the denominator
+     */
     public Rational(int numerator, int denominator){
         this.numerator = numerator;
         this.denominator = denominator;
     }
 
+    /**
+     * Constructs a rational number where the numerator and denominator are equal to the scalar
+     * @param scalar the scalar
+     */
     public Rational(int scalar){
         numerator = denominator = scalar;
     }
-
+    
+    /**
+     * Constructs a rational number from a properly formatted string
+     * @param literal string in the format "iNumerator/iDenominator"
+     */
     public Rational(String literal){
         String [] values = literal.split("/");
 		if(values.length != 2) {
@@ -27,11 +43,19 @@ public class Rational implements Comparable<Rational>{
 		denominator = Integer.parseInt(values[1]);
     }
 
+    /**
+     * Multiplies this rational by another rational
+     * @param r rational to multiply this by
+     */
     public void times(Rational r){
         this.numerator = this.numerator * r.getNumerator();
         this.denominator = this.denominator * r.getDenominator(); 
     }
 
+    /**
+     * Adds a given rational number to this rational
+     * @param r the rational to be added
+     */
     public void plus(Rational r){
         if(denominator == r.getDenominator()) {
             numerator = numerator + r.getNumerator();
@@ -45,28 +69,45 @@ public class Rational implements Comparable<Rational>{
 
     }
 
+    /**
+     * Subtracts a given rational number from this rational
+     * @param r the rational to be subtracted
+     */
     public void minus(Rational r) {
         Rational temp = r.deepCopy();
         temp.negative();
 		plus(temp);
 	}
 	
+    /**
+     * Swaps the numerator and denominator of this rational
+     */
     public void reciprocal(){
         int temp = numerator;
         numerator = denominator;
         denominator = temp;
     }
 
+    /**
+     * Divides this rational by the given rational
+     * @param r the divisor
+     */
     public void dividedBy(Rational r) {
         Rational temp = r.deepCopy();
         temp.reciprocal();
 		times(temp);
 	}
 
+    /**
+     * Negates this rational
+     */
 	public void negative() {
 		times(new Rational(-1, 1));
 	}
 
+    /**
+     * Simplifies this rational
+     */
     public void simplify(){
         if(isZero()){
             numerator = 0;
@@ -77,33 +118,70 @@ public class Rational implements Comparable<Rational>{
         denominator /= gcd;
     }
 
+    /**
+     * Retrieves this rational's denominator
+     * @return the denominator
+     */
     public int getDenominator(){
         return denominator;
     }
 
+    /**
+     * Retrieves this rational's numerator
+     * @return the numerator
+     */
     public int getNumerator(){
         return numerator;
     }
 
+    /**
+     * Sets this rational's denominator
+     * @param denominator the nenw denominator
+     */
     public void setDenominator(int denominator){
         this.denominator = denominator; // Allowing the denominator to be zero is useful for Stern-Brocot
     }
 
+    /**
+     * Sets this rational's numerator
+     * @param numerator the new numerator
+     */
     public void setNumerator(int numerator){
         this.numerator = numerator;
     }
 
+    /**
+     * Retrieves a single-precision floating point representation of the rational
+     * @return the rational as a float
+     */
     public float toFloat() {
 		return (float) numerator / (float)denominator;
 	}
 	
+    /**
+     * Retrieves a double-precision floating point representation of the rational
+     * @return the rational as a double
+     */
 	public double toDouble() {
 		return (double) numerator / (double)denominator;
 	}
 
+    /**
+     * Computes the least common multiple (LCM) of two numbers
+     * @param a first number 
+     * @param b second number
+     * @return the LCM
+     */
     public static int lcm(int a, int b) {
 		return Math.abs(a * b) / gcd(a, b);
 	}
+
+    /**
+     * Computues the greatest common divisor (GCD) of two numbers
+     * @param a first number
+     * @param b second number
+     * @return the GCD
+     */
 	public static int gcd(int a, int b) {
 		while(b != 0) {
 		int remainder = a % b;
@@ -113,11 +191,14 @@ public class Rational implements Comparable<Rational>{
 		return a;
 	}
 
+    /**
+     * Snaps a floating point number to a grid where gridlines are separated by 1/maxDenominator
+     * @param fraction the double to be approximated
+     * @param tolerance maximum error
+     * @param maxDenominator the largest acceptable denominator (must be a power of 2)
+     * @return a rational approximation of the double
+     */
     public static Rational quantize(double fraction, double tolerance, int maxDenominator) { 
-                // if(bounded)
-                //     return quantize(fraction, specificity, 2 * specificity + 1);
-                // else 
-                //     return quantize(fraction, specificity, Integer.MAX_VALUE);
                 if(fraction == 0.0) return new Rational("0/1");
                 if(fraction == 1.0) return new Rational("1/1");
                 Rational quantized = new Rational(1, 1);
@@ -131,9 +212,16 @@ public class Rational implements Comparable<Rational>{
                         )
                 );
                 return quantized;
-
     }
-            
+    /**
+     * Recursive method that conducts a binary search for a suitible rational approximation of a double
+     * @param start rational start of the search area
+     * @param end rational end of the search area
+     * @param target the double to be approximated
+     * @param tolerance the maximium error
+     * @param maxDenominator the largest acceptable denominator (must be a power of 2)
+     * @return the rational approximation
+     */
     private static Rational quantize(Rational start, Rational end, double target, double tolerance, int maxDenominator){
         Rational middle = start.deepCopy();
         middle.plus(end);
@@ -151,10 +239,17 @@ public class Rational implements Comparable<Rational>{
         return middle; // Should never be reached
     }
 
+    /**
+     * Returns a new rational with the same numerator and denominator as this rational
+     * @return the copy
+     */
     public Rational deepCopy(){
         return new Rational(numerator, denominator);
     }
 
+    /**
+     * Compares rationals by value
+     */
     @Override
 	public int compareTo(Rational r) {
 		int multiple = lcm(denominator, r.getDenominator());
@@ -167,16 +262,28 @@ public class Rational implements Comparable<Rational>{
 		else return 1;
 	}
 
+    /**
+     * Returns a String representation of the rational
+     */
     public String toString() {
 		return numerator + "/" + denominator;
 	}
     
+    /**
+     * Computes the mediant of two rational numbers
+     * @param a
+     * @param b
+     * @return
+     */
     private static Rational mediant(Rational a, Rational b) {
 		return new Rational(a.getNumerator() + b.getNumerator(), a.getDenominator() + b.getDenominator());
 	}
-    /*
-     * This is a rational approximation algorithm that idk if we'll end up using.
-     * // https://en.wikipedia.org/wiki/Stern%E2%80%93Brocot_tree#Mediants_and_binary_search
+
+    /**
+     * Standard implementation of the Stern-Brocot algorithm for rational approximation 
+     * @param q the double to be approximated
+     * @param tolerance the maximum error
+     * @return the double's rational approximation
      */
     public static Rational sternBrocot(double q, double tolerance) {
         if(q == 0) return new Rational(0, 1);
@@ -197,6 +304,10 @@ public class Rational implements Comparable<Rational>{
 		return rM;
 	}
 
+    /**
+     * Returns whether numerator is zero
+     * @return whether numerator is zero
+     */
     public boolean isZero(){
         return numerator == 0;
     }
