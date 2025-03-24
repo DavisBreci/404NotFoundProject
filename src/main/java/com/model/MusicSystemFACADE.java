@@ -59,8 +59,7 @@ public class MusicSystemFACADE {
 
     public Lesson createLesson(String lessonName){
         if(user instanceof Teacher){
-            lessonList.addLesson(lessonName, null);
-            return lessonList.getLesson(lessonName);
+            return lessonList.createLesson(null, lessonName);
         } 
         return null;
     }

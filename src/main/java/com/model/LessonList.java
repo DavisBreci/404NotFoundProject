@@ -50,10 +50,12 @@ public class LessonList {
      * @param songs songs included in the lesson
      * @param title title (without number code at beginning). cannot begin with ~.
      */
-    public void createLesson(ArrayList<Song> songs, String title) {
+    public Lesson createLesson(ArrayList<Song> songs, String title) {
         if(title.charAt(0) == '~')
-            return;
-        lessons.add(new Lesson(null, songs, title));
+            return null;
+        Lesson toAdd = new Lesson(null, songs, title);
+        lessons.add(toAdd);
+        return toAdd;
     }
 
     
