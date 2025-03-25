@@ -66,13 +66,20 @@ public class DataWriter extends DataConstants {
         userDetails.put(USER_LAST_NAME, user.getLastName());
         userDetails.put(USER_STREAK, user.getStreak());
         userDetails.put(USER_SONGS_PLAYED, user.getSongsPlayed());
-        userDetails.put(USER_ASSIGNED_LESSONS, user.getAssignedLessons());
+        userDetails.put()
         JSONArray playlistIds = new JSONArray();
+        JSONArray lessonIds = new JSONArray();
+        if(user.getAssignedLessons() != null) {
+            for(Lesson lesson : user.getAssignedLessons()) {
+                lessonIds.add(lesson.id);
+            }
+        }
     if (user.getPlaylists() != null) {  
         for (Playlist playlist : user.getPlaylists()) {
             playlistIds.add(playlist.id);
         }
     }
+    userDetails.put(USER_ASSIGNED_LESSONS, lessonIds);
     userDetails.put(USER_PLAYLISTS, playlistIds); 
 
         return userDetails;
