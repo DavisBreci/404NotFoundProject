@@ -75,4 +75,8 @@ public class SongList {
     public boolean add(Song s){
         return songs.add(s);
     }
+
+    public boolean removeSong(Song s){
+        return songs.remove(s);
+    }
 }
