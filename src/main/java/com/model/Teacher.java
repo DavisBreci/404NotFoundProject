@@ -37,5 +37,8 @@ public class Teacher extends User {
     public ArrayList<Lesson> getLessons() {
         return lessons;
     }
+    public ArrayList<Lesson> getAssignedLessons() {
+        return super.getAssignedLessons();
+    }
     
 }

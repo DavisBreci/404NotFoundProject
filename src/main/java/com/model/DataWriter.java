@@ -25,12 +25,6 @@ import javafx.scene.chart.PieChart.Data;
 public class DataWriter extends DataConstants {
 
     public static void saveUsers(ArrayList<User> users) {
-        // UserList userList = UserList.getInstance();
-        // ArrayList<User> users = userList.getUsers();
-
-        // hard code testing
-        // ArrayList<User> users = new ArrayList<>();
-        // users.add(new User(USER_ID, USER_FIRST_NAME, USER_LAST_NAME, USER_EMAIL, USER_USERNAME, USER_PASSWORD, 0, 0, null, null, null));
 
         JSONArray jsonUsers = new JSONArray();
 
@@ -73,19 +67,15 @@ public class DataWriter extends DataConstants {
         return userDetails;
     }
 
-    // public static void main(String args[]) {
-    //     DataWriter.saveUsers();
-    // }
 
 
     public static void saveTeachers(ArrayList<Teacher> teachers) {
-        // UserList teacherList = UserList.getInstance();
-        // ArrayList<User> teachers = teacherList.getUsers();
         
         JSONArray jsonTeachers = new JSONArray();
 
         for(int i = 0; i<teachers.size(); i++) {
             jsonTeachers.add(getUserJSON(teachers.get(i)));
+            jsonTeachers.add(getTeacherJSON(teachers.get(i)));
         }
 
         try (FileWriter file = new FileWriter(TEACHER_TEMP_FILE_NAME)) {
@@ -101,37 +91,35 @@ public class DataWriter extends DataConstants {
     public static JSONObject getTeacherJSON(Teacher teacher) {
         
         JSONObject teacherDetails = new JSONObject();
+        
         teacherDetails.put(TEACHER_CLASSES, teacher.getClasses());
+        // teacherDetails.put(USER_ASSIGNED_LESSONS, teacher.getAssignedLessons());
         teacherDetails.put(TEACHER_LESSONS, teacher.getLessons());
+
         
 
         return teacherDetails;
     }
-    // public static void main(String args[]) {
-    //     DataWriter.saveTeachers();
-    // }
 
     public static void saveSongs(ArrayList<Song> songs) {
-        // SongList songList = SongList.getInstance();
-        // ArrayList<Song> songs = songList.getSongs();
-
-         // hard code testing
-        // ArrayList<Song> songs = new ArrayList<>();
-        // Instrument testInstrument = Instrument.ACOUSTIC_BASS;
-        // int testTempo = 120;
-        // Score testScore = new Score("id", testInstrument, testTempo);
-        // songs.add(new Song(SONG_ID, SONG_TITLE, SONG_ARTIST, SONG_GENRE, Key.AMAJOR_GbMINOR, DifficultyLevel.ADVANCED, Instrument.ACOUSTIC_BASS, testScore));
 
         JSONArray jsonSongs = new JSONArray();
+        JSONArray jsonScores = new JSONArray();
 
-        for(int i = 0; i<songs.size(); i++) {
-            jsonSongs.add(getSongJSON(songs.get(i)));
+        for(Song song : songs){
+            jsonSongs.add(getSongJSON(song));
+            jsonScores.add(getScoreJSON(song.getScore()));
+
         }
 
-        try (FileWriter file = new FileWriter(SONG_TEMP_FILE_NAME)) {
-            file.write(jsonSongs.toJSONString());
-            file.flush();
-
+        try (
+            FileWriter songFile = new FileWriter(SONG_TEMP_FILE_NAME);
+            FileWriter  scoreFile = new FileWriter(SCORE_TEMP_FILE_NAME);
+        ) {
+            songFile.write(jsonSongs.toJSONString());
+            songFile.flush();
+            scoreFile.write(jsonScores.toJSONString());
+            scoreFile.flush();
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -153,23 +141,10 @@ public class DataWriter extends DataConstants {
         return songDetails;
     }
 
-    // public static void main(String args[]) {
-    //     DataWriter.saveSongs();
-    // }
+
     
 
     public static void savePlaylists(ArrayList<Playlist> playlists) {
-        // PlaylistList playlistList = PlaylistList.getInstance();
-        // ArrayList<Playlist> playlists = playlistList.getPlaylists();
-
-        //hard code testing
-        // PlaylistList playlistList = new PlaylistList();
-        // Playlist playlist1 = new Playlist(UUID.randomUUID(), "brendan's playlist", "brendan", "a great playlist", new ArrayList<>());
-        // Playlist playlist2 = new Playlist(UUID.randomUUID(), "ryan's playlist", "ryan", "an amazing playlist", new ArrayList<>());
-
-        // playlistList.addPlaylist(playlist1.getTitle(), playlist1.getAuthor(), playlist1.getDescription());
-        // playlistList.addPlaylist(playlist2.getTitle(), playlist2.getAuthor(), playlist2.getDescription());
-        // ArrayList<Playlist> playlists = playlistList.getPlaylists();
 
         JSONArray jsonPlaylists = new JSONArray();
 
@@ -208,9 +183,6 @@ public class DataWriter extends DataConstants {
         return playlistDetails;
     }
 
-    // public static void main(String args[]) {
-    //         DataWriter.savePlaylists(DataLoader.getPlaylists());
-    //     }
 
     public static void saveLessons() {
         // LessonList lessonList = LessonList.getInstance();
@@ -261,16 +233,14 @@ public class DataWriter extends DataConstants {
         lessonDetails.put(LESSONS_SONGS, songIds);
         return lessonDetails;
     }
-    // public static void main(String args[]) {
-    //     DataWriter.saveLessons();
-    // }
+
 
     public static void saveNewScore(Score newScore, String filename) {
 
         JSONObject jsonScore = new JSONObject();
         jsonScore.put("uuid", newScore.id);
         jsonScore.put("instrument", newScore.getInstrument().toString());
-        jsonScore.put("tempo", newScore.getTempo());
+        jsonScore.put("tempo", Integer.toString(newScore.getTempo()));
 
         JSONArray jsonMeasures = new JSONArray();
         for (Measure measure : newScore.getMeasures()) {
@@ -293,7 +263,7 @@ public class DataWriter extends DataConstants {
                 JSONObject jsonChord = new JSONObject();
                 jsonChord.put("offset", chord.getValue().toString());
                 jsonChord.put("value", chord.getValue().toString());
-                jsonChord.put("dotted", chord.isDotted());
+                jsonChord.put("dotted", Boolean.toString(chord.isDotted()));
 
 
                 JSONArray jsonNotes = new JSONArray();
@@ -343,7 +313,7 @@ public class DataWriter extends DataConstants {
         }
     }
 
-    public static void getScoreJSON(ArrayList<Score> scores) {
+    public static void saveScores(ArrayList<Score> scores) { // deprecated
         JSONArray jsonScores = new JSONArray();
 
         for (Score score : scores) {
@@ -351,7 +321,7 @@ public class DataWriter extends DataConstants {
 
             jsonScore.put("uuid", score.id);
             jsonScore.put("instrument", score.getInstrument().toString());
-            jsonScore.put("tempo", score.getTempo());
+            jsonScore.put("tempo", Integer.toString(score.getTempo()));
 
             JSONArray jsonMeasures = new JSONArray();
 
@@ -372,20 +342,21 @@ public class DataWriter extends DataConstants {
 
                     JSONObject jsonChord = new JSONObject();
 
-                    jsonChord.put("offset", chord.getValue().toString());
-                    jsonChord.put("value", chord.getValue().toString());
-                    jsonChord.put("dotted", chord.isDotted());
+                    jsonChord.put("offset", entry.getKey().toString());
+                    jsonChord.put("value", entry.getValue().getValue().toString());
+                    jsonChord.put("dotted", Boolean.toString(chord.isDotted()));
                     
                     JSONArray jsonNotes = new JSONArray();
                     for (Note note : chord.getNotes()) {
                         if (note != null) {
                             JSONObject jsonNote = new JSONObject();
-                            jsonNote.put("pitchClass", note.getPitchClass().toString());
-                            // jsonNote.put("octave", String.valueOf(note.getOctave()).toString());
-                            // jsonNote.put("string", String.valueOf(note.getString()).toString());
-                            // jsonNote.put("frontTie", String.valueOf(note.hasFrontTie()).toString());
-                            // jsonNote.put("backTie", String.valueOf(note.hasBackTie()).toString());
-                            jsonNotes.add(jsonNote);
+                           
+                        jsonNote.put("pitchClass", note.getPitchClass().toString());
+                        jsonNote.put("octave", Integer.toString(note.getOctave()));
+                        jsonNote.put("string", Integer.toString(note.getString() + 1));
+                        jsonNote.put("frontTie", Boolean.toString(note.hasFrontTie()));
+                        jsonNote.put("backTie", Boolean.toString(note.hasBackTie()));
+                        jsonNotes.add(jsonNote);
                         }
                     }
 
@@ -402,7 +373,7 @@ public class DataWriter extends DataConstants {
             jsonScores.add(jsonScore);
         }
 
-        try (FileWriter file = new FileWriter("scores.json")) {
+        try (FileWriter file = new FileWriter(SCORE_TEMP_FILE_NAME)) {
             file.write(jsonScores.toJSONString());
             file.flush();
             System.out.println("Successfully wrote all scores to scores.json");
@@ -411,22 +382,64 @@ public class DataWriter extends DataConstants {
         }
     }
 
+    public static JSONObject getScoreJSON(Score score) {
+            JSONObject jsonScore = new JSONObject();
+
+            jsonScore.put("uuid", score.id);
+            jsonScore.put("instrument", score.getInstrument().toString());
+            jsonScore.put("tempo", Integer.toString(score.getTempo()));
+
+            JSONArray jsonMeasures = new JSONArray();
+            for (Measure measure : score.getMeasures()) {
+                JSONObject jsonMeasure = new JSONObject();
+
+
+                JSONArray jsonChords = new JSONArray();
+                Iterator<Map.Entry<Rational, Chord>> iterator = measure.chordIterator();
+                while (iterator.hasNext()) {
+                    Map.Entry<Rational, Chord> entry = iterator.next();
+                    Rational offset = entry.getKey(); 
+                    Chord chord = entry.getValue(); 
+                    if (offset == null) {
+                        System.out.println("Warning: Null offset found, skipping chord.");
+                    continue;
+                    }
+
+                    JSONObject jsonChord = new JSONObject();
+
+                    jsonChord.put("offset", entry.getKey().toString());
+                    jsonChord.put("value", entry.getValue().getValue().toString());
+                    jsonChord.put("dotted", Boolean.toString(chord.isDotted()));
+                    
+                    JSONArray jsonNotes = new JSONArray();
+                    for (Note note : chord.getNotes()) {
+                        if (note != null) {
+                            JSONObject jsonNote = new JSONObject();
+                           
+                        jsonNote.put("pitchClass", note.getPitchClass().toString());
+                        jsonNote.put("octave", Integer.toString(note.getOctave()));
+                        jsonNote.put("string", Integer.toString(note.getString() + 1));
+                        jsonNote.put("frontTie", Boolean.toString(note.hasFrontTie()));
+                        jsonNote.put("backTie", Boolean.toString(note.hasBackTie()));
+                        jsonNotes.add(jsonNote);
+                        }
+                    }
+
+                    jsonChord.put("notes", jsonNotes);
+                    jsonChords.add(jsonChord);
+                }
+                jsonMeasure.put("timeSignature", measure.getTimeSignatureString());
+
+                jsonMeasure.put("chords", jsonChords);
+                jsonMeasures.add(jsonMeasure);
+            }
+
+            jsonScore.put("measures", jsonMeasures);
+         return jsonScore;
+    }
+
     public static void main(String args[]) {
-        Score myNewScore = new Score("my_unique_id", Instrument.GUITAR, 100);
-        Rational testTimeSignature = new Rational(3, 4);
-        // Add test measures and chords
-        Measure measure = new Measure(Instrument.GUITAR, testTimeSignature);
-        Chord chord = new Chord(NoteValue.EIGHTH, false, Instrument.GUITAR);
-        chord.put(new Note(NoteValue.EIGHTH, false, Instrument.GUITAR, PitchClass.A, 4), 4);
-        Rational offset = new Rational(1, 2);
-        boolean success = measure.put(offset, chord);
-        if (!success) {
-            System.out.println("Failed to add chord to the measure (possible collision or out of bounds).");
-        }
-        myNewScore.add(measure);
-
-
-
+       
         DataWriter.saveUsers(DataLoader.getUsers());
         DataWriter.saveTeachers(DataLoader.getTeachers());
         DataWriter.savePlaylists(DataLoader.getAllPlaylists());

@@ -267,6 +267,7 @@ public class DataLoader extends DataConstants {
                     for(int j=0; j<rawMeasures.size(); j++) { 
                         JSONObject individualMeasure = (JSONObject)rawMeasures.get(j);
                         String TimeSignature = (String)individualMeasure.get(MEASURE_TIME_SIGNATURE); //pull time signature
+                        System.out.println(new Rational(TimeSignature));
                         Measure measure = new Measure(Instrument.valueOf(instrument), new Rational(TimeSignature));
 
                         //for each chord
@@ -290,11 +291,11 @@ public class DataLoader extends DataConstants {
                                     String backTie = (String) individualNote.get(NOTE_BACK_TIE); //pull backTie (use .valueOf to convert to boolean)
                                     com.model.Note note = new com.model.Note(PitchClass.valueOf(pitchClass), Integer.valueOf(octave));
                                     System.out.println("Note identified: " + note.toString() + " on string: " + stringPos);
-                                    chord.put(note, Integer.valueOf(stringPos) - 1); //add note to chord
+                                    System.out.println(chord.put(note, Integer.valueOf(stringPos) - 1)); //add note to chord
                                 }
                             }
                             System.out.println("Chord identified: " + chord.toString() + " at offset: " + offset);
-                            measure.put(new Rational(offset), chord); //add chord to measure
+                            System.out.println(measure.put(new Rational(offset), chord)); //add chord to measure
                         }
                         System.out.println("Measure identified: " + measure.toString());
                         output.add(measure);

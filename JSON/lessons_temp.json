@@ -1,1 +1,18 @@
-[{"songs":["58c57713-4153-4d00-a7c7-7c9ea223de81","b528d734-791d-4670-a8df-d77b641ea8f0"],"id":"252afbce-9346-4fee-a22e-aa10b5bc8c3b","title":"Lesson 1"},{"songs":["888eaa20-0f18-48ec-a6b7-68f2ff221d20","7a8caff3-1b89-461c-893b-df62ad59707d"],"id":"3adc844a-2427-4564-bb6c-b9ed50b8349b","title":"Lesson 2"}]
+[
+    {
+        "songs": [
+            "1bb113b8-673b-4a20-813f-c14b11126905",
+            "79db12bc-ebae-46f5-8f9d-1e1f71972104"
+        ],
+        "id": "52c0eb17-14ae-48e1-b39a-238282ca1b66",
+        "title": "Lesson 1"
+    },
+    {
+        "songs": [
+            "15974ee8-6f09-4cad-a096-2eba7df43bc6",
+            "26fb6f9d-99a4-434e-8688-160ab4516416"
+        ],
+        "id": "3a1594c7-2e79-4e73-a117-ca214cdf5aa0",
+        "title": "Lesson 2"
+    }
+]

@@ -23,24 +23,60 @@ public class Song {
         this.instrument = instrument;
         this.score = score;
     }
+    /**
+     * @author brenskrz
+     * Authored the follwoing methods
+     * Getter for Title
+     * @return the song's title
+     */
     public String getTitle() {
         return title;
     }
+    /**
+     * @author brenskrz
+     * Getter for Artist
+     * @return the song's artist
+     */
     public String getArtist() {
         return artist;
     }
+    /**
+     * @author brenskrz
+     * Getter for Genre
+     * @return the song's genre
+     */
     public String getGenre(){
         return genre;
     }
+    /**
+     * @author brenskrz
+     * Getter for Key
+     * @return the song's key
+     */
     public Key getKey(){
         return key;
     }
+    /**
+     * @author brenskrz
+     * Getter for Difficulty Level
+     * @return the song's Difficulty Level
+     */
     public DifficultyLevel getDifficultyLevel(){
         return difficulty;
     }
+    /**
+     * @author brenskrz
+     * Getter for Instrument
+     * @return the song's Instrument
+     */
     public Instrument getInstrument(){
         return instrument;
     }
+    /**
+     * @author brenskrz
+     * Getter for Score
+     * @return the song's Score
+     */
     public Score getScore() {
         return score;
     }

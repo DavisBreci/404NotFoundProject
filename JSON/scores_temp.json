@@ -19,7 +19,7 @@
                     ],
                     "offset": "EIGHTH",
                     "value": "EIGHTH",
-                    "dotted": false
+                    "dotted": "false"
                 },
                 {
                     "notes": [
@@ -38,7 +38,7 @@
                     ],
                     "offset": "EIGHTH",
                     "value": "EIGHTH",
-                    "dotted": false
+                    "dotted": "false"
                 },
                 {
                     "notes": [
@@ -57,7 +57,26 @@
                     ],
                     "offset": "SIXTEENTH",
                     "value": "SIXTEENTH",
-                    "dotted": false
+                    "dotted": "false"
+                },
+                {
+                    "notes": [
+                        {
+                            "octave": "5",
+                            "string": "3",
+                            "backTie": "false",
+                            "pitchClass": "C",
+                            "frontTie": "false"
+                        },
+                        "null",
+                        "null",
+                        "null",
+                        "null",
+                        "null"
+                    ],
+                    "offset": "SIXTEENTH",
+                    "value": "SIXTEENTH",
+                    "dotted": "false"
                 }
             ],
             "timeSignature": "3\/4"
@@ -81,7 +100,7 @@
                     ],
                     "offset": "HALF",
                     "value": "HALF",
-                    "dotted": true
+                    "dotted": "true"
                 }
             ],
             "timeSignature": "3\/4"
@@ -105,7 +124,7 @@
                     ],
                     "offset": "EIGHTH",
                     "value": "EIGHTH",
-                    "dotted": false
+                    "dotted": "false"
                 },
                 {
                     "notes": [
@@ -124,12 +143,12 @@
                     ],
                     "offset": "EIGHTH",
                     "value": "EIGHTH",
-                    "dotted": false
+                    "dotted": "false"
                 },
                 {
                     "notes": [
                         {
-                            "octave": "4",
+                            "octave": "5",
                             "string": "2",
                             "backTie": "false",
                             "pitchClass": "Db",
@@ -143,7 +162,26 @@
                     ],
                     "offset": "SIXTEENTH",
                     "value": "SIXTEENTH",
-                    "dotted": false
+                    "dotted": "false"
+                },
+                {
+                    "notes": [
+                        {
+                            "octave": "5",
+                            "string": "3",
+                            "backTie": "false",
+                            "pitchClass": "D",
+                            "frontTie": "false"
+                        },
+                        "null",
+                        "null",
+                        "null",
+                        "null",
+                        "null"
+                    ],
+                    "offset": "SIXTEENTH",
+                    "value": "SIXTEENTH",
+                    "dotted": "false"
                 }
             ],
             "timeSignature": "3\/4"
@@ -167,13 +205,13 @@
                     ],
                     "offset": "HALF",
                     "value": "HALF",
-                    "dotted": true
+                    "dotted": "true"
                 }
             ],
             "timeSignature": "3\/4"
         }
     ],
-    "tempo": 120,
+    "tempo": "120",
     "instrument": "GUITAR",
     "uuid": "a42d710f-afcb-4bce-bfd7-ecb43e6a5a89"
 }
