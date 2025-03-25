@@ -465,7 +465,7 @@ public class Score {
         StringBuilder tablature = new StringBuilder();
         Note n;
         String toAppend;
-        for(int i = 0; i < instrument.tuning.length; i++){
+        for(int i = instrument.tuning.length - 1; i >= 0 ; i--){
             tablature.append(instrument.tuning[i].getPitchClass() + " |-");
             for(Chord c : m.getChords()){
                 n = c.getNotes(false)[i];
