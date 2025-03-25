@@ -144,8 +144,8 @@ public class DataWriter extends DataConstants {
         }
 
         try (
-            FileWriter songFile = new FileWriter(SONG_TEMP_FILE_NAME);
-            FileWriter  scoreFile = new FileWriter(SCORE_TEMP_FILE_NAME);
+            FileWriter songFile = new FileWriter(SONG_FILE_NAME);
+            FileWriter  scoreFile = new FileWriter(SCORE_FILE_NAME);
         ) {
             songFile.write(jsonSongs.toJSONString());
             songFile.flush();
@@ -187,10 +187,10 @@ public class DataWriter extends DataConstants {
 
 
         for( Playlist playlist : playlists) {
-            jsonPlaylists.add(getPlaylistJSON(playlist, PLAYLIST_FILE_TEMP_NAME));
+            jsonPlaylists.add(getPlaylistJSON(playlist, PLAYLIST_FILE_NAME));
         }
 
-        try (FileWriter file = new FileWriter(PLAYLIST_FILE_TEMP_NAME)) {
+        try (FileWriter file = new FileWriter(PLAYLIST_FILE_NAME)) {
             file.write(jsonPlaylists.toJSONString());
             file.flush();
 
@@ -254,7 +254,7 @@ public class DataWriter extends DataConstants {
             
         }
 
-        try (FileWriter file = new FileWriter(LESSONS_FILE_TEMP_NAME)) {
+        try (FileWriter file = new FileWriter(LESSONS_FILE_NAME)) {
             file.write(jsonLessons.toJSONString());
             file.flush();
 
@@ -430,7 +430,7 @@ public class DataWriter extends DataConstants {
             jsonScores.add(jsonScore);
         }
 
-        try (FileWriter file = new FileWriter(SCORE_TEMP_FILE_NAME)) {
+        try (FileWriter file = new FileWriter(SCORE_FILE_NAME)) {
             file.write(jsonScores.toJSONString());
             file.flush();
             System.out.println("Successfully wrote all scores to scores.json");
@@ -512,6 +512,6 @@ public class DataWriter extends DataConstants {
         DataWriter.saveSongs(DataLoader.getAllSongs());
         DataWriter.saveLessons(DataLoader.getAllLessons());
 
-        DataWriter.saveNewScore(DataLoader.getScoreFromID("a42d710f-afcb-4bce-bfd7-ecb43e6a5a89"), SCORE_TEMP_FILE_NAME);
+        DataWriter.saveNewScore(DataLoader.getScoreFromID("a42d710f-afcb-4bce-bfd7-ecb43e6a5a89"), SCORE_FILE_NAME);
     }
 }
