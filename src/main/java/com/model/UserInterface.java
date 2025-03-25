@@ -5,11 +5,11 @@ import java.util.Random;
 
 public class UserInterface {
     public static void main(String[] args) {
-        UserList users = UserList.getInstance();
-        users.removeUser("MzFrizz");
-        users.removeUser("ffred");
+        // UserList users = UserList.getInstance();
+        // users.removeUser("MzFrizz");
+        // users.removeUser("ffred");
         teacherSignUpScenario();
-        // fredSignUpScenario();
+        fredSignUpScenario();
     }
     /**
      * @author Christopher Ferguson
@@ -70,9 +70,8 @@ public class UserInterface {
         // String pass = "iHaTeMyBr0tHeR*";
         // system.signUp(teacher,first,last,email,user,pass);
         // system.logout();
-        //return;
 
-        
+
         boolean teacher = false;
         String first = "Fred";
         String last = "Fredrickson";
