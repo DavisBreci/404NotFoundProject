@@ -8,8 +8,9 @@ import com.model.User;
 
 public class RyanTester {
     public static void main(String[] args) {
-        Score dummyscore = DataLoader.getScoreFromID("3a6c83d2-2235-4fff-84dc-7ad6ec2dabf8");
-        // ArrayList<Teacher> dummyusers = DataLoader.getTeachers();
+        //Score dummyscore = DataLoader.getScoreFromID("3a6c83d2-2235-4fff-84dc-7ad6ec2dabf8");
+        ArrayList<User> dummyusers = DataLoader.getUsers();
+        //ArrayList<Teacher> dummyusers = DataLoader.getTeachers();
         //ArrayList<Song> dummysongs = DataLoader.getAllSongs();
         //ArrayList<Playlist> dummPlaylists = DataLoader.getAllPlaylists();
 
