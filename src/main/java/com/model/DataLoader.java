@@ -229,8 +229,8 @@ public class DataLoader extends DataConstants {
                     String genre = (String)individual.get(SONG_GENRE);
                     String difficultyLevel = (String)individual.get(SONG_DIFFICULTY_LEVEL);
                     String key = (String)individual.get(SONG_KEY);
-                    //String instrument = (String)individual.get(SONG_INSTRUMENT);
-                    String instrument = "GUITAR"; //reminder, have this written in all caps via the data writer
+                    String instrument = (String)individual.get(SONG_INSTRUMENT);
+                    //String instrument = "GUITAR"; //reminder, have this written in all caps via the data writer
                     String scoreID = (String)individual.get(SONG_SCORE);
                     return new Song(songID, title, artist, genre, Key.valueOf(key), DifficultyLevel.valueOf(difficultyLevel),
                     Instrument.valueOf(instrument), getScoreFromID(scoreID));
@@ -294,11 +294,11 @@ public class DataLoader extends DataConstants {
                                     String backTie = (String) individualNote.get(NOTE_BACK_TIE); //pull backTie (use .valueOf to convert to boolean)
                                     com.model.Note note = new com.model.Note(PitchClass.valueOf(pitchClass), Integer.valueOf(octave));
                                     System.out.println("Note identified: " + note.toString() + " on string: " + stringPos);
-                                    System.out.println(chord.put(note, Integer.valueOf(stringPos) - 1)); //add note to chord
+                                    chord.put(note, Integer.valueOf(stringPos) - 1); //add note to chord
                                 }
                             }
                             System.out.println("Chord identified: " + chord.toString() + " at offset: " + offset);
-                            System.out.println(measure.put(new Rational(offset), chord)); //add chord to measure
+                            measure.put(new Rational(offset), chord); //add chord to measure
                         }
                         System.out.println("Measure identified: " + measure.toString());
                         output.add(measure);
