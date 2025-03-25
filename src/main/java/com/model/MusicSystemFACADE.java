@@ -245,7 +245,7 @@ public class MusicSystemFACADE {
     public void logout(){
         if(user == null) return;
         saveUserRelatedData();
-        DataWriter.savePlaylists(playlistList.getPlaylists());
+        DataWriter.savePlaylists(playlistList.getAllPlaylists());
         DataWriter.saveLessons(lessonList.getLessons());
         DataWriter.saveSongs(songList.getSongList());
 // I added this because I'm pretty sure there'd be a data leak otherwise -Davis

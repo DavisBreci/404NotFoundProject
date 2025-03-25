@@ -9,24 +9,18 @@ public class PlaylistList {
     private ArrayList<Playlist> playlists;
 
     private PlaylistList() {
-<<<<<<< HEAD
-        playlists = new ArrayList<>();
-=======
         playlists = DataLoader.getAllPlaylists();
->>>>>>> 31c7d4059244e4f981f769ea4652a343785c0abf
     }
 
     public static PlaylistList getInstance() {
         if(playlistList == null) {
             playlistList = new PlaylistList();
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> 31c7d4059244e4f981f769ea4652a343785c0abf
         return playlistList;
     }
-
+    public ArrayList<Playlist> getAllPlayList(){
+        return playlists;
+    }
     public Playlist getPlaylist(String title, String author, String description, ArrayList<Song> library, double length) {
         for(Playlist playlist : playlists) {
             boolean titleMatch = playlist.getTitle().equals(title);
@@ -51,10 +45,6 @@ public class PlaylistList {
         return null;
     }
 
-<<<<<<< HEAD
-    public void createPlaylist(String title, String author, String description) {
-        playlists.add(new Playlist(null, title, author, description, new ArrayList<Song>()));
-=======
     public Playlist getPlaylistByAuthor(String author) {
         for( Playlist playlist : playlists) {
             if(playlist.getAuthor().equals(author)) {
@@ -72,7 +62,6 @@ public class PlaylistList {
         Playlist toAdd = new Playlist(null, title, author, description, null);
         playlists.add(toAdd);
         return toAdd;
->>>>>>> 31c7d4059244e4f981f769ea4652a343785c0abf
     }
 
     public void removePlaylist(String id) {
