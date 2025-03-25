@@ -1,26 +1,36 @@
 [
     {
-        "id": "d22d8a52-6b53-4508-b3e6-7c1e5d51fc1c",
-        "username": "dbreci",
-        "password": "404nf",
-        "email": "dbreci@email.sc.edu",
         "firstName": "Davis",
         "lastName": "Breci",
-        "streak": 10,
+        "password": "404nf",
         "songsPlayed": 1,
-        "assignedLessons": ["5c82419b-4246-40b9-9897-9e7ac9aa49bb"],
-        "playlists": ["39a48119-e368-40a9-9d4e-c10139338e7c"]
+        "playlists": [
+            "39a48119-e368-40a9-9d4e-c10139338e7c"
+        ],
+        "id": "d22d8a52-6b53-4508-b3e6-7c1e5d51fc1c",
+        "streak": 10,
+        "email": "dbreci@email.sc.edu",
+        "lastPlayed": "2025-03-24",
+        "assignedLessons": [
+            "5c82419b-4246-40b9-9897-9e7ac9aa49bb"
+        ],
+        "username": "dbreci"
     },
     {
-        "id": "8d666f44-a46c-4d5d-8877-48917befec86",
-        "username": "ctferg",
-        "password": "247sucks",
-        "email": "CTF2@email.sc.edu",
         "firstName": "Christopher",
         "lastName": "Ferguson",
-        "streak": 1,
+        "password": "247sucks",
         "songsPlayed": 13,
-        "assignedLessons": ["e9b9c2c5-0383-480d-b92c-2ffce330d3f1"],
-        "playlists": ["039a23f6-317b-4577-a78b-a9d8005adcd9"]
+        "playlists": [
+            "039a23f6-317b-4577-a78b-a9d8005adcd9"
+        ],
+        "id": "8d666f44-a46c-4d5d-8877-48917befec86",
+        "streak": 1,
+        "email": "CTF2@email.sc.edu",
+        "lastPlayed": "2025-03-24",
+        "assignedLessons": [
+            "e9b9c2c5-0383-480d-b92c-2ffce330d3f1"
+        ],
+        "username": "ctferg"
     }
 ]

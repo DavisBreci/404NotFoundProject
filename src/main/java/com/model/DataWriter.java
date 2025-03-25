@@ -66,7 +66,7 @@ public class DataWriter extends DataConstants {
         userDetails.put(USER_LAST_NAME, user.getLastName());
         userDetails.put(USER_STREAK, user.getStreak());
         userDetails.put(USER_SONGS_PLAYED, user.getSongsPlayed());
-        userDetails.put()
+        userDetails.put(USER_LAST_PLAYED, user.getLastPlayed().toString());
         JSONArray playlistIds = new JSONArray();
         JSONArray lessonIds = new JSONArray();
         if(user.getAssignedLessons() != null) {

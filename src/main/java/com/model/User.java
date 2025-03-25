@@ -218,4 +218,12 @@ public class User {
     public ArrayList<Playlist> getPlaylists(){
         return playlists;
     }
+    /**
+     * Getter for last Played
+     * @author brenskrz
+     * @return the Local Date of the last time the user played a song
+     */
+    public LocalDate getLastPlayed() {
+        return lastPlayed;
+    }
 }
