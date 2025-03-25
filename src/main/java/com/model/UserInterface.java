@@ -6,7 +6,7 @@ import java.util.Random;
 public class UserInterface {
     public static void main(String[] args) {
         teacherSignUpScenario();
-        fredSignUpScenario();
+        // fredSignUpScenario();
     }
     /**
      * @author Christopher Ferguson
