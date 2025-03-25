@@ -1,1 +1,17 @@
-[{"firstName":"Valerie","lastName":"Frizzle","password":"@Bc123","songsPlayed":0,"playlists":[],"id":"19dc15ff-0364-40d0-a874-4aed7da223ae","streak":0,"email":"valeriefrizzle@yahoo.com","lastPlayed":"-999999999-01-01","assignedLessons":[],"username":"MzFrizz"},{"classes":[[com.model.User@629f0666,com.model.User@1bc6a36e]],"lessons":[com.model.Lesson@f5f2bb7]}]
+[
+    {
+        "firstName": "Valerie",
+        "lastName": "Frizzle",
+        "password": "@Bc123",
+        "songsPlayed": 0,
+        "playlists": [],
+        "id": "57fa08fd-65ee-439a-9c89-21e146e52afe",
+        "streak": 0,
+        "email": "valeriefrizzle@yahoo.com",
+        "lastPlayed": "-999999999-01-01",
+        "assignedLessons": [],
+        "username": "MzFrizz",
+        "classes": [],
+        "lessons": []
+    }
+]
