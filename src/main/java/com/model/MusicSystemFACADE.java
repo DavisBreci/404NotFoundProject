@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.sound.midi.Sequence;
+
+import org.jfugue.player.Player;
 /**
  * @author Christopher Ferguson
  * A facade that hides the various functionalities of our program
@@ -312,5 +314,20 @@ public class MusicSystemFACADE {
         if(user instanceof Teacher)
             return ((Teacher)user).getClasses().get(classNumber);
         return null;
+    }
+
+    /**
+     * Blocking method that plays a song and updates the user's streak
+     * @param s the song to be played
+     * @author Christopher Ferguson, Davis Breci
+     */
+    public void playSong(Song s){
+        if(user == null || s == null) return;
+        Player songPlayer = new Player();
+        Score toPlay = s.getScore();
+        songPlayer.play(toPlay.getSequence(0, toPlay.size(), null, 1));
+        user.updateStreak();
+        user.addPlayedSong();
+        saveUserRelatedData(); 
     }
 }
