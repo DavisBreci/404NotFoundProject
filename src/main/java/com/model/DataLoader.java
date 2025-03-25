@@ -62,20 +62,20 @@ public class DataLoader extends DataConstants {
         }
 
         //TESTER CODE DELETE LATER PLS
-        for(int i=0; i < users.size(); i++) {
-            System.out.println("User : "+ i);
-            System.out.println(users.get(i).id);
-            System.out.println(users.get(i).username);
-            System.out.println(users.get(i).password);
-            System.out.println(users.get(i).email);
-            System.out.println(users.get(i).firstName);
-            System.out.println(users.get(i).lastName);
-            System.out.println(users.get(i).streak + " day streak");
-            System.out.println(users.get(i).songsPlayed + " songs played");
-            System.out.println(users.get(i).getAssignedLessons().get(0).getTitle());
-            System.out.println(users.get(i).lastPlayed.toString());
-            System.out.println("\n");
-        }
+        // for(int i=0; i < users.size(); i++) {
+        //     System.out.println("User : "+ i);
+        //     System.out.println(users.get(i).id);
+        //     System.out.println(users.get(i).username);
+        //     System.out.println(users.get(i).password);
+        //     System.out.println(users.get(i).email);
+        //     System.out.println(users.get(i).firstName);
+        //     System.out.println(users.get(i).lastName);
+        //     System.out.println(users.get(i).streak + " day streak");
+        //     System.out.println(users.get(i).songsPlayed + " songs played");
+        //     System.out.println(users.get(i).getAssignedLessons().get(0).getTitle());
+        //     System.out.println(users.get(i).lastPlayed.toString());
+        //     System.out.println("\n");
+        // }
 
         return users;
     }
@@ -206,11 +206,10 @@ public class DataLoader extends DataConstants {
                 songs.add(new Song(id, title, artist, genre, Key.valueOf(key), DifficultyLevel.valueOf(difficultyLevel), 
                 Instrument.valueOf(instrument), getScoreFromID(scoreID)));
             }
-            return songs;
         } catch(Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return songs;
     }
 
     public static Song getSongFromID(String inputID) {
@@ -342,11 +341,10 @@ public class DataLoader extends DataConstants {
                 
                 playlists.add(new Playlist(id, title, author, desc, songOutput));
             }
-            return playlists;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return playlists;
     }
 
     public static Playlist getPlaylistFromID(String inputID) {

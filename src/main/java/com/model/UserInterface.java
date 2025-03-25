@@ -70,6 +70,9 @@ public class UserInterface {
         // String pass = "iHaTeMyBr0tHeR*";
         // system.signUp(teacher,first,last,email,user,pass);
         // system.logout();
+        //return;
+
+        
         boolean teacher = false;
         String first = "Fred";
         String last = "Fredrickson";
