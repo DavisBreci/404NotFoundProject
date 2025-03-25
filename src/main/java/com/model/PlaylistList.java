@@ -18,7 +18,7 @@ public class PlaylistList {
         }
         return playlistList;
     }
-    public ArrayList<Playlist> getAllPlayList(){
+    public ArrayList<Playlist> getAllPlaylists(){
         return playlists;
     }
     public Playlist getPlaylist(String title, String author, String description, ArrayList<Song> library, double length) {
