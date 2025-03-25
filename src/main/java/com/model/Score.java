@@ -441,4 +441,52 @@ public class Score {
     public ArrayList<Measure> getMeasures() {
         return new ArrayList<>(measures);
     }
+
+    /**
+     * Returns a neatly formated string representing tabs for this score.
+     * The returned tabs don't convey rhythmic information beyond sequence and simultaneity.
+     * @return the tablature
+     */
+    public String getTablature(){
+        StringBuilder tablature = new StringBuilder();
+        for(int i = 0; i < measures.size(); i++){
+            tablature.append("Measure #" + (i + 1) + ":\n");
+            tablature.append(getMeasureTablature(measures.get(i)));
+        }
+        return tablature.toString();
+    }
+
+    /**
+     * Creates tablature for a single measure
+     * @param m the measure to be translated
+     * @return the tablature
+     */
+    private String getMeasureTablature(Measure m){
+        StringBuilder tablature = new StringBuilder();
+        Note n;
+        String toAppend;
+        for(int i = 0; i < instrument.tuning.length; i++){
+            tablature.append(instrument.tuning[i].getPitchClass() + " |-");
+            for(Chord c : m.getChords()){
+                n = c.getNotes(false)[i];
+                if(n == null)
+                    toAppend = "---";
+                else {
+                    if(n.getFret() < 10)
+                        toAppend = n.getFret() + "--";
+                    else
+                        toAppend = n.getFret() + "-";
+                }
+                tablature.append(toAppend);
+            }
+            tablature.append("\n");
+        }
+        return tablature.toString();
+    }
+
+    public static void main(String[] args) {
+        Score alph = DataLoader.getScoreFromID("a42d710f-afcb-4bce-bfd7-ecb43e6a5a89");
+        Score taxman = Score.midiToScore(DataLoader.loadSequence("Teen_Town.mid"), 0, Instrument.FRETLESS_BASS);
+        System.out.println(taxman.getTablature());
+    }
 }

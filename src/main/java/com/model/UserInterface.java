@@ -9,7 +9,7 @@ public class UserInterface {
         users.removeUser("MzFrizz");
         users.removeUser("ffred");
         teacherSignUpScenario();
-        fredSignUpScenario();
+        // fredSignUpScenario();
     }
     /**
      * @author Christopher Ferguson
