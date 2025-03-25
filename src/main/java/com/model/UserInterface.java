@@ -5,6 +5,9 @@ import java.util.Random;
 
 public class UserInterface {
     public static void main(String[] args) {
+        UserList users = UserList.getInstance();
+        users.removeUser("MzFrizz");
+        users.removeUser("ffred");
         teacherSignUpScenario();
         fredSignUpScenario();
     }
@@ -16,7 +19,7 @@ public class UserInterface {
         String firstName = "Valerie";
         String lastName = "Frizzle";
         String email = "valeriefrizzle@yahoo.com";
-        String username = "MzFrizz" + (new Random().nextInt(2025) + 1);
+        String username = "MzFrizz";
         String password = "@Bc123";
         System.out.println("Attempting to sign up as " + username + "...");
         if(system.signUp(true, firstName, lastName, email, username, password))

@@ -55,11 +55,13 @@ public class UserList {
         return true;
     }
 
-    public boolean removeUser(User user) {
-         ArrayList<User> copy = (ArrayList<User>)users.clone();
-        if(users.contains(user)){
-            users.remove(user);
-            return true;
+    public boolean removeUser(String username) {
+        for(int i = 0; i < users.size(); i++){
+            if(users.get(i).getUsername().equals(username)){
+                users.remove(i);
+                --i;
+                return true;
+            }
         }
         return false;
     }

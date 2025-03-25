@@ -93,7 +93,7 @@ public class DataWriter extends DataConstants {
             jsonTeachers.add(getTeacherJSON(teachers.get(i)));
         }
 
-        try (FileWriter file = new FileWriter(TEACHER_TEMP_FILE_NAME)) {
+        try (FileWriter file = new FileWriter(TEACHER_FILE_NAME)) {
             file.write(jsonTeachers.toJSONString());
             file.flush();
 
