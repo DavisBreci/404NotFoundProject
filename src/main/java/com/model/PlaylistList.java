@@ -18,7 +18,9 @@ public class PlaylistList {
         }
         return playlistList;
     }
-
+    public ArrayList<Playlist> getAllPlaylists(){
+        return playlists;
+    }
     public Playlist getPlaylist(String title, String author, String description, ArrayList<Song> library, double length) {
         for(Playlist playlist : playlists) {
             boolean titleMatch = playlist.getTitle().equals(title);
