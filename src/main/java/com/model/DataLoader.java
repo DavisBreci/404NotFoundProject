@@ -51,9 +51,9 @@ public class DataLoader extends DataConstants {
                 for(int j=0; j < assignedLessonIDs.size(); j++) {
                     assignedLessons.add(getLessonFromID((String)assignedLessonIDs.get(j)));
                 }  
-                //Users.json does not current support a Last Played Date
+                String lastPlayedDate = (String)individual.get(USER_LAST_PLAYED);
                 users.add(new User(id, firstName, lastName, email, userName, password, (int)Streak, (int)songsPlayed,
-                playlists, assignedLessons, LocalDate.now()));      
+                playlists, assignedLessons, LocalDate.parse(lastPlayedDate)));      
             }
 
             
@@ -70,7 +70,10 @@ public class DataLoader extends DataConstants {
             System.out.println(users.get(i).email);
             System.out.println(users.get(i).firstName);
             System.out.println(users.get(i).lastName);
+            System.out.println(users.get(i).streak + " day streak");
+            System.out.println(users.get(i).songsPlayed + " songs played");
             System.out.println(users.get(i).getAssignedLessons().get(0).getTitle());
+            System.out.println(users.get(i).lastPlayed.toString());
             System.out.println("\n");
         }
 
@@ -105,9 +108,9 @@ public class DataLoader extends DataConstants {
                     for(int j=0; j < assignedLessonIDs.size(); j++) {
                         assignedLessons.add(getLessonFromID((String)assignedLessonIDs.get(j)));
                     }  
-                    //Users.json does not current support a Last Played Date
+                    String lastPlayedDate = (String)individual.get(USER_LAST_PLAYED);
                     return new User(userID, firstName, lastName, email, userName, password, (int)Streak, (int)songsPlayed,
-                    playlists, assignedLessons, LocalDate.now());
+                    playlists, assignedLessons, LocalDate.parse(lastPlayedDate));
                 }
             }
             if (userID == "") {
@@ -162,9 +165,9 @@ public class DataLoader extends DataConstants {
                     }
                     classes.add(classUsers);
                 } 
-                //NOTE: Teachers.json does not current support a Last Played Date
+                String lastPlayedDate = (String)individual.get(USER_LAST_PLAYED);
                 teachers.add(new Teacher(id, firstName, lastName, email, userName, password, (int)Streak, (int)songsPlayed,
-                playlists, assignedLessons, LocalDate.now(), classes, lessons));      
+                playlists, assignedLessons, LocalDate.parse(lastPlayedDate), classes, lessons));      
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -438,7 +441,7 @@ public class DataLoader extends DataConstants {
     public static Sequence loadSequence(String filename){
 		Sequence loadedSequence = null;
 		try {
-			loadedSequence = MidiSystem.getSequence(new File(filename));
+			loadedSequence = MidiSystem.getSequence(new File(MIDI_FOLDER + filename));
 		} catch(IOException e) {
 			e.printStackTrace();
 		} catch (InvalidMidiDataException e) {
