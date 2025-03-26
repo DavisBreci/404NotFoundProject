@@ -330,4 +330,19 @@ public class MusicSystemFACADE {
         user.addPlayedSong();
         saveUserRelatedData(); 
     }
+
+    /**
+     * Blocking method that plays a song and updates the user's streak
+     * @param s the song to be played
+     * @author Christopher Ferguson, Davis Breci
+     */
+    public void playSong(Song s, int start, int end){
+        if(user == null || s == null) return;
+        Score toPlay = s.getScore();
+        Player songPlayer = new Player();
+        songPlayer.play(toPlay.getSequence(start, end, null, 1));
+        user.updateStreak();
+        user.addPlayedSong();
+        saveUserRelatedData(); 
+    }
 }

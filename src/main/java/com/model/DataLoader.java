@@ -4,26 +4,26 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.UUID;
-import java.util.regex.Pattern;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 
-import org.jfugue.theory.Note;
-import org.jfugue.theory.TimeSignature;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import com.model.DataConstants;
 import java.time.LocalDate;
 
-/*
- * @author ryanMazz
+/**
+ * Loads data from JSON files into the program 
+ * @author Ryan Mazzella
  */
 public class DataLoader extends DataConstants {
     
+    /**
+     * Loads all users from the JSON file
+     * @return ArrayList of all users
+     */
     public static ArrayList<User> getUsers() {
         ArrayList<User> users = new ArrayList<User>();
 
@@ -61,25 +61,14 @@ public class DataLoader extends DataConstants {
             e.printStackTrace();
         }
 
-        //TESTER CODE DELETE LATER PLS
-        // for(int i=0; i < users.size(); i++) {
-        //     System.out.println("User : "+ i);
-        //     System.out.println(users.get(i).id);
-        //     System.out.println(users.get(i).username);
-        //     System.out.println(users.get(i).password);
-        //     System.out.println(users.get(i).email);
-        //     System.out.println(users.get(i).firstName);
-        //     System.out.println(users.get(i).lastName);
-        //     System.out.println(users.get(i).streak + " day streak");
-        //     System.out.println(users.get(i).songsPlayed + " songs played");
-        //     System.out.println(users.get(i).getAssignedLessons().get(0).getTitle());
-        //     System.out.println(users.get(i).lastPlayed.toString());
-        //     System.out.println("\n");
-        // }
-
         return users;
     }
     
+    /**
+     * Loads a single user from the JSON file
+     * @param inputID The ID of the user to load
+     * @return The user with matching ID
+     */
     public static User getUserFromID(String inputID) {
         try {
             FileReader reader = new FileReader(USER_FILE_NAME);
@@ -123,6 +112,10 @@ public class DataLoader extends DataConstants {
         return null;
     }
 
+    /**
+     * Loads all teachers from the JSON file
+     * @return ArrayList of all teachers
+     */
     public static ArrayList<Teacher> getTeachers() {
         ArrayList<Teacher> teachers = new ArrayList<Teacher>();
 
@@ -161,7 +154,7 @@ public class DataLoader extends DataConstants {
                     JSONArray classUserIDs = (JSONArray)classIDs.get(j);
                     ArrayList<User> classUsers = new ArrayList<User>();
                     for (int k=0; k < classUserIDs.size(); k++) {
-                        classUsers.add(getUserFromID(id));
+                        classUsers.add(getUserFromID((String) classUserIDs.get(k)));
                     }
                     classes.add(classUsers);
                 } 
@@ -172,21 +165,13 @@ public class DataLoader extends DataConstants {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        for(int i=0; i < teachers.size(); i++) {
-            System.out.println("User : "+ i);
-            System.out.println(teachers.get(i).id);
-            System.out.println(teachers.get(i).username);
-            System.out.println(teachers.get(i).password);
-            System.out.println(teachers.get(i).email);
-            System.out.println(teachers.get(i).firstName);
-            System.out.println(teachers.get(i).lastName);
-            System.out.println("\n");
-        }
-
         return teachers;
     }
 
+    /**
+     * Loads all songs from the JSON file
+     * @return ArrayList of all songs
+     */
     public static ArrayList<Song> getAllSongs() {
         ArrayList<Song> songs = new ArrayList<Song>();
         
@@ -212,6 +197,11 @@ public class DataLoader extends DataConstants {
         return songs;
     }
 
+    /**
+     * Loads a single song from the JSON file
+     * @param inputID The ID of the song to load
+     * @return The song with matching ID
+     */
     public static Song getSongFromID(String inputID) {
         try {
             FileReader reader = new FileReader(SONG_FILE_NAME);
@@ -229,7 +219,6 @@ public class DataLoader extends DataConstants {
                     String difficultyLevel = (String)individual.get(SONG_DIFFICULTY_LEVEL);
                     String key = (String)individual.get(SONG_KEY);
                     String instrument = (String)individual.get(SONG_INSTRUMENT);
-                    //String instrument = "GUITAR"; //reminder, have this written in all caps via the data writer
                     String scoreID = (String)individual.get(SONG_SCORE);
                     return new Song(songID, title, artist, genre, Key.valueOf(key), DifficultyLevel.valueOf(difficultyLevel),
                     Instrument.valueOf(instrument), getScoreFromID(scoreID));
@@ -245,6 +234,11 @@ public class DataLoader extends DataConstants {
         return null;
     }
 
+    /**
+     * Loads a single score from the JSON file
+     * @param inputID The ID of the score to load
+     * @return The score with matching ID
+     */
     public static Score getScoreFromID(String inputID) {
         try {
             FileReader reader = new FileReader(SCORE_FILE_NAME);
@@ -254,63 +248,48 @@ public class DataLoader extends DataConstants {
             String instrument = "";
             String tempo = "0";
 
-            for(int i=0; i<scoreJSON.size(); i++) { //search for score with matching id
+            for(int i=0; i<scoreJSON.size(); i++) { 
                 JSONObject individualScore = (JSONObject)scoreJSON.get(i);
                 if (inputID.equals((String)individualScore.get(SCORE_ID))) {
-                    System.out.println("Score identified for UUID: " + inputID);
-                    //Matching ID found, generate score object.
                     scoreID = (String)individualScore.get(SCORE_ID);
                     instrument = (String)individualScore.get(SCORE_INSTRUMENT);
                     tempo = (String)individualScore.get(SCORE_TEMPO);
                     Score output = new Score(scoreID, Instrument.valueOf(instrument), Integer.valueOf(tempo));
-
-                    //for each measure
                     JSONArray rawMeasures = (JSONArray)individualScore.get(SCORE_MEASURES);
                     for(int j=0; j<rawMeasures.size(); j++) { 
                         JSONObject individualMeasure = (JSONObject)rawMeasures.get(j);
-                        String TimeSignature = (String)individualMeasure.get(MEASURE_TIME_SIGNATURE); //pull time signature
-                        System.out.println(new Rational(TimeSignature));
+                        String TimeSignature = (String)individualMeasure.get(MEASURE_TIME_SIGNATURE);
                         Measure measure = new Measure(Instrument.valueOf(instrument), new Rational(TimeSignature));
-
-                        //for each chord
                         JSONArray rawChords = (JSONArray) individualMeasure.get(MEASURE_CHORDS);
                         for (int  k=0; k<rawChords.size(); k++) {
                             JSONObject individualChord = (JSONObject) rawChords.get(k);
-                            String offset = (String) individualChord.get(CHORD_OFFSET); //pull offset (long -> int)
-                            String value = (String) individualChord.get(CHORD_VALUE); //pull value (NoteValue Enumerator)
-                            String dotted = (String) individualChord.get(CHORD_DOTTED); //pull dotted (use .valueOf to convert to boolean)
+                            String offset = (String) individualChord.get(CHORD_OFFSET);
+                            String value = (String) individualChord.get(CHORD_VALUE); 
+                            String dotted = (String) individualChord.get(CHORD_DOTTED); 
                             Chord chord = new Chord(NoteValue.valueOf(value), Boolean.valueOf(dotted), Instrument.valueOf(instrument));
-                            
-                            //for each note
                             JSONArray rawNotes = (JSONArray) individualChord.get(CHORD_NOTES);
                             for (int l = 0; l < rawNotes.size(); l++) {
-                                if (!rawNotes.get(l).equals("null")) { //If note is not empty, proceed
+                                if (!rawNotes.get(l).equals("null")) { 
                                     JSONObject individualNote = (JSONObject) rawNotes.get(l);
-                                    String pitchClass = (String) individualNote.get(NOTE_PITCH_CLASS); //pull pitchClass (PitchClass Enumerator)
-                                    String octave = (String) individualNote.get(NOTE_OCTAVE); //pull octave (long -> int)
-                                    String stringPos = (String) individualNote.get(NOTE_STRING_POSITION); //pull stringPos (long -> int)
-                                    String frontTie = (String) individualNote.get(NOTE_FRONT_TIE); //pull frontTie (use .valueOf to convert to boolean)
-                                    String backTie = (String) individualNote.get(NOTE_BACK_TIE); //pull backTie (use .valueOf to convert to boolean)
+                                    String pitchClass = (String) individualNote.get(NOTE_PITCH_CLASS); 
+                                    String octave = (String) individualNote.get(NOTE_OCTAVE);
+                                    String stringPos = (String) individualNote.get(NOTE_STRING_POSITION);
+                                    String frontTie = (String) individualNote.get(NOTE_FRONT_TIE);
+                                    String backTie = (String) individualNote.get(NOTE_BACK_TIE); 
                                     com.model.Note note = new com.model.Note(PitchClass.valueOf(pitchClass), Integer.valueOf(octave));
-                                    System.out.println("Note identified: " + note.toString() + " on string: " + stringPos);
-                                    chord.put(note, Integer.valueOf(stringPos) - 1); //add note to chord
+                                    chord.put(note, Integer.valueOf(stringPos) - 1);
                                 }
                             }
-                            System.out.println("Chord identified: " + chord.toString() + " at offset: " + offset);
-                            measure.put(new Rational(offset), chord); //add chord to measure
+                            measure.put(new Rational(offset), chord);
                         }
-                        System.out.println("Measure identified: " + measure.toString());
                         output.add(measure);
-                        System.out.println("Was measure added? " + output.contains(measure));
                     }
-                    System.out.println("Score loaded sucessfully!:\n" + output.toString());
                     return output;     
                 }
             }
-            if (scoreID.equals("")) { //If no matching score is found, return dummy score
+            if (scoreID.equals("")) {
                 System.out.println("No matching score found for ID: " + inputID);
                 return null;
-                //return new Score(null, Instrument.GUITAR, 0);
             }
         } catch(Exception e) {
             e.printStackTrace();
@@ -318,6 +297,10 @@ public class DataLoader extends DataConstants {
         return null;
     }
 
+    /**
+     * Loads all playlists from the JSON file
+     * @return ArrayList of all playlists
+     */
     public static ArrayList<Playlist> getAllPlaylists() {
         ArrayList<Playlist> playlists = new ArrayList<Playlist>();
 
@@ -335,10 +318,7 @@ public class DataLoader extends DataConstants {
                 ArrayList<Song> songOutput =  new ArrayList<Song>();
                 for(int j=0; j < SongIDs.size(); j++) {
                     songOutput.add(getSongFromID((String)SongIDs.get(j)));
-                    System.out.println("Pulled song from id: " + (String)SongIDs.get(j)); //debug
-                }  
-
-                
+                }
                 playlists.add(new Playlist(id, title, author, desc, songOutput));
             }
         } catch (Exception e) {
@@ -347,6 +327,11 @@ public class DataLoader extends DataConstants {
         return playlists;
     }
 
+    /**
+     * Loads a single playlist from the JSON file
+     * @param inputID The ID of the playlist to load
+     * @return The playlist with matching ID
+     */
     public static Playlist getPlaylistFromID(String inputID) {
         try {
             FileReader reader = new FileReader(PLAYLIST_FILE_NAME);
@@ -379,6 +364,10 @@ public class DataLoader extends DataConstants {
         return null;
     }
 
+    /**
+     * Loads all lessons from the JSON file
+     * @return ArrayList of all lessons
+     */
     public static ArrayList<Lesson> getAllLessons() {
         ArrayList<Lesson> lessons = new ArrayList<Lesson>();
 
@@ -402,6 +391,11 @@ public class DataLoader extends DataConstants {
         return lessons;
     }
 
+    /**
+     * Loads a single lesson from the JSON file
+     * @param inputID The ID of the lesson to load
+     * @return The lesson with matching ID
+     */
     public static Lesson getLessonFromID(String inputID) {
         try {
             FileReader reader = new FileReader(LESSONS_FILE_NAME);
@@ -433,8 +427,11 @@ public class DataLoader extends DataConstants {
         return null;
     }
 
-    /*
-     * @author Christopher
+    /**
+     * Creates a sequence from a MIDI file
+     * @param filename the name of the MIDI file
+     * @return the sequence created from the MIDI file
+     * @author Christopher and Ryan
      */
     public static Sequence loadSequence(String filename){
 		Sequence loadedSequence = null;

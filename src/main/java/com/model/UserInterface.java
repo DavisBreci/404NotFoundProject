@@ -1,15 +1,21 @@
 package com.model;
 
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Random;
+import org.jfugue.player.Player;
 
 public class UserInterface {
     public static void main(String[] args) {
-        // UserList users = UserList.getInstance();
-        // users.removeUser("MzFrizz");
-        // users.removeUser("ffred");
+        UserList users = UserList.getInstance();
+        SongList songList = SongList.getInstance();
+        songList.removeSong(songList.getSongByTitle("Smoke On the Water"));
+        users.removeUser("MzFrizz");
+        users.removeUser("ffred");
         teacherSignUpScenario();
         fredSignUpScenario();
+        writingASongScenario();
+        playingASongScenario();
     }
     /**
      * @author Christopher Ferguson
@@ -110,13 +116,15 @@ public class UserInterface {
         MusicSystemFACADE system = MusicSystemFACADE.getInstance();
         String username = "ctferg";
         String password = "247sucks";
+        System.out.println("Scenario 3: Making a Song\n");
         System.out.println("Attempting to sign in as " + username);
+
         if(system.login(username, password))
             System.out.println("Login successful!");
         else
             System.out.println("Login failed");
             
-        System.out.println("Beginning to write a score");
+        System.out.println("\nBeginning to write a score");
 
         Instrument instrument = Instrument.DISTORTION_GUITAR; // Choose our instrument
         int tempo = 120;
@@ -132,7 +140,7 @@ public class UserInterface {
         Chord powerChord = new Chord(NoteValue.EIGHTH, false, instrument); // Create a power chord shape
         powerChord.put(new Note(PitchClass.D, 3), 1);
         powerChord.put(new Note(PitchClass.A, 3), 2);
-        System.out.println("Creating a power chord shape: " + powerChord);
+        System.out.println("\nCreating a power chord shape: " + powerChord);
         Measure m = smokeOnTheWater.get(0); // First measure
         m.put(new Rational("0/1"), powerChord.deepCopy()); // Add chord to measure
             powerChord.shiftString(1); // Move the chord shape around
@@ -144,7 +152,7 @@ public class UserInterface {
         m.put(new Rational("7/8"), powerChord.deepCopy());
             powerChord.shiftString(1);
             powerChord.transpose(-2);
-        System.out.println("Wrote first measure: | " + smokeOnTheWater.get(0));
+        System.out.println("Wrote first measure:\n" + Score.getMeasureTablature(m));
         m = smokeOnTheWater.get(1);  // Second measure
         m.put(new Rational("1/8"), powerChord.deepCopy());
             powerChord.transpose(3);
@@ -152,7 +160,7 @@ public class UserInterface {
             powerChord.transpose(-1);
         m.put(new Rational("1/2"), powerChord.deepCopy());
             powerChord.shiftString(-1);
-        System.out.println("Wrote second measure: | " + smokeOnTheWater.get(1));
+        System.out.println("Wrote second measure:\n" + Score.getMeasureTablature(m));
         m = smokeOnTheWater.get(2); // Third measure
         m.put(new Rational("0/4"), powerChord.deepCopy());
             powerChord.shiftString(1);
@@ -164,15 +172,15 @@ public class UserInterface {
         m.put(new Rational("7/8"), powerChord.deepCopy());
             powerChord.shiftString(-1);
             powerChord.transpose(2);
-        System.out.println("Wrote third measure: | " + smokeOnTheWater.get(2));
+        System.out.println("Wrote third measure:\n" + Score.getMeasureTablature(m));
         m = smokeOnTheWater.get(3); // Fourth measure
         m.put(new Rational("1/8"), powerChord.deepCopy());
-        System.out.println("Wrote fourth measure: | " + smokeOnTheWater.get(3));
-        System.out.println("Score writing complete, adding score to song \"Smoke on the Water\" by Deep Purple");
+        System.out.println("Wrote fourth measure:\n" + Score.getMeasureTablature(m));
+        System.out.println("Score writing complete, adding score to song \"Smoke on the Water\" by Christopher Ferguson");
         Song smokeOnTheWaterSong = new Song(
             null, 
             "Smoke on the Water", 
-            "Deep Purple", 
+            "Christopher Ferguson", 
             "Hard Rock",
              Key.BbMAJOR_GMINOR, 
              DifficultyLevel.BEGINNER,
@@ -184,5 +192,61 @@ public class UserInterface {
             System.out.println("Addition successful!");
         else
             System.out.println("Addition unsuccessful.");
+        
+        System.out.println("\nPlaying song...");
+        system.playSong(smokeOnTheWaterSong);
+        System.out.println("Playback complete");
+        System.out.println("\nLogging out...");
+        system.logout();
+
+        username = "dbreci";
+        password = "404nf";
+        System.out.println("\nAttempting to sign in as " + username);
+
+        if(system.login(username, password))
+            System.out.println("Login successful!");
+        else
+            System.out.println("Login failed");
+        
+        System.out.println("\nSearching for \"Smoke on the Water\"");
+        Song retrievedSong = system.getSong("Smoke on the Water");
+        if(retrievedSong == smokeOnTheWaterSong)
+            System.out.println("Found \"Smoke on the Water\" by " + retrievedSong.getArtist() + "!");
+        else
+            System.out.println("Search failed");
+        System.out.println("\nPlaying song...");
+        system.playSong(retrievedSong);
+        System.out.println("\nLogging out...");
+        system.logout();
+
+    }
+
+    /**
+     * @author Ryan Mazzella
+     */
+    public static void playingASongScenario(){
+        SongList songList = SongList.getInstance();
+        //User chooses artist to search for
+        String ARTIST = "James Jamerson";
+        System.out.println("Searching for songs by " + ARTIST);
+        ArrayList<Song> search = songList.getSongsByArtist(ARTIST);
+        System.out.println(search.size() + " song(s) found by " + ARTIST);
+        for(int i=0; i<search.size(); i++) {
+            System.out.println(i+1 + ". " + search.get(i).getTitle());
+        }
+        //User selects a song to play from the results
+        int CHOICE = 1;
+        Player p = new Player();
+        System.out.println("Chosen " + (CHOICE) + ". " + search.get(CHOICE-1).getTitle());
+        System.out.println("Now playing " + search.get(CHOICE-1).getTitle());
+        p.play(search.get(CHOICE-1).getScore().getSequence(0, search.get(CHOICE-1).getScore().size(), null, 1));
+        //Sheet music is then output to a text file
+        try {
+            FileWriter file = new FileWriter(search.get(CHOICE-1).getTitle() + ".txt");
+            file.write(search.get(CHOICE-1).getScore().getTablature());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("Sheet music has been output to " + search.get(CHOICE-1).getTitle() + ".txt");
     }
 }

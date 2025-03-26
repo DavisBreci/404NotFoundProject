@@ -95,10 +95,17 @@ public class DataWriter extends DataConstants {
         
         JSONArray jsonTeachers = new JSONArray();
 
-        for(int i = 0; i<teachers.size(); i++) {
-            jsonTeachers.add(getUserJSON(teachers.get(i)));
-            jsonTeachers.add(getTeacherJSON(teachers.get(i)));
+        for (int i = 0; i < teachers.size(); i++) {
+            JSONObject userJson = getUserJSON(teachers.get(i));
+            JSONObject teacherJson = getTeacherJSON(teachers.get(i));
+    
+            JSONObject combinedJson = new JSONObject();
+            combinedJson.putAll(userJson); 
+            combinedJson.putAll(teacherJson); 
+    
+            jsonTeachers.add(combinedJson);
         }
+    
 
         try (FileWriter file = new FileWriter(TEACHER_FILE_NAME)) {
             file.write(jsonTeachers.toJSONString());
@@ -119,9 +126,39 @@ public class DataWriter extends DataConstants {
         
         JSONObject teacherDetails = new JSONObject();
         
-        teacherDetails.put(TEACHER_CLASSES, teacher.getClasses());
-        // teacherDetails.put(USER_ASSIGNED_LESSONS, teacher.getAssignedLessons());
-        teacherDetails.put(TEACHER_LESSONS, teacher.getLessons());
+        JSONArray classesArray = new JSONArray();
+    if (teacher.getClasses() != null) {
+        for (ArrayList<User> classUsers : teacher.getClasses()) {
+            JSONArray classUserIds = new JSONArray();
+            if(classUsers != null){ //Null Check
+                for (int i = 0; i < classUsers.size(); i++) {
+                    User user = classUsers.get(i);
+                    if(user != null){ //Null Check
+                         classUserIds.add(user.id);
+                    }
+
+                }
+            }
+
+            classesArray.add(classUserIds);
+        }
+    }
+        JSONArray assignedIds = new JSONArray();
+        if(teacher.getAssignedLessons() != null) {
+            for(Lesson lesson : teacher.getAssignedLessons()) {
+                assignedIds.add(lesson.id);
+            }
+        }
+        JSONArray lessonIds = new JSONArray();
+        if(teacher.getLessons() != null) {
+            for(Lesson lesson : teacher.getLessons()) {
+                lessonIds.add(lesson.id);
+            }
+        }
+
+        teacherDetails.put(TEACHER_CLASSES, classesArray);
+        teacherDetails.put(USER_ASSIGNED_LESSONS, assignedIds);
+        teacherDetails.put(TEACHER_LESSONS, lessonIds);
 
         
 
@@ -505,6 +542,10 @@ public class DataWriter extends DataConstants {
      * @param args the arguments that are passed in
      */
     public static void main(String args[]) {
+        ArrayList<Teacher> teachers = DataLoader.getTeachers();
+    for (Teacher teacher : teachers) {
+        System.out.println("Teacher: " + teacher.getUsername() + ", Classes: " + teacher.getClasses()+ "yellow");
+    }
        
         DataWriter.saveUsers(DataLoader.getUsers());
         DataWriter.saveTeachers(DataLoader.getTeachers());
@@ -512,6 +553,6 @@ public class DataWriter extends DataConstants {
         DataWriter.saveSongs(DataLoader.getAllSongs());
         DataWriter.saveLessons(DataLoader.getAllLessons());
 
-        DataWriter.saveNewScore(DataLoader.getScoreFromID("a42d710f-afcb-4bce-bfd7-ecb43e6a5a89"), SCORE_FILE_NAME);
+        // DataWriter.saveNewScore(DataLoader.getScoreFromID("a42d710f-afcb-4bce-bfd7-ecb43e6a5a89"), SCORE_FILE_NAME);
     }
 }
