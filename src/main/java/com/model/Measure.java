@@ -375,4 +375,12 @@ public class Measure {
     public String getTimeSignatureString() {
         return timeSignature.getNumerator() + "/" + timeSignature.getDenominator();
     }
+
+    /**
+     * Retrieves the measure's instrument
+     * @return thhe instrument
+     */
+    public Instrument getInstrument(){
+        return instrument;
+    }
 }

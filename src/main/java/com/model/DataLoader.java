@@ -4,26 +4,27 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.UUID;
-import java.util.regex.Pattern;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 
-import org.jfugue.theory.Note;
-import org.jfugue.theory.TimeSignature;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import com.model.DataConstants;
 import java.time.LocalDate;
 
-/*
- * @author ryanMazz
+/**
+ * Loads data from JSON files into the program 
+ * @author Ryan Mazzella
  */
 public class DataLoader extends DataConstants {
     
+    /**
+     * Loads all users from the JSON file
+     * @return ArrayList of all users
+     */
     public static ArrayList<User> getUsers() {
         ArrayList<User> users = new ArrayList<User>();
 
@@ -80,6 +81,11 @@ public class DataLoader extends DataConstants {
         return users;
     }
     
+    /**
+     * Loads a single user from the JSON file
+     * @param inputID The ID of the user to load
+     * @return The user with matching ID
+     */
     public static User getUserFromID(String inputID) {
         try {
             FileReader reader = new FileReader(USER_FILE_NAME);
@@ -123,6 +129,10 @@ public class DataLoader extends DataConstants {
         return null;
     }
 
+    /**
+     * Loads all teachers from the JSON file
+     * @return ArrayList of all teachers
+     */
     public static ArrayList<Teacher> getTeachers() {
         ArrayList<Teacher> teachers = new ArrayList<Teacher>();
 
@@ -187,6 +197,10 @@ public class DataLoader extends DataConstants {
         return teachers;
     }
 
+    /**
+     * Loads all songs from the JSON file
+     * @return ArrayList of all songs
+     */
     public static ArrayList<Song> getAllSongs() {
         ArrayList<Song> songs = new ArrayList<Song>();
         
@@ -213,6 +227,11 @@ public class DataLoader extends DataConstants {
         return null;
     }
 
+    /**
+     * Loads a single song from the JSON file
+     * @param inputID The ID of the song to load
+     * @return The song with matching ID
+     */
     public static Song getSongFromID(String inputID) {
         try {
             FileReader reader = new FileReader(SONG_FILE_NAME);
@@ -246,6 +265,11 @@ public class DataLoader extends DataConstants {
         return null;
     }
 
+    /**
+     * Loads a single score from the JSON file
+     * @param inputID The ID of the score to load
+     * @return The score with matching ID
+     */
     public static Score getScoreFromID(String inputID) {
         try {
             FileReader reader = new FileReader(SCORE_FILE_NAME);
@@ -319,6 +343,10 @@ public class DataLoader extends DataConstants {
         return null;
     }
 
+    /**
+     * Loads all playlists from the JSON file
+     * @return ArrayList of all playlists
+     */
     public static ArrayList<Playlist> getAllPlaylists() {
         ArrayList<Playlist> playlists = new ArrayList<Playlist>();
 
@@ -349,6 +377,11 @@ public class DataLoader extends DataConstants {
         return null;
     }
 
+    /**
+     * Loads a single playlist from the JSON file
+     * @param inputID The ID of the playlist to load
+     * @return The playlist with matching ID
+     */
     public static Playlist getPlaylistFromID(String inputID) {
         try {
             FileReader reader = new FileReader(PLAYLIST_FILE_NAME);
@@ -381,6 +414,10 @@ public class DataLoader extends DataConstants {
         return null;
     }
 
+    /**
+     * Loads all lessons from the JSON file
+     * @return ArrayList of all lessons
+     */
     public static ArrayList<Lesson> getAllLessons() {
         ArrayList<Lesson> lessons = new ArrayList<Lesson>();
 
@@ -404,6 +441,11 @@ public class DataLoader extends DataConstants {
         return lessons;
     }
 
+    /**
+     * Loads a single lesson from the JSON file
+     * @param inputID The ID of the lesson to load
+     * @return The lesson with matching ID
+     */
     public static Lesson getLessonFromID(String inputID) {
         try {
             FileReader reader = new FileReader(LESSONS_FILE_NAME);
@@ -435,8 +477,11 @@ public class DataLoader extends DataConstants {
         return null;
     }
 
-    /*
-     * @author Christopher
+    /**
+     * Creates a sequence from a MIDI file
+     * @param filename the name of the MIDI file
+     * @return the sequence created from the MIDI file
+     * @author Christopher and Ryan
      */
     public static Sequence loadSequence(String filename){
 		Sequence loadedSequence = null;

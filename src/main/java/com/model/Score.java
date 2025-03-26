@@ -461,12 +461,13 @@ public class Score {
      * @param m the measure to be translated
      * @return the tablature
      */
-    private String getMeasureTablature(Measure m){
+    public static String getMeasureTablature(Measure m){
         StringBuilder tablature = new StringBuilder();
         Note n;
         String toAppend;
-        for(int i = instrument.tuning.length - 1; i >= 0 ; i--){
-            tablature.append(instrument.tuning[i].getPitchClass() + " |-");
+        Note [] tuning = m.getInstrument().tuning;
+        for(int i =  tuning.length - 1; i >= 0 ; i--){
+            tablature.append(tuning[i].getPitchClass() + " |-");
             for(Chord c : m.getChords()){
                 n = c.getNotes(false)[i];
                 if(n == null)
