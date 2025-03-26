@@ -12,8 +12,8 @@ public class UserInterface {
         songList.removeSong(songList.getSongByTitle("Smoke On the Water"));
         users.removeUser("MzFrizz");
         users.removeUser("ffred");
-        // teacherSignUpScenario();
-        // fredSignUpScenario();
+        teacherSignUpScenario();
+        fredSignUpScenario();
         writingASongScenario();
     }
     /**

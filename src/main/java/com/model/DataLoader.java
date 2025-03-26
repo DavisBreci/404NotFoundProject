@@ -62,22 +62,6 @@ public class DataLoader extends DataConstants {
             e.printStackTrace();
         }
 
-        //TESTER CODE DELETE LATER PLS
-        for(int i=0; i < users.size(); i++) {
-            System.out.println("User : "+ i);
-            System.out.println(users.get(i).id);
-            System.out.println(users.get(i).username);
-            System.out.println(users.get(i).password);
-            System.out.println(users.get(i).email);
-            System.out.println(users.get(i).firstName);
-            System.out.println(users.get(i).lastName);
-            System.out.println(users.get(i).streak + " day streak");
-            System.out.println(users.get(i).songsPlayed + " songs played");
-            System.out.println(users.get(i).getAssignedLessons().get(0).getTitle());
-            System.out.println(users.get(i).lastPlayed.toString());
-            System.out.println("\n");
-        }
-
         return users;
     }
     

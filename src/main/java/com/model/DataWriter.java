@@ -553,6 +553,6 @@ public class DataWriter extends DataConstants {
         DataWriter.saveSongs(DataLoader.getAllSongs());
         DataWriter.saveLessons(DataLoader.getAllLessons());
 
-        DataWriter.saveNewScore(DataLoader.getScoreFromID("a42d710f-afcb-4bce-bfd7-ecb43e6a5a89"), SCORE_FILE_NAME);
+        // DataWriter.saveNewScore(DataLoader.getScoreFromID("a42d710f-afcb-4bce-bfd7-ecb43e6a5a89"), SCORE_FILE_NAME);
     }
 }
