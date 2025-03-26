@@ -9,8 +9,7 @@ public class Playlist {
     private ArrayList<Song> songs;
 
     public Playlist(String id, String title, String author, String description, ArrayList<Song> songs){
-        ID temp = id == null ? new ID() : new ID(id);
-        this.id = temp.uuid;
+        this.id = (id == null) ? UUID.randomUUID().toString(): id;
         this.title = title;
         this.author = author;
         this.description = description;

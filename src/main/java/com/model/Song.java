@@ -13,8 +13,7 @@ public class Song {
 
     public Song(String id, String title, String artist, String genre, Key key,
                 DifficultyLevel difficulty, Instrument instrument, Score score){
-        ID temp = id == null ? new ID() : new ID(id);
-        this.id = temp.uuid;
+        this.id = (id == null) ? UUID.randomUUID().toString(): id;
         this.title = title;
         this.artist = artist;
         this.genre = genre;

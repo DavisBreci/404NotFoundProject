@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 import java.util.Map.Entry;
+import java.util.UUID;
+
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Track;
@@ -30,8 +32,7 @@ public class Score {
 
     public Score(String id, Instrument instrument, int tempo){
         measures = new ArrayList<Measure>();
-        ID temp = id == null ? new ID() : new ID(id);
-        this.id = temp.uuid;
+        this.id = (id == null) ? UUID.randomUUID().toString(): id;
         this.instrument = instrument;
         setTempo(tempo);
     }

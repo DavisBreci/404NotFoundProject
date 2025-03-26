@@ -13,9 +13,9 @@ public class UserInterface {
         users.removeUser("MzFrizz");
         users.removeUser("ffred");
         teacherSignUpScenario();
-        fredSignUpScenario();
-        writingASongScenario();
-        playingASongScenario();
+        // fredSignUpScenario();
+        // writingASongScenario();
+        // playingASongScenario();
     }
     /**
      * @author Christopher Ferguson
@@ -239,7 +239,7 @@ public class UserInterface {
         Player p = new Player();
         System.out.println("Chosen " + (CHOICE) + ". " + search.get(CHOICE-1).getTitle());
         System.out.println("Now playing " + search.get(CHOICE-1).getTitle());
-        p.play(search.get(CHOICE-1).getScore().getSequence(0, search.get(CHOICE-1).getScore().size(), null, 1));
+        p.play(search.get(CHOICE-1).getScore().getSequence(0, 4, null, 1));
         //Sheet music is then output to a text file
         try {
             FileWriter file = new FileWriter(search.get(CHOICE-1).getTitle() + ".txt");

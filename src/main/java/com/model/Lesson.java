@@ -7,8 +7,7 @@ public class Lesson {
     private String title;
 
     public Lesson(String id, ArrayList<Song> songs, String title){
-        ID temp = id == null ? new ID() : new ID(id);
-        this.id = temp.uuid;
+        this.id = (id == null) ? UUID.randomUUID().toString(): id;
         if(songs != null)
             this.songs = songs;
         else 

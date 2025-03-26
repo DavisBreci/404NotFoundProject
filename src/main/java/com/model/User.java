@@ -39,8 +39,7 @@ public class User {
              String pass, int streak, int songsPlayed, ArrayList<Playlist> playlists,
              ArrayList<Lesson> assignedLessons, LocalDate lastPlayed){
 // when new users are created, a uuid must be created for them
-        ID temp = id == null ? new ID() : new ID(id);
-        this.id = temp.uuid;
+        this.id = (id == null) ? UUID.randomUUID().toString(): id;
         this.firstName = first;
         this.lastName = last;
         this.email = email;
