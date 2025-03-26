@@ -111,17 +111,18 @@ public class User {
      * @author Davis Breci
      */
     public void updateStreak(){
-//same day
-        if(lastPlayed.compareTo(LocalDate.now()) == 0){
-            ;
-//one day has passed
-        }else if(lastPlayed.plusDays(1).compareTo(LocalDate.now())==0){
-            lastPlayed = LocalDate.now();
-            ++streak;
-//reset streak
-        }else{
-            streak = 0;
+        switch(lastPlayed.plusDays(1).compareTo(LocalDate.now())){
+// lastPlayed was yesterday
+            case 0:
+                ++streak;
+                break;
+// lastPlayed was before yesterday
+            case -1:
+                streak = 0;
+                break;
+// streak is not updated if lastPlayed was today
         }
+        lastPlayed = LocalDate.now();
     }
     /**
      * increments every time a song is played
