@@ -15,6 +15,7 @@ public class UserInterface {
         teacherSignUpScenario();
         fredSignUpScenario();
         writingASongScenario();
+        playingASongScenario();
     }
     /**
      * @author Christopher Ferguson
@@ -223,18 +224,21 @@ public class UserInterface {
      */
     public static void playingASongScenario(){
         SongList songList = SongList.getInstance();
-        String ARTIST = "Marvin Gaye";
+        //User chooses artist to search for
+        String ARTIST = "James Jamerson";
         System.out.println("Searching for songs by " + ARTIST);
         ArrayList<Song> search = songList.getSongsByArtist(ARTIST);
         System.out.println(search.size() + " song(s) found by " + ARTIST);
         for(int i=0; i<search.size(); i++) {
             System.out.println(i+1 + ". " + search.get(i).getTitle());
         }
+        //User selects a song to play from the results
         int CHOICE = 1;
-
         Player p = new Player();
+        System.out.println("Chosen " + (CHOICE) + ". " + search.get(CHOICE-1).getTitle());
+        System.out.println("Now playing " + search.get(CHOICE-1).getTitle());
         p.play(search.get(CHOICE-1).getScore().getSequence(0, search.get(CHOICE-1).getScore().size(), null, 1));
-        System.out.println("Chosen " + (CHOICE-1) + ". " + search.get(CHOICE-1).getTitle());
+        //Sheet music is then output to a text file
         try {
             FileWriter file = new FileWriter(search.get(CHOICE-1).getTitle() + ".txt");
             file.write(search.get(CHOICE-1).getScore().getTablature());
@@ -242,12 +246,5 @@ public class UserInterface {
             e.printStackTrace();
         }
         System.out.println("Sheet music has been output to " + search.get(CHOICE-1).getTitle() + ".txt");
-
-
-
-        //search songs by artist
-        //list songs
-        //select song 
-        //output song to txt 
-        }
+    }
 }

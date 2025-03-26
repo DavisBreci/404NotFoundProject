@@ -249,7 +249,7 @@ public class DataLoader extends DataConstants {
             String instrument = "";
             String tempo = "0";
 
-            for(int i=0; i<scoreJSON.size(); i++) {
+            for(int i=0; i<scoreJSON.size(); i++) { 
                 JSONObject individualScore = (JSONObject)scoreJSON.get(i);
                 if (inputID.equals((String)individualScore.get(SCORE_ID))) {
                     scoreID = (String)individualScore.get(SCORE_ID);
@@ -265,14 +265,14 @@ public class DataLoader extends DataConstants {
                         for (int  k=0; k<rawChords.size(); k++) {
                             JSONObject individualChord = (JSONObject) rawChords.get(k);
                             String offset = (String) individualChord.get(CHORD_OFFSET);
-                            String value = (String) individualChord.get(CHORD_VALUE);
-                            String dotted = (String) individualChord.get(CHORD_DOTTED);
+                            String value = (String) individualChord.get(CHORD_VALUE); 
+                            String dotted = (String) individualChord.get(CHORD_DOTTED); 
                             Chord chord = new Chord(NoteValue.valueOf(value), Boolean.valueOf(dotted), Instrument.valueOf(instrument));
                             JSONArray rawNotes = (JSONArray) individualChord.get(CHORD_NOTES);
                             for (int l = 0; l < rawNotes.size(); l++) {
                                 if (!rawNotes.get(l).equals("null")) { 
                                     JSONObject individualNote = (JSONObject) rawNotes.get(l);
-                                    String pitchClass = (String) individualNote.get(NOTE_PITCH_CLASS);
+                                    String pitchClass = (String) individualNote.get(NOTE_PITCH_CLASS); 
                                     String octave = (String) individualNote.get(NOTE_OCTAVE);
                                     String stringPos = (String) individualNote.get(NOTE_STRING_POSITION);
                                     String frontTie = (String) individualNote.get(NOTE_FRONT_TIE);
@@ -281,8 +281,9 @@ public class DataLoader extends DataConstants {
                                     chord.put(note, Integer.valueOf(stringPos) - 1);
                                 }
                             }
-                            measure.put(new Rational(offset), chord); //add chord to measure
+                            measure.put(new Rational(offset), chord);
                         }
+                        output.add(measure);
                     }
                     return output;     
                 }
