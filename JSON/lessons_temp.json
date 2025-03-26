@@ -1,1 +1,24 @@
-[{"songs":["8a8e7e25-b701-479d-867c-54cab7eccb92"],"id":"5c82419b-4246-40b9-9897-9e7ac9aa49bb","title":"~3514~ baby's first music lesson"},{"songs":["8a8e7e25-b701-479d-867c-54cab7eccb92","97355262-9242-4325-9d4e-4a7c3757977a"],"id":"e9b9c2c5-0383-480d-b92c-2ffce330d3f1","title":"~3719~ cool ahh lesson"},{"songs":["8a8e7e25-b701-479d-867c-54cab7eccb92"],"id":"1df35e0b-2e68-4fd5-829b-feca69eed307","title":"~3667~ Learning Songs From Video Games: 'Alphys' by Toby Fox"}]
+[
+    {
+        "songs": [
+            "8a8e7e25-b701-479d-867c-54cab7eccb92"
+        ],
+        "id": "5c82419b-4246-40b9-9897-9e7ac9aa49bb",
+        "title": "~3514~ baby's first music lesson"
+    },
+    {
+        "songs": [
+            "8a8e7e25-b701-479d-867c-54cab7eccb92",
+            "97355262-9242-4325-9d4e-4a7c3757977a"
+        ],
+        "id": "e9b9c2c5-0383-480d-b92c-2ffce330d3f1",
+        "title": "~3719~ cool ahh lesson"
+    },
+    {
+        "songs": [
+            "8a8e7e25-b701-479d-867c-54cab7eccb92"
+        ],
+        "id": "1df35e0b-2e68-4fd5-829b-feca69eed307",
+        "title": "~3667~ Learning Songs From Video Games: 'Alphys' by Toby Fox"
+    }
+]
