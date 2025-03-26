@@ -54,15 +54,15 @@ public class SongList {
     }
 
     /**
-     * @author Christopher Ferguson
      * Retrieves all songs by an artist
      * @param artist the artis whose songs you want
      * @return the songs by the artist
+     * @author Christopher Ferguson & Ryan Mazzella
      */
     public ArrayList<Song> getSongsByArtist(String artist){
         ArrayList<Song> ret = new ArrayList<Song>();
         for(Song s : songs)
-            if(s.getArtist() == artist)
+            if(s.getArtist().equals(artist))
                 ret.add(s);
         return ret;
     }

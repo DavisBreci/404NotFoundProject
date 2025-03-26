@@ -1,7 +1,9 @@
 package com.model;
 
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Random;
+import org.jfugue.player.Player;
 
 public class UserInterface {
     public static void main(String[] args) {
@@ -215,4 +217,37 @@ public class UserInterface {
         system.logout();
 
     }
+
+    /**
+     * @author Ryan Mazzella
+     */
+    public static void playingASongScenario(){
+        SongList songList = SongList.getInstance();
+        String ARTIST = "Marvin Gaye";
+        System.out.println("Searching for songs by " + ARTIST);
+        ArrayList<Song> search = songList.getSongsByArtist(ARTIST);
+        System.out.println(search.size() + " song(s) found by " + ARTIST);
+        for(int i=0; i<search.size(); i++) {
+            System.out.println(i+1 + ". " + search.get(i).getTitle());
+        }
+        int CHOICE = 1;
+
+        Player p = new Player();
+        p.play(search.get(CHOICE-1).getScore().getSequence(0, search.get(CHOICE-1).getScore().size(), null, 1));
+        System.out.println("Chosen " + (CHOICE-1) + ". " + search.get(CHOICE-1).getTitle());
+        try {
+            FileWriter file = new FileWriter(search.get(CHOICE-1).getTitle() + ".txt");
+            file.write(search.get(CHOICE-1).getScore().getTablature());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("Sheet music has been output to " + search.get(CHOICE-1).getTitle() + ".txt");
+
+
+
+        //search songs by artist
+        //list songs
+        //select song 
+        //output song to txt 
+        }
 }

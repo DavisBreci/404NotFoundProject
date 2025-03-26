@@ -77,6 +77,7 @@ public class DataConstants {
     protected static final String NOTE_STRING_POSITION = "string";
     protected static final String NOTE_FRONT_TIE = "frontTie";
     protected static final String NOTE_BACK_TIE = "backTie"; 
+    
     /**@author Christopher Ferguson */  
     protected static final String MIDI_FOLDER = "src/main/midi/";
 }
