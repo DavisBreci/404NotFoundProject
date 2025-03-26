@@ -1,16 +1,19 @@
 [
     {
-        "firstName": "Valerie",
         "lastName": "Frizzle",
-        "password": "@Bc123",
-        "songsPlayed": 0,
+        "classes": [
+            [
+                "d22d8a52-6b53-4508-b3e6-7c1e5d51fc1c"
+            ],
+            [
+                "8d666f44-a46c-4d5d-8877-48917befec86"
+            ]
+        ],
         "playlists": [
             "39a48119-e368-40a9-9d4e-c10139338e7c"
         ],
-        "id": "57fa08fd-65ee-439a-9c89-21e146e52afe",
         "streak": 0,
-        "email": "valeriefrizzle@yahoo.com",
-        "lastPlayed": "-999999999-01-01",
+        "lastPlayed": "2025-03-25",
         "assignedLessons": [
             "61d2e47a-a8f9-41b2-88c3-1656a626c433",
             "e9b9c2c5-0383-480d-b92c-2ffce330d3f1",
@@ -21,15 +24,12 @@
             "c5276218-2505-4ba5-aa9f-db2e116d5a8e",
             "2b7d3c97-5e65-45cd-becd-84e259ce326b"
         ],
+        "firstName": "Valerie",
+        "password": "@Bc123",
+        "songsPlayed": 0,
+        "id": "57fa08fd-65ee-439a-9c89-21e146e52afe",
+        "email": "valeriefrizzle@yahoo.com",
         "username": "MzFrizz",
-        "classes": [
-            [
-                "d22d8a52-6b53-4508-b3e6-7c1e5d51fc1c"
-            ],
-            [
-                "8d666f44-a46c-4d5d-8877-48917befec86"
-            ]
-        ],
         "lessons": [
             "e9b9c2c5-0383-480d-b92c-2ffce330d3f1",
             "61d2e47a-a8f9-41b2-88c3-1656a626c433",

@@ -542,6 +542,10 @@ public class DataWriter extends DataConstants {
      * @param args the arguments that are passed in
      */
     public static void main(String args[]) {
+        ArrayList<Teacher> teachers = DataLoader.getTeachers();
+    for (Teacher teacher : teachers) {
+        System.out.println("Teacher: " + teacher.getUsername() + ", Classes: " + teacher.getClasses()+ "yellow");
+    }
        
         DataWriter.saveUsers(DataLoader.getUsers());
         DataWriter.saveTeachers(DataLoader.getTeachers());

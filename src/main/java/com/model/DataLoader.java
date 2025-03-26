@@ -171,7 +171,7 @@ public class DataLoader extends DataConstants {
                     JSONArray classUserIDs = (JSONArray)classIDs.get(j);
                     ArrayList<User> classUsers = new ArrayList<User>();
                     for (int k=0; k < classUserIDs.size(); k++) {
-                        classUsers.add(getUserFromID(id));
+                        classUsers.add(getUserFromID((String) classUserIDs.get(k)));
                     }
                     classes.add(classUsers);
                 } 
