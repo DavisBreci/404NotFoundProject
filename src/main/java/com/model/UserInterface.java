@@ -15,7 +15,7 @@ public class UserInterface {
         // teacherSignUpScenario();
         fredSignUpScenario();
         // writingASongScenario();
-        // playingASongScenario();
+        playingASongScenario();
     }
     /**
      * @author Christopher Ferguson

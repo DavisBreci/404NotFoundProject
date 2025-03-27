@@ -402,6 +402,12 @@ public class Score {
         return idealString;
     }
 
+    /**
+     * Transposes a staccato string by the given number of octaves
+     * @param staccato JFugue staccato string
+     * @param octaves octaves to transpose
+     * @return transposed staccato string
+     */
     public static String transposeStaccato(String staccato, int octaves){
         String [] tokens = staccato.split("\s");
         StringBuilder transposed = new StringBuilder();
