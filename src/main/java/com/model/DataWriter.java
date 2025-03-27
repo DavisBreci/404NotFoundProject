@@ -271,20 +271,6 @@ public class DataWriter extends DataConstants {
 
         JSONArray jsonLessons = new JSONArray();
 
-        //hard code for testing
-        // LessonList lessonList = new LessonList();
-        // ArrayList<Song> lessonSongs1 = new ArrayList<>();
-        // ArrayList<Song> lessonSongs2 = new ArrayList<>();
-
-        // lessonSongs1.add(new Song(UUID.randomUUID().toString(), LESSONS_TITLE, SONG_ARTIST, SONG_GENRE, null, null, null, null));
-        // lessonSongs1.add(new Song(UUID.randomUUID().toString(), LESSONS_TITLE, SONG_ARTIST, SONG_GENRE, null, null, null, null));
-        // lessonSongs2.add(new Song(UUID.randomUUID().toString(), LESSONS_TITLE, SONG_ARTIST, SONG_GENRE, null, null, null, null));
-        // lessonSongs2.add(new Song(UUID.randomUUID().toString(), LESSONS_TITLE, SONG_ARTIST, SONG_GENRE, null, null, null, null));
-
-        // lessonList.addLesson("Lesson 1", lessonSongs1);
-        // lessonList.addLesson("Lesson 2", lessonSongs2);
-
-        // ArrayList<Lesson> lessons = lessonList.getLessons();
 
         for(Lesson lesson : lessons) {
             jsonLessons.add(getLessonJSON((lesson)));
@@ -553,6 +539,5 @@ public class DataWriter extends DataConstants {
         DataWriter.saveSongs(DataLoader.getAllSongs());
         DataWriter.saveLessons(DataLoader.getAllLessons());
 
-        // DataWriter.saveNewScore(DataLoader.getScoreFromID("a42d710f-afcb-4bce-bfd7-ecb43e6a5a89"), SCORE_FILE_NAME);
     }
 }
