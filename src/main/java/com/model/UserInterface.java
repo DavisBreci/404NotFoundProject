@@ -9,13 +9,13 @@ public class UserInterface {
     public static void main(String[] args) {
         UserList users = UserList.getInstance();
         SongList songList = SongList.getInstance();
-        songList.removeSong(songList.getSongByTitle("Smoke On the Water"));
-        users.removeUser("MzFrizz");
-        users.removeUser("ffred");
-        teacherSignUpScenario();
+        // songList.removeSong(songList.getSongByTitle("Smoke On the Water"));
+        // users.removeUser("MzFrizz");
+        // users.removeUser("ffred");
+
         // fredSignUpScenario();
         // writingASongScenario();
-        // playingASongScenario();
+        playingASongScenario();
     }
     /**
      * @author Christopher Ferguson
