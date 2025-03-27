@@ -4,16 +4,26 @@ import java.util.ArrayList;
 import java.util.function.Predicate;
 import java.time.LocalDate;
 
+/**
+ * a UserList class that manages a list of users
+ */
 public class UserList {
     
     private static UserList userList;
     private ArrayList<User> users;
 
+    /**
+     * Constructor that loads the user list from DataLoader
+     */
     private UserList() {
         users = DataLoader.getUsers();
         users.addAll(DataLoader.getTeachers());
     }
 
+    /**
+     * Singleton instance of UserList
+     * @return the instance of user list
+     */
     public static UserList getInstance() {
         if(userList == null) {
             userList = new UserList();
@@ -21,6 +31,12 @@ public class UserList {
         return userList;
     }
 
+    /**
+     * Gets the User by both username and password
+     * @param username The users username
+     * @param password The users password
+     * @return the user object if the arguments match the user object
+     */
     public User getUser(String username, String password) {
         for(User user : users)
             if(user.getUsername().equals(username) && user.getPassword().equals(password))
@@ -42,6 +58,16 @@ public class UserList {
         return null;
     }
 
+    /**
+     * Creates a new user and adds the new user 
+     * @param teacher If the student is a teacher or not
+     * @param first The User's first name
+     * @param last The users' last name
+     * @param email The user's email
+     * @param user The User's username
+     * @param pass The user's password
+     * @return True if the creation was a success, false if not
+     */
     public boolean createUser(boolean teacher, String first, String last, String email, String user, String pass) {
         if(!User.isValidUsername(user) || !User.isValidPassword(pass))
             return false;
@@ -55,6 +81,11 @@ public class UserList {
         return true;
     }
 
+    /**
+     * Removes a user by their username
+     * @param username The user's username
+     * @return True if the removal was successful, false if not
+     */
     public boolean removeUser(String username) {
         for(int i = 0; i < users.size(); i++){
             if(users.get(i).getUsername().equals(username)){
@@ -65,10 +96,19 @@ public class UserList {
         }
         return false;
     }
+
+    /**
+     * Getter for users
+     * @return the list of all users
+     */
     public ArrayList<User> getAllUsers(){
         return users;
     }
 
+    /**
+     * Getter for teachers
+     * @return the list of all teachers
+     */
     public ArrayList<Teacher> getTeachers(){
         ArrayList<Teacher> teachers = new ArrayList<Teacher>();
         for(User user : users)
@@ -77,6 +117,10 @@ public class UserList {
         return teachers;
     }
 
+    /**
+     * Getter for students 
+     * @return the list of users who are not teaches
+     */
     public ArrayList<User> getUsers(){
         ArrayList<User> students = new ArrayList<User>();
         for(User user : users)
