@@ -1,11 +1,10 @@
+package com.model;
+import java.time.LocalDate;
+import java.util.*;
 /**
  * Class for the end user, containing all their personal data and some managerial methods
  * @author Davis Breci
  */
-package com.model;
-import java.time.LocalDate;
-import java.util.*;
-
 public class User {
 // UUID for json storage, constant
     public final String id;
