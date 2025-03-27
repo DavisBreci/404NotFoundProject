@@ -1,7 +1,7 @@
 package com.model;
 /**
- * @author Christopher Ferguson
  * Enum that contains representations of fretted MIDI instruments
+ * @author Christopher Ferguson
  */
 public enum Instrument {
     GUITAR(0, 24, 24, 
@@ -71,7 +71,7 @@ public enum Instrument {
 
     /**
      * Returns the most significant byte of the instrument's bank number
-     * @return
+     * @return the most significant byte
      */
     public int msb(){
         return bank >> 7;
@@ -79,7 +79,7 @@ public enum Instrument {
 
      /**
      * Returns the least significant byte of the instrument's bank number
-     * @return
+     * @return the least significant byte
      */
     public int lsb(){
         return bank & 0x7F;

@@ -1,10 +1,8 @@
-/**
- * @author Christopher Ferguson
- */
 package com.model;
 /**
- * @author Christopher Ferguson
+ * 
  * Class representing rational numbers
+ * @author Christopher Ferguson
  */
 public class Rational implements Comparable<Rational>{
     private int numerator;

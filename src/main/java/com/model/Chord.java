@@ -1,6 +1,3 @@
-/**
- * @Author Christopher Ferguson
- */
 package com.model;
 
 import java.util.ArrayList;
@@ -8,6 +5,7 @@ import java.util.Iterator;
 
 /**
  * A class representing a chord on a fretted instrument
+ * @author Christopher Fergusons
  */
 public class Chord extends BarObj{
     private Instrument instrument;

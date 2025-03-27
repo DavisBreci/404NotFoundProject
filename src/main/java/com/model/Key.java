@@ -1,5 +1,8 @@
 package com.model;
 
+/**
+ * Enumeration representing musical keys
+ */
 public enum Key {
     CMAJOR_AMINOR,
     GMAJOR_EMINOR,
