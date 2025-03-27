@@ -7,13 +7,13 @@ import org.jfugue.player.Player;
 
 public class UserInterface {
     public static void main(String[] args) {
-        UserList users = UserList.getInstance();
-        SongList songList = SongList.getInstance();
-        songList.removeSong(songList.getSongByTitle("Smoke On the Water"));
-        users.removeUser("MzFrizz");
-        users.removeUser("ffred");
-        teacherSignUpScenario();
-        // fredSignUpScenario();
+        // UserList users = UserList.getInstance();
+        // SongList songList = SongList.getInstance();
+        // songList.removeSong(songList.getSongByTitle("Smoke On the Water"));
+        // users.removeUser("MzFrizz");
+        // users.removeUser("ffred");
+        // teacherSignUpScenario();
+        fredSignUpScenario();
         // writingASongScenario();
         // playingASongScenario();
     }
@@ -68,15 +68,16 @@ public class UserInterface {
      */
     public static void fredSignUpScenario(){
         MusicSystemFACADE system = MusicSystemFACADE.getInstance();
-        // boolean teacher = false;
-        // String first = "Fellicia";
-        // String last = "Fredrickson";
-        // String email = "fellicia@gmail.com";
-        // String user = "ffredrickson";
-        // String pass = "iHaTeMyBr0tHeR*";
-        // system.signUp(teacher,first,last,email,user,pass);
-        // system.logout();
-
+/*
+        boolean teacher = false;
+        String first = "Fellicia";
+        String last = "Fredrickson";
+        String email = "fellicia@gmail.com";
+        String user = "ffredrickson";
+        String pass = "iHaTeMyBr0tHeR*";
+        system.signUp(teacher,first,last,email,user,pass);
+        system.logout();
+*/
 
         boolean teacher = false;
         String first = "Fred";
@@ -108,6 +109,7 @@ public class UserInterface {
         System.out.println("Attempting to login as "+user+"...");
         System.out.println("Login "+(system.login(user, pass) ? "success!" : "failed."));
         system.logout();
+
     }
     /**
      * @author Christopher Ferguson

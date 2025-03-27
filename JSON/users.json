@@ -1,1 +1,49 @@
-[{"firstName":"Davis","lastName":"Breci","password":"404nf","songsPlayed":9,"playlists":["39a48119-e368-40a9-9d4e-c10139338e7c"],"id":"d22d8a52-6b53-4508-b3e6-7c1e5d51fc1c","streak":12,"email":"dbreci@email.sc.edu","lastPlayed":"2025-03-26","assignedLessons":["61d2e47a-a8f9-41b2-88c3-1656a626c433","e9b9c2c5-0383-480d-b92c-2ffce330d3f1","62e22409-2fe7-4a4c-b73d-2d8addf5735d","f0f99d68-6574-4a89-916c-d16ee918cf44","3721712c-b426-460f-adc9-b1d0a62caac6","8040399c-55bb-4cb2-b4e4-9e2e45a18b89","c5276218-2505-4ba5-aa9f-db2e116d5a8e","2b7d3c97-5e65-45cd-becd-84e259ce326b","698aea09-e580-4f59-86f4-1edf5197f82d","c5788f3b-afa1-45cc-a4b6-95c26210d3e5","380606ae-766a-4c61-a406-642c33ab004b","19462866-c1db-4bc3-a47e-ecea92c4c226","1d25c172-4b30-47cc-b606-d12294002963","6e4b31aa-a29e-4cef-8408-ab9d65e52c7e","6ec6dc7b-4602-45cd-8e8c-855a435aa61c"],"username":"dbreci"},{"firstName":"Christopher","lastName":"Ferguson","password":"247sucks","songsPlayed":22,"playlists":["039a23f6-317b-4577-a78b-a9d8005adcd9"],"id":"8d666f44-a46c-4d5d-8877-48917befec86","streak":3,"email":"CTF2@email.sc.edu","lastPlayed":"2025-03-26","assignedLessons":["e9b9c2c5-0383-480d-b92c-2ffce330d3f1","61d2e47a-a8f9-41b2-88c3-1656a626c433","62e22409-2fe7-4a4c-b73d-2d8addf5735d","f0f99d68-6574-4a89-916c-d16ee918cf44","3721712c-b426-460f-adc9-b1d0a62caac6","8040399c-55bb-4cb2-b4e4-9e2e45a18b89","c5276218-2505-4ba5-aa9f-db2e116d5a8e","2b7d3c97-5e65-45cd-becd-84e259ce326b","698aea09-e580-4f59-86f4-1edf5197f82d","c5788f3b-afa1-45cc-a4b6-95c26210d3e5","380606ae-766a-4c61-a406-642c33ab004b","19462866-c1db-4bc3-a47e-ecea92c4c226","1d25c172-4b30-47cc-b606-d12294002963","6e4b31aa-a29e-4cef-8408-ab9d65e52c7e","6ec6dc7b-4602-45cd-8e8c-855a435aa61c"],"username":"ctferg"},{"firstName":"Fred","lastName":"Fredrickson","password":"I<3mysister","songsPlayed":0,"playlists":[],"id":"ba646da5-4c28-4961-954e-7233a1e4ba77","streak":0,"email":"fred^2@gmail.com","lastPlayed":"-999999999-01-01","assignedLessons":[],"username":"ffredrickson"}]
+[
+    {
+        "firstName": "Davis",
+        "lastName": "Breci",
+        "password": "404nf",
+        "songsPlayed": 9,
+        "playlists": [
+            "39a48119-e368-40a9-9d4e-c10139338e7c"
+        ],
+        "id": "d22d8a52-6b53-4508-b3e6-7c1e5d51fc1c",
+        "streak": 12,
+        "email": "dbreci@email.sc.edu",
+        "lastPlayed": "2025-03-26",
+        "assignedLessons": [
+            
+        ],
+        "username": "dbreci"
+    },
+    {
+        "firstName": "Christopher",
+        "lastName": "Ferguson",
+        "password": "247sucks",
+        "songsPlayed": 22,
+        "playlists": [
+            "039a23f6-317b-4577-a78b-a9d8005adcd9"
+        ],
+        "id": "8d666f44-a46c-4d5d-8877-48917befec86",
+        "streak": 3,
+        "email": "CTF2@email.sc.edu",
+        "lastPlayed": "2025-03-26",
+        "assignedLessons": [
+            
+        ],
+        "username": "ctferg"
+    },
+    {
+        "firstName": "Fellicia",
+        "lastName": "Fredrickson",
+        "password": "iHaTeMyBr0tHeR*",
+        "songsPlayed": 0,
+        "playlists": [],
+        "id": "b2d14823-e3f3-44b6-a5d7-03ab21b6d4a7",
+        "streak": 0,
+        "email": "fellicia@gmail.com",
+        "lastPlayed": "-999999999-01-01",
+        "assignedLessons": [],
+        "username": "ffredrickson"
+    }
+]
