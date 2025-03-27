@@ -2,6 +2,9 @@ package com.model;
 
 import java.util.ArrayList;
 
+/**
+ * Class that manages all the program's lessons
+ */
 public class LessonList {
     
     private static LessonList lessonList;
@@ -15,8 +18,9 @@ public class LessonList {
     }
     /**
      * returns instance of singleton class
+     * @return the LessonList instance
      * @author Davis Breci
-     * @return
+     * 
      */    
     public static LessonList getInstance() {
         if(lessonList == null) {
@@ -26,9 +30,9 @@ public class LessonList {
     }
     /**
      * searches for lesson by title
-     * @author Davis Breci
      * @param title lesson being searched for
      * @return matching lesson
+     * @author Davis Breci
      */
     public Lesson getLesson(String title) {
         for(Lesson l : lessons)
@@ -39,8 +43,8 @@ public class LessonList {
 
     /**
      * Getter for the lessons
-     * @author brenskrz
      * @return The arrayList of lessons
+     * @author brenskrz
      */
     public ArrayList<Lesson> getLessons() {
         return lessons;
@@ -49,6 +53,7 @@ public class LessonList {
      * creates a new lesson and adds it to the lesson list
      * @param songs songs included in the lesson
      * @param title title (without number code at beginning). cannot begin with ~.
+     * @author Davis Breci
      */
     public Lesson createLesson(ArrayList<Song> songs, String title) {
         if(title.charAt(0) == '~')
@@ -57,6 +62,4 @@ public class LessonList {
         lessons.add(toAdd);
         return toAdd;
     }
-
-    
 }

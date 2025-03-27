@@ -1,7 +1,7 @@
 package com.model;
 /**
- * @author Christopher Ferguson
  * Represents a music entity with only duration
+ * @author Christopher Ferguson
  */
 public abstract class BarObj implements Comparable<BarObj>{
     protected NoteValue value;

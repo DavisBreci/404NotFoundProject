@@ -1,5 +1,8 @@
 package com.model;
 
+/**
+ * Enumeration representing the base lengths for notes
+ */
 public enum NoteValue {
     SIXTY_FOURTH(new Rational(1, 64)),
     THIRTY_SECOND(new Rational(1, 32)),
