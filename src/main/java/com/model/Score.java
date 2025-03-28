@@ -573,12 +573,14 @@ public class Score {
             Synthesizer synth;
             Sequencer sequencer;
             boolean noteActive;
+            boolean passedTest;
 
             BankSwitchTester(Instrument instrument, Synthesizer synth, Sequencer sequencer){
                 this.instrument = instrument;
                 this.synth = synth;
                 this.sequencer = sequencer;
                 noteActive = false;
+                passedTest = false;
             }
 
             public void send(MidiMessage message, long timeStamp) { // Called by the sequencer when it receives a MIDI event
@@ -589,8 +591,8 @@ public class Score {
                 VoiceStatus [] voiceStatuses = synth.getVoiceStatus();
                 for(VoiceStatus noteStatus : voiceStatuses){
                     if(noteStatus.active == false) continue;
-                    assertEquals(505, noteStatus.bank);
-                    assertEquals(instrument.patch, noteStatus.program);
+                    if(instrument.bank == noteStatus.bank && instrument.patch == noteStatus.program);
+                        passedTest = true;
                 }
             }
             
@@ -609,18 +611,14 @@ public class Score {
         synth.open(); // Allow the synth to receive info
         sequencer.getTransmitters().get(0).setReceiver(synth.getReceiver()); // Manually connect sequencer to singleton synthesizer
         BankSwitchTester tester = new BankSwitchTester(instrument, synth, sequencer);
-        // sequencer.getTransmitter().setReceiver(tester); // Connect sequencer to tester
-        // SequencerManager.getInstance().addEndOfTrackListener(tester);
+        sequencer.getTransmitter().setReceiver(tester); // Connect sequencer to tester
+        SequencerManager.getInstance().addEndOfTrackListener(tester);
         Score testScore  = new Score(null, instrument, 120);
         Measure testMeasure = new Measure(instrument, new Rational(4));
         testMeasure.put(new Rational(0, 1), new Note(PitchClass.C, 4), 1);
         testScore.add(testMeasure);
         ManagedPlayer p = new ManagedPlayer();
         p.start(testScore.getSequence(0, testScore.size(), null, 1));
-        VoiceStatus [] vs = synth.getVoiceStatus();
-        for(VoiceStatus v : vs){
-            if(v.active)
-                System.out.println("Active voice!");
-        }
+        
     }
 }

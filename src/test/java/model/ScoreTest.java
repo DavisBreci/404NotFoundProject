@@ -6,10 +6,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import static java.util.Map.entry;
+
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
+import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Synthesizer;
@@ -152,4 +158,74 @@ public class ScoreTest {
             busyNotes.put(fMaj7add11[i], idealStrings[i]);
         }
     }
+
+    @Test
+    public void getIdealStringHighestNote(){
+        Instrument instrument = Instrument.DISTORTION_GUITAR;
+        Note ceiling = new Note(PitchClass.E, 6);
+        Chord busyNotes = new Chord(NoteValue.WHOLE, false, instrument);
+        int idealString = Score.getIdealString(busyNotes, instrument.tuning[0], ceiling);
+        assertEquals(instrument.tuning.length - 1, idealString);
+    }
+
+    @Test
+    public void testMidiToScoreTuplet(){ // Method doesn't support tuplets, but they shouldn't break the parser
+        Sequence rawMidi = DataLoader.loadSequence("triplet_test.mid");
+        Score tripletTest = Score.midiToScore(rawMidi, 0, Instrument.ELECTRIC_JAZZ_GUITAR);
+        assertEquals(" Rq G3s. Ri Rt ",tripletTest.toString(0, 1, false));
+    }
+
+    @Test 
+    public void testMidiToScoreEOT(){ // Method shouldn't let the end of track event add an empty measure at the end
+        Sequence rawMidi = DataLoader.loadSequence("Teen_Town.mid");
+        Score eotTest = Score.midiToScore(rawMidi, 0, Instrument.FRETLESS_BASS);
+        Measure endOfTrack = eotTest.get(eotTest.size() - 1);
+        assertFalse(endOfTrack.isEmpty());
+    }
+
+    @Test
+    public void testMidiToScoreTied(){ // Method should ignore notes that cross barlines
+        Sequence rawMidi = DataLoader.loadSequence("tiedNoteTest.mid");
+        Score tiedTest = Score.midiToScore(rawMidi, 0, Instrument.FRETLESS_BASS);
+        assertTrue(tiedTest.get(0).isEmpty());
+        assertTrue(tiedTest.get(1).isEmpty());
+    }
+
+    @Test
+    public void testMidiToScoreTimeSignatures(){ // Score should reflect time signature changes in midi 
+        Sequence rawMidi = DataLoader.loadSequence("Larks_II_GuitarOnly.mid");
+        Score timeSignatureTest = Score.midiToScore(rawMidi, 0, Instrument.OVERDRIVEN_GUITAR);
+        Rational four = new Rational(4);
+        Rational five = new Rational(5, 4);
+        Map<Integer, Rational> testTimeMap = Map.ofEntries( // Where the score changes time signature
+            entry(1, five),
+            entry(4, four),
+            entry(5, five),
+            entry(6, four),
+            entry(9, five),
+            entry(10, four),
+            entry(13, five),
+            entry(14, four),
+            entry(17, five),
+            entry(18, four)
+        );
+        Rational prev = new Rational(0, 1);
+        Rational current;
+        for(int i = 0; i < 19; i++){
+            current = timeSignatureTest.get(i).getTimeSignature();
+            if(prev.compareTo(current) != 0){
+                assertEquals(testTimeMap.get(i + 1).toString(), current.toString());
+                prev = current;
+            }
+        }
+    }
+
+    @Test
+    public void testMidiToScoreWrongInstrument(){ // Out of range notes should be dropped
+        Sequence rawMidi = DataLoader.loadSequence("DeanTown.mid");
+        Score wrongInstrumentTest = Score.midiToScore(rawMidi, 0, Instrument.SOPRANO_UKULELE);
+        for(Measure m : wrongInstrumentTest.getMeasures())
+            assertTrue(m.isEmpty());
+    }
+
 }
