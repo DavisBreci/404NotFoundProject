@@ -3,16 +3,31 @@
  */
 package com.model;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
+import javax.sound.midi.MidiMessage;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequence;
+import javax.sound.midi.Sequencer;
+import javax.sound.midi.ShortMessage;
+import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Track;
+import javax.sound.midi.VoiceStatus;
+
+import org.jfugue.player.EndOfTrackListener;
+import org.jfugue.player.ManagedPlayer;
 import org.jfugue.player.Player;
+import org.jfugue.player.SequencerManager;
+import org.jfugue.player.SynthesizerManager;
 
 /**
  * Class representing tablature
@@ -377,7 +392,7 @@ public class Score {
      * @param currentNote the note to choose a string for
      * @return the best string to place the current note on
      */
-    private static int getIdealString(Chord currentChord, Note prevNote, Note currentNote){
+    public static int getIdealString(Chord currentChord, Note prevNote, Note currentNote){
         int idealString = -1;
         double minSteps = Double.MAX_VALUE;
         double currentSteps = 0;
@@ -492,9 +507,120 @@ public class Score {
         return tablature.toString();
     }
 
-    public static void main(String[] args) {
-        Score alph = DataLoader.getScoreFromID("a42d710f-afcb-4bce-bfd7-ecb43e6a5a89");
-        Score taxman = Score.midiToScore(DataLoader.loadSequence("Teen_Town.mid"), 0, Instrument.FRETLESS_BASS);
-        System.out.println(taxman.getTablature());
+    public static void main(String[] args) throws MidiUnavailableException, InvalidMidiDataException {
+        // Instrument instrument = Instrument.SOPRANO_UKULELE;
+        // Score testScore  = new Score(null, instrument, 120);
+        // Measure testMeasure = new Measure(instrument, new Rational(4));
+        // testMeasure.put(new Rational(0, 1), new Note(PitchClass.C, 4), 1);
+        // testScore.add(testMeasure);
+        // Player p = new Player();
+        // p.play(testScore.getSequence(0, testScore.size(), null, 0));
+        testBankSwitching();
+    }
+
+    // public static void testBankSwitching(){
+    //     class BankSwitchTester implements Receiver{
+    //         Instrument instrument;
+    //         Synthesizer synth;
+    //         boolean noteActive;
+
+    //         BankSwitchTester(Instrument instrument, Synthesizer synth){
+    //             this.instrument = instrument;
+    //             this.synth = synth;
+    //             noteActive = false;
+    //         }
+
+    //         public void send(MidiMessage message, long timeStamp) {
+    //             int status = message.getStatus();
+    //             if(status != ShortMessage.NOTE_ON && status != ShortMessage.NOTE_OFF) return;
+    //             if(noteActive){ noteActive = false; return;}
+    //             noteActive = true;
+    //             VoiceStatus [] voiceStatuses = synth.getVoiceStatus();
+    //             for(VoiceStatus noteStatus : voiceStatuses){
+    //                 if(noteStatus.active == false) continue;
+    //                 assertEquals(instrument.bank, noteStatus.bank);
+    //                 assertEquals(instrument.patch, noteStatus.program);
+    //             }
+    //         }
+            
+    //         public void close() {}
+    //     }
+
+    //     Instrument instrument = Instrument.SOPRANO_UKULELE;
+    //     try(
+    //         Synthesizer synth = SynthesizerManager.getInstance().getSynthesizer();
+    //         Sequencer sequencer = SequencerManager.getInstance().getSequencer();
+    //     ){
+    //         synth.open(); // Allow the synth to receive info
+    //         sequencer.getTransmitters().get(0).setReceiver(synth.getReceiver()); // Manually connect sequencer to singleton synthesizer
+    //         sequencer.getTransmitter().setReceiver(new BankSwitchTester(instrument, synth)); // Connect sequencer to tester
+    //         Score testScore  = new Score(null, instrument, 120);
+    //         Measure testMeasure = new Measure(instrument, new Rational(4));
+    //         testMeasure.put(new Rational(0, 1), new Note(PitchClass.C, 4), 1);
+    //         testScore.add(testMeasure);
+    //         ManagedPlayer p = new ManagedPlayer();
+    //         p.start(testScore.getSequence(0, testScore.size(), null, 1));
+    //     } catch (MidiUnavailableException e) {
+    //         e.printStackTrace();
+    //     } catch (InvalidMidiDataException e) {
+    //                 e.printStackTrace();
+    //             }
+    // }
+
+     public static void testBankSwitching() throws MidiUnavailableException, InvalidMidiDataException{
+        class BankSwitchTester implements Receiver, EndOfTrackListener{
+            Instrument instrument;
+            Synthesizer synth;
+            Sequencer sequencer;
+            boolean noteActive;
+
+            BankSwitchTester(Instrument instrument, Synthesizer synth, Sequencer sequencer){
+                this.instrument = instrument;
+                this.synth = synth;
+                this.sequencer = sequencer;
+                noteActive = false;
+            }
+
+            public void send(MidiMessage message, long timeStamp) { // Called by the sequencer when it receives a MIDI event
+                int status = message.getStatus();
+                if(status != ShortMessage.NOTE_ON && status != ShortMessage.NOTE_OFF) return;
+                if(noteActive){ noteActive = false; return;}
+                noteActive = true;
+                VoiceStatus [] voiceStatuses = synth.getVoiceStatus();
+                for(VoiceStatus noteStatus : voiceStatuses){
+                    if(noteStatus.active == false) continue;
+                    assertEquals(505, noteStatus.bank);
+                    assertEquals(instrument.patch, noteStatus.program);
+                }
+            }
+            
+            public void close() {}
+
+            @Override
+            public void onEndOfTrack() {
+                synth.close();
+                sequencer.close();
+            }
+        }
+
+        Instrument instrument = Instrument.SOPRANO_UKULELE;
+        Synthesizer synth = SynthesizerManager.getInstance().getSynthesizer();
+        Sequencer sequencer =  SequencerManager.getInstance().getSequencer();
+        synth.open(); // Allow the synth to receive info
+        sequencer.getTransmitters().get(0).setReceiver(synth.getReceiver()); // Manually connect sequencer to singleton synthesizer
+        BankSwitchTester tester = new BankSwitchTester(instrument, synth, sequencer);
+        // sequencer.getTransmitter().setReceiver(tester); // Connect sequencer to tester
+        // SequencerManager.getInstance().addEndOfTrackListener(tester);
+        Score testScore  = new Score(null, instrument, 120);
+        Measure testMeasure = new Measure(instrument, new Rational(4));
+        testMeasure.put(new Rational(0, 1), new Note(PitchClass.C, 4), 1);
+        testScore.add(testMeasure);
+        ManagedPlayer p = new ManagedPlayer();
+        p.start(testScore.getSequence(0, testScore.size(), null, 1));
+        VoiceStatus [] vs = synth.getVoiceStatus();
+        for(VoiceStatus v : vs){
+            if(v.active)
+                System.out.println("Active voice!");
+        }
     }
 }
