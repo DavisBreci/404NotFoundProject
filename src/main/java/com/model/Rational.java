@@ -310,8 +310,4 @@ public class Rational implements Comparable<Rational>{
         return numerator == 0;
     }
 
-    public boolean equals(Rational r){
-        return numerator == r.getNumerator() && denominator == r.getDenominator();
-    }
-
 }

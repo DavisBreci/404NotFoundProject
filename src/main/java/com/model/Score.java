@@ -508,64 +508,9 @@ public class Score {
     }
 
     public static void main(String[] args) throws MidiUnavailableException, InvalidMidiDataException {
-        // Instrument instrument = Instrument.SOPRANO_UKULELE;
-        // Score testScore  = new Score(null, instrument, 120);
-        // Measure testMeasure = new Measure(instrument, new Rational(4));
-        // testMeasure.put(new Rational(0, 1), new Note(PitchClass.C, 4), 1);
-        // testScore.add(testMeasure);
-        // Player p = new Player();
-        // p.play(testScore.getSequence(0, testScore.size(), null, 0));
         testBankSwitching();
     }
 
-    // public static void testBankSwitching(){
-    //     class BankSwitchTester implements Receiver{
-    //         Instrument instrument;
-    //         Synthesizer synth;
-    //         boolean noteActive;
-
-    //         BankSwitchTester(Instrument instrument, Synthesizer synth){
-    //             this.instrument = instrument;
-    //             this.synth = synth;
-    //             noteActive = false;
-    //         }
-
-    //         public void send(MidiMessage message, long timeStamp) {
-    //             int status = message.getStatus();
-    //             if(status != ShortMessage.NOTE_ON && status != ShortMessage.NOTE_OFF) return;
-    //             if(noteActive){ noteActive = false; return;}
-    //             noteActive = true;
-    //             VoiceStatus [] voiceStatuses = synth.getVoiceStatus();
-    //             for(VoiceStatus noteStatus : voiceStatuses){
-    //                 if(noteStatus.active == false) continue;
-    //                 assertEquals(instrument.bank, noteStatus.bank);
-    //                 assertEquals(instrument.patch, noteStatus.program);
-    //             }
-    //         }
-            
-    //         public void close() {}
-    //     }
-
-    //     Instrument instrument = Instrument.SOPRANO_UKULELE;
-    //     try(
-    //         Synthesizer synth = SynthesizerManager.getInstance().getSynthesizer();
-    //         Sequencer sequencer = SequencerManager.getInstance().getSequencer();
-    //     ){
-    //         synth.open(); // Allow the synth to receive info
-    //         sequencer.getTransmitters().get(0).setReceiver(synth.getReceiver()); // Manually connect sequencer to singleton synthesizer
-    //         sequencer.getTransmitter().setReceiver(new BankSwitchTester(instrument, synth)); // Connect sequencer to tester
-    //         Score testScore  = new Score(null, instrument, 120);
-    //         Measure testMeasure = new Measure(instrument, new Rational(4));
-    //         testMeasure.put(new Rational(0, 1), new Note(PitchClass.C, 4), 1);
-    //         testScore.add(testMeasure);
-    //         ManagedPlayer p = new ManagedPlayer();
-    //         p.start(testScore.getSequence(0, testScore.size(), null, 1));
-    //     } catch (MidiUnavailableException e) {
-    //         e.printStackTrace();
-    //     } catch (InvalidMidiDataException e) {
-    //                 e.printStackTrace();
-    //             }
-    // }
 
      public static void testBankSwitching() throws MidiUnavailableException, InvalidMidiDataException{
         class BankSwitchTester implements Receiver, EndOfTrackListener{

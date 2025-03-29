@@ -12,6 +12,8 @@ import java.util.Map;
 import static java.util.Map.entry;
 
 import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MetaMessage;
+import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
@@ -19,6 +21,7 @@ import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Synthesizer;
+import javax.sound.midi.Track;
 import javax.sound.midi.Transmitter;
 import javax.sound.midi.VoiceStatus;
 
@@ -29,7 +32,9 @@ import org.jfugue.player.SequencerManager;
 import org.jfugue.player.SynthesizerManager;
 import org.junit.Assert;
 import com.model.*;
-
+/**
+ * @author Christopher Ferguson
+ */
 public class ScoreTest {
     @Test
     public void testBankSwitching() throws MidiUnavailableException, InvalidMidiDataException{
@@ -216,7 +221,7 @@ public class ScoreTest {
             if(prev.compareTo(current) != 0){
                 assertEquals(testTimeMap.get(i + 1).toString(), current.toString());
                 prev = current;
-            }
+            } else assertEquals(prev.toString(), current.toString());
         }
     }
 
@@ -228,4 +233,145 @@ public class ScoreTest {
             assertTrue(m.isEmpty());
     }
 
+    @Test
+    public void testTransposeStaccatoNegative(){ // Shouldn't allow negative octaves
+        String staccato = "C0";
+        assertEquals(staccato, Score.transposeStaccato(staccato, -1));
+    }
+
+    @Test
+    public void testTransposeStaccatoTooHigh(){ // Shouldn't allow octaves greater than 9
+        String staccato = "G9";
+        assertEquals(staccato, Score.transposeStaccato(staccato, 1));
+    }
+
+    @Test
+    public void testTransposeStaccatoChord(){
+        String staccato = "(C4+E4+G4)q"; // Parenthesized chord, equivalent to C4q+E4q+G4q
+        assertEquals("(C5+E5+G5)q", Score.transposeStaccato(staccato, 1));
+    }
+
+    @Test
+    public void testTransposeStaccatoImplicit(){
+        String staccato = "C"; // Implicitly C4, even though octave is unstated
+        assertEquals("C5", Score.transposeStaccato(staccato, 1));
+    }
+
+    @Test 
+    public void testTransposeStaccatoTied(){
+        String staccato = "C4-q C4-q";
+        assertEquals("C5q- C5-q", Score.transposeStaccato(staccato, 1));
+    }
+
+    @Test
+    public void testAsChordArrayEmpty(){
+        Score test = new Score(null, Instrument.GUITAR, 120);
+        Chord [] chordArray = test.asChordArray();
+        assertEquals(0, chordArray.length);
+    }
+
+    @Test
+    public void testAsChordArrayTied(){ // Two chords where all notes are tied should count as two
+        Instrument instrument = Instrument.GUITAR;
+        Score test = new Score(null, instrument, 120);
+        Chord a = new Chord(NoteValue.WHOLE, false, instrument);
+        a.put(new Note(PitchClass.E, 2), 0);
+        Chord b = new Chord(NoteValue.WHOLE, false, instrument);
+        b.put(new Note(PitchClass.E, 2), 0);
+        a.getNotes(false)[0].tieFront(b.getNotes(false)[0]);
+        Measure measureA = new Measure(instrument, new Rational(4));
+        Measure measureB = new Measure(instrument, new Rational(4));
+        measureA.put(new Rational(0, 1), a);
+        measureB.put(new Rational(0, 1), b);
+        test.add(measureA);
+        test.add(measureB);
+        assertEquals(2, test.asChordArray().length);
+    }
+
+    @Test
+    public void testAsChordArrayGap(){
+        Instrument instrument = Instrument.GUITAR;
+        Score test = new Score(null, instrument, 120);
+
+        Measure measureOne = new Measure(instrument, new Rational(4));
+        Chord chordOne = new Chord(NoteValue.WHOLE, false, instrument);
+        chordOne.put(new Note(PitchClass.E, 2), 0);
+        measureOne.put(new Rational(0, 1), chordOne);
+
+        Measure measureTwo = new Measure(instrument, new Rational(4));
+        Chord chordTwo = chordOne.deepCopy();
+        measureTwo.put(new Rational(0, 1), chordTwo);
+
+        test.add(measureOne);
+        test.add(new Measure(instrument, new Rational(4)));
+        test.add(measureTwo);
+
+        Chord [] chordArray = test.asChordArray();
+        assertEquals(2, chordArray.length);
+        assertEquals(chordOne, chordArray[0]);
+        assertEquals(chordTwo, chordArray[1]);
+    }
+
+    @Test
+    public void testGetSequencePaddingOnly(){ // Creating a score with nothing but padding
+        Rational padding = new Rational(17,16);
+        Score test = new Score(null, Instrument.GUITAR, 120);
+        Sequence result = test.getSequence(0, test.size(), padding, 0);
+        Track t = result.getTracks()[0];
+        MidiEvent eot = t.get(t.size() - 1);
+        assertEquals(padding.toString(), MIDIHelper.midiQuantize(0, eot, result.getResolution()).toString());
+    }
+
+    @Test
+    public void testGetSequenceInvalidSlice(){ // An invalid slice should yield an empty sequence
+        Score test = Score.midiToScore(DataLoader.loadSequence("Teen_Town.mid"), 0, Instrument.FRETLESS_BASS);
+        Sequence result = test.getSequence(test.size(), 0 , null, 0);
+        Track t = result.getTracks()[0];
+        MidiEvent eot = t.get(t.size() - 1);
+        assertEquals(0, eot.getTick());
+    }
+
+    @Test
+    public void testGetSequenceControllerEvents(){ // Make sure JFugue controller functions are reflected in the sequence
+        Instrument instrument = Instrument.SOPRANO_UKULELE;
+        int tempo = 120;
+        Score test = new Score(null,instrument , 120);
+        test.add(new Measure(instrument, new Rational(17, 16)));
+        test.get(0).put(new Rational(0, 1), new Note(PitchClass.C, 4), 1);
+        Sequence result = test.getSequence(0, test.size(), null, 1);
+        Track t = result.getTracks()[0];
+        byte [] msg;
+        boolean hasMSB = false;
+        boolean hasLSB = false;
+        boolean hasTempo = false;
+        boolean hasInstrument = false;
+        for(int i = 0; i < t.size(); i++){
+            MidiMessage current = t.get(i).getMessage();
+            msg = current.getMessage();
+            switch(current.getStatus()){
+                case ShortMessage.CONTROL_CHANGE:
+                    if(Byte.toUnsignedInt(msg[1]) == 0){
+                        assertEquals(instrument.msb(), Byte.toUnsignedInt(msg[2]));
+                        hasMSB = true;
+                    } else if(Byte.toUnsignedInt(msg[1]) == 0x20){
+                        assertEquals(instrument.lsb(), Byte.toUnsignedInt(msg[2]));
+                        hasLSB = true;
+                    }   
+                    break;
+                case ShortMessage.PROGRAM_CHANGE:
+                    assertEquals(instrument.patch, Byte.toUnsignedInt(msg[1]));
+                    hasInstrument = true;
+                    break;
+                case MetaMessage.META:
+                    if(msg[1] != MIDIHelper.TEMPO) continue;
+                    assertEquals(tempo, MIDIHelper.mpqToBpm(MIDIHelper.getLong(msg, 3, 3)));
+                    hasTempo = true;
+                    break;
+                default:
+                    ;
+            }
+        }
+        assertTrue(hasMSB && hasLSB && hasInstrument && hasTempo);
+        
+    }
 }
