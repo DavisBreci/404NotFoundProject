@@ -219,7 +219,7 @@ public class Measure {
      * @param start where to begin filling
      * @param end where to end filling
      */
-    private void greedyRestFill(Rational start, Rational end){
+    public void greedyRestFill(Rational start, Rational end){
         Rational remainder = end.deepCopy();
         Rational offset = start.deepCopy();
         remainder.minus(start);
@@ -343,7 +343,7 @@ public class Measure {
      * Retrieves an iterator that iterates over rests and chords
      * @return the bar iterator
      */
-    private Iterator<Entry<Rational, ? extends BarObj>> barIterator(){
+    public Iterator<Entry<Rational, ? extends BarObj>> barIterator(){
         TreeSet<Entry<Rational, ? extends BarObj>> ts = new TreeSet<Entry<Rational, ? extends BarObj>>(Comparator.comparing(Entry::getKey));
         ts.addAll(rests.entrySet());
         ts.addAll(chords.entrySet());   
