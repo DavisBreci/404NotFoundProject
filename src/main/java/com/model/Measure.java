@@ -43,7 +43,7 @@ public class Measure {
      * @param b note for collision check
      * @return whether there's a collision
      */
-    private boolean collides(Entry<Rational, ? extends BarObj> a, Entry<Rational, ? extends BarObj> b){
+    public static boolean collides(Entry<Rational, ? extends BarObj> a, Entry<Rational, ? extends BarObj> b){
         Rational aStart = a.getKey();
         Rational aEnd = aStart.deepCopy();
         aEnd.plus(a.getValue().getDuration());
@@ -108,7 +108,7 @@ public class Measure {
      * @param barObj a musical object that has a duration
      * @return whether the BarObj cannot be contained within the measure
      */
-    private boolean outOfBounds(Rational offset, BarObj barObj){
+    public boolean outOfBounds(Rational offset, BarObj barObj){
         if(offset.compareTo(new Rational("0/1")) == -1)
             return true;
         Rational noteEnd = offset.deepCopy();

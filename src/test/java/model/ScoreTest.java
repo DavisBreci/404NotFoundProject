@@ -5,6 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -248,7 +249,11 @@ public class ScoreTest {
     @Test
     public void testTransposeStaccatoChord(){
         String staccato = "(C4+E4+G4)q"; // Parenthesized chord, equivalent to C4q+E4q+G4q
-        assertEquals("(C5+E5+G5)q", Score.transposeStaccato(staccato, 1));
+        try{
+            assertEquals("(C5+E5+G5)q", Score.transposeStaccato(staccato, 1));
+        } catch(Exception e ){
+            fail();
+        }
     }
 
     @Test
