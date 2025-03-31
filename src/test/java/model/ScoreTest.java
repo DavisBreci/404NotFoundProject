@@ -5,6 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,18 +38,22 @@ import com.model.*;
  */
 public class ScoreTest {
     @Test
-    public void testBankSwitching() throws MidiUnavailableException, InvalidMidiDataException{
+    public void testBankSwitching() throws MidiUnavailableException, InvalidMidiDataException, InterruptedException{
         class BankSwitchTester implements Receiver, EndOfTrackListener{
             Instrument instrument;
             Synthesizer synth;
             Sequencer sequencer;
             boolean noteActive;
+            boolean resultObtained;
+            boolean result;
 
             BankSwitchTester(Instrument instrument, Synthesizer synth, Sequencer sequencer){
                 this.instrument = instrument;
                 this.synth = synth;
                 this.sequencer = sequencer;
                 noteActive = false;
+                resultObtained = false;
+                result = false;
             }
 
             public void send(MidiMessage message, long timeStamp) { // Called by the sequencer when it receives a MIDI event
@@ -59,8 +64,9 @@ public class ScoreTest {
                 VoiceStatus [] voiceStatuses = synth.getVoiceStatus();
                 for(VoiceStatus noteStatus : voiceStatuses){
                     if(noteStatus.active == false) continue;
-                    assertEquals(instrument.bank, noteStatus.bank);
-                    assertEquals(instrument.patch, noteStatus.program);
+                    if(instrument.bank == noteStatus.bank && instrument.patch == noteStatus.program)
+                        result = true;
+                    resultObtained = true;
                 }
             }
             
@@ -87,7 +93,9 @@ public class ScoreTest {
         testScore.add(testMeasure);
         ManagedPlayer p = new ManagedPlayer();
         p.start(testScore.getSequence(0, testScore.size(), null, 1));
-    }
+        Thread.sleep(1000);
+        assertTrue(tester.result);
+    }   
 
     @Test
     public void testGetIdealStringAllBusy(){
@@ -248,7 +256,11 @@ public class ScoreTest {
     @Test
     public void testTransposeStaccatoChord(){
         String staccato = "(C4+E4+G4)q"; // Parenthesized chord, equivalent to C4q+E4q+G4q
-        assertEquals("(C5+E5+G5)q", Score.transposeStaccato(staccato, 1));
+        try{
+            assertEquals("(C5+E5+G5)q", Score.transposeStaccato(staccato, 1));
+        } catch(Exception e ){
+            fail();
+        }
     }
 
     @Test
