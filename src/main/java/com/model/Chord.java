@@ -24,6 +24,7 @@ public class Chord extends BarObj{
         notes = new Note[instrument.tuning.length];
         noteCount = 0;
     }
+    
     /**
      * Retrieves the number of notes in a chord
      * @return the current note count
