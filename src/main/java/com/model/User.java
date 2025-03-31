@@ -39,6 +39,8 @@ public class User {
              ArrayList<Lesson> assignedLessons, LocalDate lastPlayed){
 // when new users are created, a uuid must be created for them
         this.id = (id == null) ? UUID.randomUUID().toString(): id;
+        if(first == null || last == null || email == null || user == null || !isValidPassword(pass))
+            throw new IllegalArgumentException();
         this.firstName = first;
         this.lastName = last;
         this.email = email;
@@ -58,7 +60,7 @@ public class User {
      * @param newPass new desired password
      */
     public void resetPassword(String email, String newPass){
-        if(this.email == email && isValidPassword(newPass))
+        if(newPass != null && this.email == email && isValidPassword(newPass))
             this.password = newPass;
     }
     /**
@@ -70,7 +72,7 @@ public class User {
      * @return boolean whether the name is valid or not
      */
     public static boolean isValidUsername(String user){
-        if(user.length()<5 || user.length()>30)
+        if(user == null || user.length()<5 || user.length()>30)
             return false;
         for( char c : user.toCharArray())
             if(c < 33)
@@ -85,7 +87,7 @@ public class User {
      * @return boolean whether or not the password is acceptable
      */
     public static boolean isValidPassword(String pass){
-        if(pass.length()<5 || pass.length()>30)
+        if(pass == null || pass.length()<5 || pass.length()>30)
             return false;
         boolean capitalLetter = false;
         boolean specialCharacter = false;
@@ -109,7 +111,8 @@ public class User {
      * @author Davis Breci
      */
     public void updateStreak(){
-        switch(lastPlayed.plusDays(1).compareTo(LocalDate.now())){
+        int x = (int)(((Long)(lastPlayed.toEpochDay()+1)).compareTo(LocalDate.now().toEpochDay()));
+        switch(x){
 // lastPlayed was yesterday
             case 0:
                 ++streak;
