@@ -183,5 +183,51 @@ public class ChordTest {
         Chord c = new Chord(NoteValue.WHOLE, false, Instrument.SOPRANO_UKULELE);
         assertFalse(c.put(null, 0));
     }
+
+    @Test 
+    public void testRemoveByString(){
+        Chord c = new Chord(NoteValue.WHOLE, false, Instrument.SOPRANO_UKULELE);
+        c.put(c.getInstrument().tuning[0].deepCopy(),0);
+        assertTrue(c.remove(0));
+        assertNull(c.getNotes(false)[0]);
+    }
+
+    @Test
+    public void testRemoveByValue(){
+        Chord c = new Chord(NoteValue.WHOLE, false, Instrument.SOPRANO_UKULELE);
+        Note n = c.getInstrument().tuning[0].deepCopy();
+        c.put(n,0);
+        assertTrue(c.remove(n));
+        assertNull(c.getNotes(false)[0]);
+    }
+
+    @Test
+    public void testRemoveByValueDeepCopy(){
+        Chord c = new Chord(NoteValue.WHOLE, false, Instrument.SOPRANO_UKULELE);
+        Note n = c.getInstrument().tuning[0].deepCopy();
+        c.put(n,0);
+        assertFalse(c.remove(n.deepCopy()));
     
+    }
+
+    @Test
+    public void testRemoveNull(){
+        Chord c = new Chord(NoteValue.WHOLE, false, Instrument.SOPRANO_UKULELE);
+        try{
+            assertFalse(c.remove(null));
+        } catch(Exception e){
+            fail();
+        }
+    }
+    
+
+    @Test
+    public void testRemoveInvalidString(){
+        Chord c = new Chord(NoteValue.WHOLE, false, Instrument.SOPRANO_UKULELE);
+        try{
+            assertFalse(c.remove(-1));
+        } catch (Exception e){
+            fail();
+        }
+    }
 }

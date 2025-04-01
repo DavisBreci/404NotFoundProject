@@ -111,7 +111,7 @@ public class Chord extends BarObj{
             return false;
         if(notes[n.getString()] == null)
             return false;
-        if(!notes[n.getString()].equals(n))
+        if(!(notes[n.getString()] == n))
             return false;
         notes[n.getString()].untie();
         notes[n.getString()] = null;
