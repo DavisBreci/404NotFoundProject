@@ -18,6 +18,8 @@ public class Lesson {
      */
     public Lesson(String id, ArrayList<Song> songs, String title){
         this.id = (id == null) ? UUID.randomUUID().toString(): id;
+        if(title == null || title.length() > 30)
+            throw new IllegalArgumentException();
         if(songs != null)
             this.songs = songs;
         else 
@@ -39,7 +41,8 @@ public class Lesson {
      * @author Davis Breci
      */
     public void addSong(Song song){
-        songs.add(song);
+        if(song != null)
+            songs.add(song);
     }
 
     /**
@@ -54,6 +57,15 @@ public class Lesson {
                 --i;
             }
         }
+    }
+    /**
+     * Attempts to remove a song at a specified index from the lesson
+     * @author Davis Breci
+     * @param index int value of its location in the ArrayList
+     */
+    public void removeSong(int index){
+        if(index >= 0 && index < songs.size())
+            songs.remove(index);
     }
     /**
      * Getter for the Songs in the lessons
