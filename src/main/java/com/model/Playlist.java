@@ -21,6 +21,14 @@ public class Playlist {
      */
     public Playlist(String id, String title, String author, String description, ArrayList<Song> songs){
         this.id = (id == null) ? UUID.randomUUID().toString(): id;
+        if(title == null || author == null || title.length() > 30 || author.length() > 30)
+            throw new IllegalArgumentException();
+        if(description == null)
+            description = "";
+        if(songs == null)
+            songs = new ArrayList<Song>();
+        else if(songs.contains(null))
+            throw new IllegalArgumentException();
         this.title = title;
         this.author = author;
         this.description = description;
@@ -32,7 +40,8 @@ public class Playlist {
      * @author Davis Breci
      */
     public void editTitle(String title){
-        this.title = title;
+        if(title != null && title.length() < 30)
+            this.title = title;
     }
 
     /**
@@ -41,7 +50,8 @@ public class Playlist {
      * @author Davis Breci
      */
     public void addSong(Song song){
-        songs.add(song);
+        if(song != null)
+            songs.add(song);
     }
 
     /**
@@ -57,17 +67,27 @@ public class Playlist {
             }
         }
     }
-    
+    /**
+     * Removes a song from the playlist by index
+     * @author Davis Breci
+     * @param index must be between 0 inclusive and playlist.size() exclusive
+     */
+    public void removeSong(int index){
+        if(index >= 0 && index < songs.size())
+            songs.remove(index);
+    }
     /**
      * Changes the playlist's description
      * @param description the new description
      */
     public void editDescription(String description){
-        this.description = description;
+        if(description != null)
+            this.description = description;
     }
 
     /**
      * Puts the playlist in alphabetical order by title
+     * @author Davis Breci
      */
     public void sortByTitle(){
         songs.sort(new Comparator<Song>(){
@@ -79,6 +99,7 @@ public class Playlist {
 
     /**
      * Puts the playlist in alphabetical order by artist
+     * @author Davis Breci
      */
     public void sortByArtist(){
         songs.sort(new Comparator<Song>(){
@@ -90,6 +111,7 @@ public class Playlist {
 
     /**
      * Puts the playlist in alphabetical order by genre
+     * @author Davis Breci
      */
     public void sortByGenre(){
         songs.sort(new Comparator<Song>(){
@@ -103,6 +125,7 @@ public class Playlist {
      * Sorts the playlist by key. Due to the structure of the 
      * key enumeration, songs in C major or A minor appear first, and
      * the subsequent keys progress through the circle of fifths clockwise.
+     * @author Davis Breci
      */
     public void sortByKey(){
         Comparator<Song> sortByKey = Comparator.comparingInt(s -> s.getKey().ordinal());
@@ -111,6 +134,7 @@ public class Playlist {
 
     /**
      * Sorts the songs from easiest to hardest
+     * @author Davis Breci
      */
     public void sortByDifficulty(){
         Comparator<Song> sortByKey = Comparator.comparingInt(s -> s.getDifficultyLevel().ordinal());
