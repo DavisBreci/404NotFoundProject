@@ -150,7 +150,7 @@ public class DataWriterTest {
     }
 
     @Test
-    public void testTeTeachers() {
+    public void testTenTeachers() {
         teachers.add(new Teacher(null, "first", "last", "email", "teacher", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
         teachers.add(new Teacher(null, "first", "last", "email", "teacher2", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
         teachers.add(new Teacher(null, "first", "last", "email", "teacher3", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
@@ -214,7 +214,7 @@ public class DataWriterTest {
     assertEquals("Username mismatch", "username", loadedStudent.getUsername());
     assertEquals("Full name mismatch", "User Name", 
         loadedStudent.getFirstName() + " " + loadedStudent.getLastName());
-}    
+    }    
 
     @Test
     public void testTwoClasses() {
@@ -247,4 +247,122 @@ public class DataWriterTest {
     }
 
     @Test
+    public void testZeroSongs() {
+
+    }
+
+    @Test
+    public void testOneSong() {
+        
+    }
+
+    @Test
+    public void testTwoSongs() {
+        
+    }
+
+    @Test
+    public void testEmtySongSave() {
+        
+    }
+
+    @Test
+    public void testNullSongSave() {
+        
+    }
+
+    @Test
+    public void testGetSongJSON() {
+        
+    }
+
+    @Test
+    public void testZeroPlaylists() {
+        
+    }
+
+    @Test
+    public void testOnePlaylist() {
+        
+    }
+
+    @Test
+    public void testTwoPlaylists() {
+        
+    }
+
+    @Test
+    public void testEmptyPlaylist() {
+        
+    }
+
+    @Test
+    public void testNullPlaylist() {
+        
+    }
+
+    @Test
+    public void testGetPlaylistJSON() {
+        
+    }
+
+    @Test
+    public void testZeroLessons() {
+        
+    }
+
+    @Test
+    public void testOneLesson() {
+        
+    }
+
+    @Test
+    public void testTwoLessons() {
+        
+    }
+
+    @Test
+    public void testEmptyLessonSave() {
+        
+    }
+
+    @Test
+    public void testNullLessonSave() {
+        
+    }
+
+    @Test
+    public void testGetLessonJSON() {
+        
+    }
+
+    @Test
+    public void testZeroScores() {
+        
+    }
+
+    @Test
+    public void testOneScore() {
+        
+    }
+
+    @Test
+    public void testTwoScores() {
+        
+    }
+
+    @Test
+    public void testEmptyScore() {
+        
+    }
+
+    @Test
+    public void testNullScore() {
+        
+    }
+
+    @Test
+    public void testGetScoreJSON() {
+        
+    }
 }
