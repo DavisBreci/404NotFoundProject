@@ -38,6 +38,19 @@ public class LessonTest {
         Lesson l = new Lesson(null, null, "hello world");
         assertNotNull(l);
     }
+    @Test
+    public void constructorTest4(){
+        ArrayList<Song> songs = new ArrayList<Song>();
+        songs.add(null);
+        assertThrows(
+            IllegalArgumentException.class,
+            new ThrowingRunnable() {
+                public void run() throws Throwable {
+                    Lesson l = new Lesson(null, songs, "valid title");
+                }
+            }
+        );
+    }
     ArrayList<Song> songs;
     Song s;
     Lesson l;
