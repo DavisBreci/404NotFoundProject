@@ -132,6 +132,10 @@ public class UserTest {
     }
     @Test
     public void isValidPasswordTest6(){
+        assertFalse(User.isValidPassword(null));
+    }
+    @Test
+    public void isValidPasswordTest7(){
         assertTrue(User.isValidPassword("ValidPassword&%123123"));
     }
     @Test
@@ -158,5 +162,5 @@ public class UserTest {
         u.updateStreak();
         assertEquals(u.getStreak(), 0);
     }
-    
+
 }

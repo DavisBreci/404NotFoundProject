@@ -28,6 +28,8 @@ public class Song {
     public Song(String id, String title, String artist, String genre, Key key,
                 DifficultyLevel difficulty, Instrument instrument, Score score){
         this.id = (id == null) ? UUID.randomUUID().toString(): id;
+        if(title == null || artist == null || genre == null || key == null || difficulty == null || instrument == null || score == null)
+            throw new IllegalArgumentException();
         this.title = title;
         this.artist = artist;
         this.genre = genre;
