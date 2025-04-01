@@ -445,4 +445,28 @@ public class DataLoader extends DataConstants {
 		return loadedSequence;
 	}
 
+    public static ArrayList<Score> getAllScores(String filePath) {
+        ArrayList<Score> scores = new ArrayList<>();
+
+        try {
+            JSONParser parser = new JSONParser();
+            JSONArray scoreArray = (JSONArray) parser.parse(new FileReader(filePath));
+
+            for (Object obj : scoreArray) {
+                JSONObject jsonScore = (JSONObject) obj;
+
+                String scoreID = (String) jsonScore.get("scoreID");
+                String instrument = (String) jsonScore.get("instrument");
+                String tempo = String.valueOf(jsonScore.get("tempo"));
+                Instrument instrumentEnum = Instrument.valueOf(instrument.toUpperCase()); 
+                int tempoValue = Integer.parseInt(tempo);
+                scores.add(new Score(scoreID, instrumentEnum, tempoValue));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return scores;
+    }
 }
+
