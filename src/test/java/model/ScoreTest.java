@@ -44,7 +44,6 @@ public class ScoreTest {
             Synthesizer synth;
             Sequencer sequencer;
             boolean noteActive;
-            boolean resultObtained;
             boolean result;
 
             BankSwitchTester(Instrument instrument, Synthesizer synth, Sequencer sequencer){
@@ -52,7 +51,6 @@ public class ScoreTest {
                 this.synth = synth;
                 this.sequencer = sequencer;
                 noteActive = false;
-                resultObtained = false;
                 result = false;
             }
 
@@ -66,7 +64,6 @@ public class ScoreTest {
                     if(noteStatus.active == false) continue;
                     if(instrument.bank == noteStatus.bank && instrument.patch == noteStatus.program)
                         result = true;
-                    resultObtained = true;
                 }
             }
             

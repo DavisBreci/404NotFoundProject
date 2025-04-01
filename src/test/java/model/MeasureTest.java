@@ -23,7 +23,9 @@ import java.util.Map.Entry;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Iterator;
 
-
+/**
+ * @author Christopher Ferguson
+ */
 public class MeasureTest {
 
     @Test
