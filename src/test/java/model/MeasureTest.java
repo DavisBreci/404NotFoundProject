@@ -75,7 +75,7 @@ public class MeasureTest {
             SimpleEntry<Rational, Note> residue = a.bite(null, new Rational(1, 2), p, octave, duration, string);
             b.bite(residue.getValue(), new Rational(0, 1), p, octave, residue.getKey(), string);
             Note nLeft = a.get(new Rational(1, 2)).getNotes(false)[string];
-            Note nRight = a.get(new Rational(0, 1)).getNotes(false)[string];
+            Note nRight = b.get(new Rational(0, 1)).getNotes(false)[string];
             assert(nLeft.getDuration().compareTo(new Rational(1, 2)) == 0);
             assert(nRight.getDuration().compareTo(new Rational(1, 2)) == 0);
             assert(nLeft.getFrontTie() == nRight);
@@ -87,33 +87,28 @@ public class MeasureTest {
 
     @Test
     public void testBiteChordCrossingBarline(){
-        try{
-            Instrument instrument = Instrument.ELECTRIC_JAZZ_GUITAR;
-            Measure a = new Measure(instrument, new Rational(4));
-            Measure b = new Measure(instrument, new Rational(4));
-            Rational duration = BarObj.calcDuration(NoteValue.WHOLE, false);
-            Note [] fMaj7add11 = {
-                new Note(PitchClass.F, 2),
-                new Note(PitchClass.C, 3),
-                new Note(PitchClass.F, 3),
-                new Note(PitchClass.A, 3),
-                new Note(PitchClass.B, 3),
-                new Note(PitchClass.E, 4)
-            };
-            Note nLeft;
-            Note nRight;
-            for(int i = 0; i < fMaj7add11.length; i++){
-                SimpleEntry<Rational, Note> residue = a.bite(null, new Rational(1, 2), fMaj7add11[i].getPitchClass(), fMaj7add11[i].getOctave(), duration, i);
-                b.bite(residue.getValue(), new Rational(0, 1), fMaj7add11[i].getPitchClass(), fMaj7add11[i].getOctave(), residue.getKey(), i);
-                nLeft = a.get(new Rational(1, 2)).getNotes(false)[i];
-                nRight = a.get(new Rational(0, 1)).getNotes(false)[i];
-                assert(nLeft.getDuration().compareTo(new Rational(1, 2)) == 0);
-                assert(nRight.getDuration().compareTo(new Rational(1, 2)) == 0);
-                assert(nLeft.getFrontTie() == nRight);
-            }
-            
-        } catch (Exception e){
-            fail();
+        Instrument instrument = Instrument.ELECTRIC_JAZZ_GUITAR;
+        Measure a = new Measure(instrument, new Rational(4));
+        Measure b = new Measure(instrument, new Rational(4));
+        Rational duration = BarObj.calcDuration(NoteValue.WHOLE, false);
+        Note [] fMaj7add11 = {
+            new Note(PitchClass.F, 2),
+            new Note(PitchClass.C, 3),
+            new Note(PitchClass.F, 3),
+            new Note(PitchClass.A, 3),
+            new Note(PitchClass.B, 3),
+            new Note(PitchClass.E, 4)
+        };
+        Note nLeft;
+        Note nRight;
+        for(int i = 0; i < fMaj7add11.length; i++){
+            SimpleEntry<Rational, Note> residue = a.bite(null, new Rational(1, 2), fMaj7add11[i].getPitchClass(), fMaj7add11[i].getOctave(), duration, i);
+            b.bite(residue.getValue(), new Rational(0, 1), fMaj7add11[i].getPitchClass(), fMaj7add11[i].getOctave(), residue.getKey(), i);
+            nLeft = a.get(new Rational(1, 2)).getNotes(false)[i];
+            nRight = b.get(new Rational(0, 1)).getNotes(false)[i];
+            assert(nLeft.getDuration().compareTo(new Rational(1, 2)) == 0);
+            assert(nRight.getDuration().compareTo(new Rational(1, 2)) == 0);
+            assert(nLeft.getFrontTie() == nRight);
         }
     }
 
@@ -121,7 +116,8 @@ public class MeasureTest {
     public void testBiteCollision(){ // Bite doesn't return null when a note can't be placed
         Instrument instrument = Instrument.GUITAR;
         Measure m = new Measure(instrument, new Rational(4));
-        m.put(new Rational(3, 4), new Note(PitchClass.E, 2), 0);
+        Note n = new Note(NoteValue.QUARTER, false, instrument, PitchClass.E, 2);
+        m.put(new Rational(3, 4),n , 0);
         SimpleEntry<Rational, Note> residue = m.bite(null, new Rational(0, 1), PitchClass.F, 2, new Rational(4), 0);
         assertEquals(null, residue);
     }
@@ -133,6 +129,8 @@ public class MeasureTest {
         Measure m = new Measure(instrument, new Rational(4));
         SimpleEntry<Rational, Note> firstResidue = m.bite(null, new Rational(0, 1), PitchClass.E, 2, new Rational(1, 2), 0);
         SimpleEntry<Rational, Note> secondResidue = m.bite(null, new Rational(1, 2), PitchClass.E, 2, new Rational(1, 2), 0);
+        firstResidue.getKey().simplify();
+        secondResidue.getKey().simplify();
         assertEquals("0/1", firstResidue.getKey().toString());
         assertEquals("0/1", secondResidue.getKey().toString());
         assertEquals("E2h E2h ", m.toString(false));
