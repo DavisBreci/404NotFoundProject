@@ -1,0 +1,437 @@
+package model;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Before;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.junit.After;
+
+
+
+
+import org.junit.Assert;
+import com.model.*;
+
+public class DataWriterTest {
+
+    private UserList userList = UserList.getInstance();
+    private ArrayList<User> users = userList.getUsers();
+    private ArrayList<Teacher> teachers = new ArrayList<>();
+    private SongList songList = SongList.getInstance();
+    private ArrayList<Song> songs = new ArrayList<>();
+    private PlaylistList playlistList = PlaylistList.getInstance();
+    private ArrayList<Playlist> playlists = new  ArrayList<>();
+    private LessonList lessonList = LessonList.getInstance();
+    private ArrayList<Lesson> lessons = new ArrayList<>();
+    private ArrayList<Score> scores = new ArrayList<>();
+
+
+
+    @Before
+    public void setup() {
+        users.clear();
+        teachers.clear();
+        songs.clear();
+        playlists.clear();
+        lessons.clear();
+        scores.clear();
+        DataWriter.saveUsers(users);
+        DataWriter.saveTeachers(teachers);
+        DataWriter.saveSongs(songs);
+        DataWriter.savePlaylists(playlists);
+        DataWriter.saveLessons(lessons);
+        DataWriter.saveScores(scores);
+    }
+
+    @After 
+    public void close() {
+        userList.getInstance().getUsers().clear();
+        DataWriter.saveUsers(users);
+    }
+
+    @Test
+    public void testZeroUser() {
+        users = DataLoader.getUsers();
+        assertEquals(0, users.size());
+    }
+
+    @Test
+    public void testOneUsers() {
+        users.add(new User("Test", "User", "Name", "email", "username", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
+        DataWriter.saveUsers(users);
+        assertEquals("username", DataLoader.getUsers().get(0).getUsername());
+    }
+
+    @Test
+    public void testTwoUsers() {
+        users.add(new User("Test", "User", "Name", "email", "username", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
+        users.add(new User("Test2", "User", "Name", "email", "username2", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
+        DataWriter.saveUsers(users);
+        assertEquals("username2", DataLoader.getUsers().get(1).getUsername());
+    }
+
+    @Test
+    public void testTenUsers() {
+        users.add(new User("Test", "User",  "Name", "email", "username", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
+        users.add(new User("Test2", "User", "Name", "email", "username2", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
+        users.add(new User("Test3", "User", "Name", "email", "username3", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
+        users.add(new User("Test4", "User", "Name", "email", "username4", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
+        users.add(new User("Test5", "User", "Name", "email", "username5", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
+        users.add(new User("Test6", "User", "Name", "email", "username6", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
+        users.add(new User("Test7", "User", "Name", "email", "username7", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
+        users.add(new User("Test8", "User", "Name", "email", "username8", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
+        users.add(new User("Test9", "User", "Name", "email", "username9", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
+        users.add(new User("Test10", "User", "Name", "email", "username10", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
+        DataWriter.saveUsers(users);
+        assertEquals("username10", DataLoader.getUsers().get(9).getUsername());
+    }
+
+    //Cannot test for an empty or null user for the IllegalArgumentException is thrown by the User constrcutor,
+    // so these tests do run correctly but saveUsers does not ever run for an empty or null user
+        @Test
+        public void testEmptyUserSave() {        
+            assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
+                @Override
+                public void run() throws Throwable {
+                    users.add(new User("", "", "", "", "", "", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
+                    DataWriter.saveUsers(users);
+                }
+            });
+        }
+
+    @Test
+    public void testNullUserSave() {        
+        assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
+            @Override
+            public void run() throws Throwable {
+                users.add(new User(null, null, null, null, null, null, 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
+                DataWriter.saveUsers(users);
+            }
+        });
+    }
+
+    @Test
+    public void testGetUserJSON() {
+        User newUser =  new User("Test", "User",  "Name", "email", "username", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN);
+        JSONObject jsonOutput = DataWriter.getUserJSON(newUser);
+        assertNotNull("Should not be null.", jsonOutput);
+    }
+    
+    //Attempmting to check getUserJSON returns correctly for null playlists
+    @Test
+    public void testGetUserJSON2() {
+        User newUser =  new User("Test", "User",  "Name", "email", "username", "iHaTeMyBr0tHeR*", 2, 2, null, new ArrayList<Lesson>(), LocalDate.MIN);
+        JSONObject jsonOutput = DataWriter.getUserJSON(newUser);
+    }
+
+    //Attempmting to check getUserJSON returns correctly for null lessons
+    @Test
+    public void testGetUserJSON3() {
+        User newUser =  new User("Test", "User",  "Name", "email", "username", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), null,  LocalDate.MIN);
+        JSONObject jsonOutput = DataWriter.getUserJSON(newUser);
+    }
+
+    @Test
+    public void testZeroTeachers() {
+        DataLoader.getTeachers();
+        assertEquals(0, teachers.size());
+    }
+
+    @Test
+    public void testOneTeacher() {
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        DataWriter.saveTeachers(teachers);
+        assertEquals("teacher", DataLoader.getTeachers().get(0).getUsername());
+    }
+
+    @Test
+    public void testTwoTeachers() {
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher2", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        DataWriter.saveTeachers(teachers);
+        assertEquals("teacher2", DataLoader.getTeachers().get(1).getUsername());
+    }
+
+    @Test
+    public void testTenTeachers() {
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher2", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher3", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher4", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher5", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher6", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher7", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher8", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher9", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher10", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        DataWriter.saveTeachers(teachers);
+        assertEquals("teacher10", DataLoader.getTeachers().get(9).getUsername());
+    }
+
+    @Test
+    public void testEmptyTeacherSave() {
+        assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
+            @Override
+            public void run() throws Throwable {
+                teachers.add(new Teacher("", "", "", "", "", "", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+                DataWriter.saveTeachers(teachers);
+            }
+        });
+    }
+
+    @Test
+    public void testNullTeacherSave() {
+        assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
+            @Override
+            public void run() throws Throwable {
+                teachers.add(new Teacher(null, null, null, null, null, null, 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(), new ArrayList<Lesson>()));
+                DataWriter.saveTeachers(teachers);
+            }
+        });
+    }
+
+    //COME BACK
+    @Test
+    public void testOneClass() {
+        ArrayList<ArrayList<User>> classes = new ArrayList<>();
+        ArrayList<User> firstClass = new ArrayList<>();
+        User student = new User(null, "User",  "Name", "email", "username", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN);
+        firstClass.add(student);
+        classes.add(firstClass);
+        Teacher teacher = new Teacher(null, "first", "last", "email", "teacher", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, classes,  new ArrayList<Lesson>());
+        teachers.add(teacher);
+    DataWriter.saveTeachers(teachers);
+    ArrayList<Teacher> loadedTeachers = DataLoader.getTeachers();
+    
+    // 4. Proper assertions
+    assertFalse("No teachers loaded", loadedTeachers.isEmpty());
+    
+    Teacher loadedTeacher = loadedTeachers.get(0);
+    assertNotNull("Teacher classes null", loadedTeacher.getClasses());
+    
+    ArrayList<User> loadedClass = loadedTeacher.getClasses().get(0);
+    assertNotNull("Class not loaded", loadedClass);
+    
+    User loadedStudent = loadedClass.get(0);
+    assertNotNull("Student null", loadedStudent);
+    
+    assertEquals("Username mismatch", "username", loadedStudent.getUsername());
+    assertEquals("Full name mismatch", "User Name", 
+        loadedStudent.getFirstName() + " " + loadedStudent.getLastName());
+    }    
+
+    //COME BACK
+    @Test
+    public void testTwoClasses() {
+        ArrayList<Teacher> teachers = new ArrayList<>();
+        teachers = DataLoader.getTeachers();
+        ArrayList<ArrayList<User>> classes = new ArrayList<>();
+        ArrayList<User> firstClass = new ArrayList<>();
+        firstClass.add(new User("Test", "User",  "Name", "email", "username", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
+        ArrayList<User> secondClass = new ArrayList<>();
+        User secondUser = new User("Test", "User",  "Name", "email", "username2", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN);
+        secondClass.add(secondUser);
+        classes.add(firstClass);
+        classes.add(secondClass);
+        Teacher teacher = new Teacher(null, "first", "last", "email", "teacher", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, classes,  new ArrayList<Lesson>());
+        teachers.add(teacher);
+        DataWriter.saveTeachers(teachers);
+        User actualUser = DataLoader.getTeachers().get(0).getClasses().get(1).get(0);
+        ArrayList<Teacher> loadedTeachers = DataLoader.getTeachers();
+        assertFalse(loadedTeachers.isEmpty());
+        Teacher loadedTeacher = loadedTeachers.get(0);
+        assertEquals(2, loadedTeacher.getClasses().size());
+        // assertEquals(secondUser, actualUser);
+    }
+
+    @Test
+    public void testGetTeacherJSON() {
+        Teacher teacher = new Teacher(null, "first", "last", "email", "teacher", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>());
+        JSONObject jsonOutput = DataWriter.getTeacherJSON(teacher);
+        assertNotNull("jsonOutput null", jsonOutput);
+    }
+
+    @Test
+    public void testZeroSongs() {
+        songs = DataLoader.getAllSongs();
+        assertEquals(0, songs.size());
+    }
+
+    @Test
+    public void testOneSong() {
+        songs.add(new Song("Song", "testSong", "me", "rock", Key.CMAJOR_AMINOR , DifficultyLevel.BEGINNER, Instrument.DISTORTION_GUITAR, new Score(null, Instrument.ACOUSTIC_BASS, 10)));
+        DataWriter.saveSongs(songs);
+        assertEquals("testSong", DataLoader.getAllSongs().get(0).getTitle());
+    }
+
+    @Test
+    public void testTwoSongs() {
+        songs.add(new Song("Song", "testSong", "me", "rock", Key.CMAJOR_AMINOR , DifficultyLevel.BEGINNER, Instrument.DISTORTION_GUITAR, new Score(null, Instrument.ACOUSTIC_BASS, 10)));
+        songs.add(new Song("Song", "testSong2", "me", "rock", Key.CMAJOR_AMINOR , DifficultyLevel.BEGINNER, Instrument.DISTORTION_GUITAR, new Score(null, Instrument.ACOUSTIC_BASS, 10)));
+        DataWriter.saveSongs(songs);
+        assertEquals("testSong2", DataLoader.getAllSongs().get(1).getTitle());
+    }
+
+    //COME BACK, logic maybe?
+    @Test
+    public void testEmtySongSave() {
+        songs.add(new Song("", "", "", "", Key.CMAJOR_AMINOR , DifficultyLevel.BEGINNER, Instrument.DISTORTION_GUITAR, new Score(null, Instrument.ACOUSTIC_BASS, 10)));
+        DataWriter.saveSongs(songs);
+        assertEquals("", DataLoader.getAllSongs().get(0).getTitle());
+    }
+
+    @Test
+    public void testNullSongSave() {
+        assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
+            @Override
+            public void run() throws Throwable {
+                songs.add(new Song(null, null, null, null, null , null, null, null));
+                DataWriter.saveSongs(songs);
+            }
+        });
+    }
+
+    @Test
+    public void testGetSongJSON() {
+        Song newSong = new Song("Song", "testSong", "me", "rock", Key.CMAJOR_AMINOR , DifficultyLevel.BEGINNER, Instrument.DISTORTION_GUITAR, new Score(null, Instrument.ACOUSTIC_BASS, 10));
+        JSONObject jsonOutput = DataWriter.getSongJSON(newSong);
+        assertNotNull( "jsonOutput is null.", jsonOutput);
+    }
+
+    @Test
+    public void testZeroPlaylists() {
+        playlists = DataLoader.getAllPlaylists();
+        assertEquals(0, DataLoader.getAllPlaylists().size());
+    }
+
+    @Test
+    public void testOnePlaylist() {
+        playlists.add(new Playlist(null, "Brendan Playlist", "Brendan", "awesome", songs));
+        DataWriter.savePlaylists(playlists);
+        assertEquals("Brendan Playlist", DataLoader.getAllPlaylists().get(0).getTitle());
+    }
+
+    @Test
+    public void testTwoPlaylists() {
+        playlists.add(new Playlist(null, "Brendan Playlist", "Brendan", "awesome", songs));
+        playlists.add(new Playlist(null, "Brendan Playlist Two", "Brendan", "awesome", songs));
+        DataWriter.savePlaylists(playlists);
+        assertEquals("Brendan Playlist Two", DataLoader.getAllPlaylists().get(1).getTitle());
+    }
+
+    @Test
+    public void testEmptyPlaylist() {
+        playlists.add(new Playlist("", "", "", "", songs));
+        DataWriter.savePlaylists(playlists);
+        assertEquals("", DataLoader.getAllPlaylists().get(0).getTitle());
+    }
+
+    @Test
+    public void testNullPlaylist() {
+        playlists.add(new Playlist(null, null, null, null, songs));
+        DataWriter.savePlaylists(playlists);
+        assertNotNull(DataLoader.getAllPlaylists());
+    }
+
+    @Test
+    public void testGetPlaylistJSON() {
+        Playlist newPlaylist = new Playlist(null, "Brendan Playlist", "Brendan", "awesome", songs);
+        JSONObject jsonOutput = DataWriter.getPlaylistJSON(newPlaylist, null);
+        assertNotNull("Should not be null.", jsonOutput);
+    }
+
+    @Test
+    public void testZeroLessons() {
+        lessons = DataLoader.getAllLessons();
+        assertEquals(0, DataLoader.getAllLessons().size());
+    }
+
+    //COME BACK
+    @Test
+    public void testOneLesson() {
+        lessons.add(new Lesson(null, songs, "Brendan lesson"));
+        DataWriter.saveLessons(lessons);
+        assertEquals("Brendan lesson", DataLoader.getAllLessons().get(0).getTitle());
+    }
+
+    //COME BACK
+    @Test
+    public void testTwoLessons() {
+        lessons.add(new Lesson(null, songs, "Brendan lesson two"));
+        lessons.add(new Lesson(null, songs, "Brendan lesson two"));
+        DataWriter.saveLessons(lessons);
+        assertEquals("Brendan lesson two", DataLoader.getAllLessons().get(1).getTitle());
+
+    }
+
+    //COME BACK
+    @Test
+    public void testEmptyLessonSave() {
+        lessons.add(new Lesson("", songs, ""));
+        DataWriter.saveLessons(lessons);
+        assertNotNull(DataLoader.getAllLessons());
+    }
+
+    @Test
+    public void testNullLessonSave() {
+        assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
+            @Override
+            public void run() throws Throwable {
+                lessons.add(new Lesson(null, songs, null));
+                DataWriter.saveLessons(lessons);
+            }
+        });
+    }
+
+    @Test
+    public void testGetLessonJSON() {
+        Lesson lesson = new Lesson(null, songs, "Brendan's lesson");
+        JSONObject jsonOutput = DataWriter.getLessonJSON(lesson);
+        assertNotNull(jsonOutput);
+    }
+
+    @Test
+    public void testZeroScores() {
+        
+    }
+
+    @Test
+    public void testOneScore() {
+        Score newScore = new Score("401", Instrument.ACOUSTIC_BASS, 10);
+        DataWriter.saveNewScore(newScore, "JSON/scores.json");
+        assertEquals(10, DataLoader.getScoreFromID("401").getTempo());
+    }
+
+    @Test
+    public void testTwoScores() {
+        
+    }
+
+    @Test
+    public void testEmptyScore() {
+        
+    }
+
+    @Test
+    public void testNullScore() {
+        
+    }
+
+    @Test
+    public void testGetScoreJSON() {
+        
+    }
+}

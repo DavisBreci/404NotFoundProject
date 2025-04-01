@@ -240,7 +240,7 @@ public class Measure {
             dot.times(new Rational(1, 2));
             temp = remainder.deepCopy();
             temp.minus(dot);
-            if(dotted = (remainder.compareTo(dot) <= 0) && temp.compareTo(new Rational("0/1")) == 1)
+            if(dotted = (remainder.compareTo(dot) >= 0) && temp.compareTo(new Rational("0/1")) == 1)
                 remainder = temp;
             rest = new Rest(value, dotted);
             offset.simplify();
@@ -271,16 +271,27 @@ public class Measure {
      * @return a pair containing the unbitten duration and a reference to the last note bitten
      */
     public AbstractMap.SimpleEntry<Rational, Note> bite(Note backTie, Rational offset, PitchClass pitchClass, int octave, Rational duration, int string){
-        Rational remainder = duration.deepCopy(); // How much of the note is left for processing
         Rational _offset = offset.deepCopy();
         double noteIndex;
-        Note prevNote = null;
+        Note prevNote = backTie;
         Note currentNote = null;
         NoteValue value;
         Rational dot;
         Rational temp;
         boolean dotted;
-        while(_offset.compareTo(timeSignature) == -1){ // Stop when you've exhausted all space within the measure
+
+        Rational end = offset.deepCopy(); 
+        end.plus(duration);
+        if(end.compareTo(timeSignature) == 1)
+            end = timeSignature.deepCopy();
+
+        Rational remainder = end.deepCopy();
+        remainder.minus(offset);  // How much of the note is left for processing
+
+        Rational ret = duration.deepCopy();
+        ret.minus(remainder);
+
+        while(_offset.compareTo(end) == -1){ // Stop when you've exhausted all space within the measure
             remainder.times(new Rational(64/remainder.getDenominator())); // Normalize the remainder
             noteIndex = Math.log(remainder.getNumerator()) / Math.log(2); // Calculate duration
             value = NoteValue.values()[
@@ -302,7 +313,8 @@ public class Measure {
             prevNote = currentNote;
             _offset.plus(currentNote.getDuration());
         }
-        return new AbstractMap.SimpleEntry<Rational, Note>(remainder.deepCopy(), currentNote);
+        
+        return new AbstractMap.SimpleEntry<Rational, Note>(ret, currentNote);
     }
 
     /**
