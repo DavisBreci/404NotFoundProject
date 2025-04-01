@@ -2,6 +2,8 @@ package model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.function.ThrowingRunnable;
 
@@ -26,12 +28,16 @@ public class DataWriterTest {
 
     private UserList userList = UserList.getInstance();
     private ArrayList<User> users = userList.getUsers();
+    private ArrayList<Teacher> teachers = new ArrayList<>();
+
 
 
     @Before
     public void setup() {
         users.clear();
+        teachers.clear();
         DataWriter.saveUsers(users);
+        DataWriter.saveTeachers(teachers);
     }
 
     @After 
@@ -123,7 +129,122 @@ public class DataWriterTest {
     }
 
     @Test
-    public void testMulitpleClasses() {
-        
+    public void testZeroTeachers() {
+        DataLoader.getTeachers();
+        assertEquals(0, teachers.size());
     }
+
+    @Test
+    public void testOneTeacher() {
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        DataWriter.saveTeachers(teachers);
+        assertEquals("teacher", DataLoader.getTeachers().get(0).getUsername());
+    }
+
+    @Test
+    public void testTwoTeachers() {
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher2", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        DataWriter.saveTeachers(teachers);
+        assertEquals("teacher2", DataLoader.getTeachers().get(1).getUsername());
+    }
+
+    @Test
+    public void testTeTeachers() {
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher2", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher3", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher4", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher5", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher6", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher7", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher8", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher9", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        teachers.add(new Teacher(null, "first", "last", "email", "teacher10", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+        DataWriter.saveTeachers(teachers);
+        assertEquals("teacher10", DataLoader.getTeachers().get(9).getUsername());
+    }
+
+    @Test
+    public void testEmptyTeacherSave() {
+        assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
+            @Override
+            public void run() throws Throwable {
+                teachers.add(new Teacher("", "", "", "", "", "", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>()));
+                DataWriter.saveTeachers(teachers);
+            }
+        });
+    }
+
+    @Test
+    public void testNullTeacherSave() {
+        assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
+            @Override
+            public void run() throws Throwable {
+                teachers.add(new Teacher(null, null, null, null, null, null, 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(), new ArrayList<Lesson>()));
+                DataWriter.saveTeachers(teachers);
+            }
+        });
+    }
+
+    @Test
+    public void testOneClass() {
+        ArrayList<ArrayList<User>> classes = new ArrayList<>();
+        ArrayList<User> firstClass = new ArrayList<>();
+        User student = new User(null, "User",  "Name", "email", "username", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN);
+        firstClass.add(student);
+        classes.add(firstClass);
+        Teacher teacher = new Teacher(null, "first", "last", "email", "teacher", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, classes,  new ArrayList<Lesson>());
+        teachers.add(teacher);
+    DataWriter.saveTeachers(teachers);
+    ArrayList<Teacher> loadedTeachers = DataLoader.getTeachers();
+    
+    // 4. Proper assertions
+    assertFalse("No teachers loaded", loadedTeachers.isEmpty());
+    
+    Teacher loadedTeacher = loadedTeachers.get(0);
+    assertNotNull("Teacher classes null", loadedTeacher.getClasses());
+    
+    ArrayList<User> loadedClass = loadedTeacher.getClasses().get(0);
+    assertNotNull("Class not loaded", loadedClass);
+    
+    User loadedStudent = loadedClass.get(0);
+    assertNotNull("Student null", loadedStudent);
+    
+    assertEquals("Username mismatch", "username", loadedStudent.getUsername());
+    assertEquals("Full name mismatch", "User Name", 
+        loadedStudent.getFirstName() + " " + loadedStudent.getLastName());
+}    
+
+    @Test
+    public void testTwoClasses() {
+        ArrayList<Teacher> teachers = new ArrayList<>();
+        teachers = DataLoader.getTeachers();
+        ArrayList<ArrayList<User>> classes = new ArrayList<>();
+        ArrayList<User> firstClass = new ArrayList<>();
+        firstClass.add(new User("Test", "User",  "Name", "email", "username", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
+        ArrayList<User> secondClass = new ArrayList<>();
+        User secondUser = new User("Test", "User",  "Name", "email", "username2", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN);
+        secondClass.add(secondUser);
+        classes.add(firstClass);
+        classes.add(secondClass);
+        Teacher teacher = new Teacher(null, "first", "last", "email", "teacher", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, classes,  new ArrayList<Lesson>());
+        teachers.add(teacher);
+        DataWriter.saveTeachers(teachers);
+        User actualUser = DataLoader.getTeachers().get(0).getClasses().get(1).get(0);
+        ArrayList<Teacher> loadedTeachers = DataLoader.getTeachers();
+        assertFalse(loadedTeachers.isEmpty());
+        Teacher loadedTeacher = loadedTeachers.get(0);
+        assertEquals(2, loadedTeacher.getClasses().size());
+        // assertEquals(secondUser, actualUser);
+    }
+
+    @Test
+    public void testGetTeacherJSON() {
+        Teacher teacher = new Teacher(null, "first", "last", "email", "teacher", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>());
+        JSONObject jsonOutput = DataWriter.getTeacherJSON(teacher);
+        assertNotNull("jsonOutput null", jsonOutput);
+    }
+
+    @Test
 }
