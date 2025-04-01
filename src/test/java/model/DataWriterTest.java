@@ -10,6 +10,7 @@ import org.junit.function.ThrowingRunnable;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
@@ -29,6 +30,13 @@ public class DataWriterTest {
     private UserList userList = UserList.getInstance();
     private ArrayList<User> users = userList.getUsers();
     private ArrayList<Teacher> teachers = new ArrayList<>();
+    private SongList songList = SongList.getInstance();
+    private ArrayList<Song> songs = new ArrayList<>();
+    private PlaylistList playlistList = PlaylistList.getInstance();
+    private ArrayList<Playlist> playlists = new  ArrayList<>();
+    private LessonList lessonList = LessonList.getInstance();
+    private ArrayList<Lesson> lessons = new ArrayList<>();
+    private ArrayList<Score> scores = new ArrayList<>();
 
 
 
@@ -36,8 +44,16 @@ public class DataWriterTest {
     public void setup() {
         users.clear();
         teachers.clear();
+        songs.clear();
+        playlists.clear();
+        lessons.clear();
+        scores.clear();
         DataWriter.saveUsers(users);
         DataWriter.saveTeachers(teachers);
+        DataWriter.saveSongs(songs);
+        DataWriter.savePlaylists(playlists);
+        DataWriter.saveLessons(lessons);
+        DataWriter.saveScores(scores);
     }
 
     @After 
@@ -187,6 +203,7 @@ public class DataWriterTest {
         });
     }
 
+    //COME BACK
     @Test
     public void testOneClass() {
         ArrayList<ArrayList<User>> classes = new ArrayList<>();
@@ -216,6 +233,7 @@ public class DataWriterTest {
         loadedStudent.getFirstName() + " " + loadedStudent.getLastName());
     }    
 
+    //COME BACK
     @Test
     public void testTwoClasses() {
         ArrayList<Teacher> teachers = new ArrayList<>();
@@ -248,92 +266,141 @@ public class DataWriterTest {
 
     @Test
     public void testZeroSongs() {
-
+        songs = DataLoader.getAllSongs();
+        assertEquals(0, songs.size());
     }
 
     @Test
     public void testOneSong() {
-        
+        songs.add(new Song("Song", "testSong", "me", "rock", Key.CMAJOR_AMINOR , DifficultyLevel.BEGINNER, Instrument.DISTORTION_GUITAR, new Score(null, Instrument.ACOUSTIC_BASS, 10)));
+        DataWriter.saveSongs(songs);
+        assertEquals("testSong", DataLoader.getAllSongs().get(0).getTitle());
     }
 
     @Test
     public void testTwoSongs() {
-        
+        songs.add(new Song("Song", "testSong", "me", "rock", Key.CMAJOR_AMINOR , DifficultyLevel.BEGINNER, Instrument.DISTORTION_GUITAR, new Score(null, Instrument.ACOUSTIC_BASS, 10)));
+        songs.add(new Song("Song", "testSong2", "me", "rock", Key.CMAJOR_AMINOR , DifficultyLevel.BEGINNER, Instrument.DISTORTION_GUITAR, new Score(null, Instrument.ACOUSTIC_BASS, 10)));
+        DataWriter.saveSongs(songs);
+        assertEquals("testSong2", DataLoader.getAllSongs().get(1).getTitle());
     }
 
+    //COME BACK, logic maybe?
     @Test
     public void testEmtySongSave() {
-        
+        songs.add(new Song("", "", "", "", Key.CMAJOR_AMINOR , DifficultyLevel.BEGINNER, Instrument.DISTORTION_GUITAR, new Score(null, Instrument.ACOUSTIC_BASS, 10)));
+        DataWriter.saveSongs(songs);
+        assertEquals("", DataLoader.getAllSongs().get(0).getTitle());
     }
 
     @Test
     public void testNullSongSave() {
-        
+        assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
+            @Override
+            public void run() throws Throwable {
+                songs.add(new Song(null, null, null, null, null , null, null, null));
+                DataWriter.saveSongs(songs);
+            }
+        });
     }
 
     @Test
     public void testGetSongJSON() {
-        
+        Song newSong = new Song("Song", "testSong", "me", "rock", Key.CMAJOR_AMINOR , DifficultyLevel.BEGINNER, Instrument.DISTORTION_GUITAR, new Score(null, Instrument.ACOUSTIC_BASS, 10));
+        JSONObject jsonOutput = DataWriter.getSongJSON(newSong);
+        assertNotNull( "jsonOutput is null.", jsonOutput);
     }
 
     @Test
     public void testZeroPlaylists() {
-        
+        playlists = DataLoader.getAllPlaylists();
+        assertEquals(0, DataLoader.getAllPlaylists().size());
     }
 
     @Test
     public void testOnePlaylist() {
-        
+        playlists.add(new Playlist(null, "Brendan Playlist", "Brendan", "awesome", songs));
+        DataWriter.savePlaylists(playlists);
+        assertEquals("Brendan Playlist", DataLoader.getAllPlaylists().get(0).getTitle());
     }
 
     @Test
     public void testTwoPlaylists() {
-        
+        playlists.add(new Playlist(null, "Brendan Playlist", "Brendan", "awesome", songs));
+        playlists.add(new Playlist(null, "Brendan Playlist Two", "Brendan", "awesome", songs));
+        DataWriter.savePlaylists(playlists);
+        assertEquals("Brendan Playlist Two", DataLoader.getAllPlaylists().get(1).getTitle());
     }
 
     @Test
     public void testEmptyPlaylist() {
-        
+        playlists.add(new Playlist("", "", "", "", songs));
+        DataWriter.savePlaylists(playlists);
+        assertEquals("", DataLoader.getAllPlaylists().get(0).getTitle());
     }
 
     @Test
     public void testNullPlaylist() {
-        
+        playlists.add(new Playlist(null, null, null, null, songs));
+        DataWriter.savePlaylists(playlists);
+        assertNotNull(DataLoader.getAllPlaylists());
     }
 
     @Test
     public void testGetPlaylistJSON() {
-        
+        Playlist newPlaylist = new Playlist(null, "Brendan Playlist", "Brendan", "awesome", songs);
+        JSONObject jsonOutput = DataWriter.getPlaylistJSON(newPlaylist, null);
+        assertNotNull("Should not be null.", jsonOutput);
     }
 
     @Test
     public void testZeroLessons() {
-        
+        lessons = DataLoader.getAllLessons();
+        assertEquals(0, DataLoader.getAllLessons().size());
     }
 
+    //COME BACK
     @Test
     public void testOneLesson() {
-        
+        lessons.add(new Lesson(null, songs, "Brendan lesson"));
+        DataWriter.saveLessons(lessons);
+        assertEquals("Brendan lesson", DataLoader.getAllLessons().get(0).getTitle());
     }
 
+    //COME BACK
     @Test
     public void testTwoLessons() {
-        
+        lessons.add(new Lesson(null, songs, "Brendan lesson two"));
+        lessons.add(new Lesson(null, songs, "Brendan lesson two"));
+        DataWriter.saveLessons(lessons);
+        assertEquals("Brendan lesson two", DataLoader.getAllLessons().get(1).getTitle());
+
     }
 
+    //COME BACK
     @Test
     public void testEmptyLessonSave() {
-        
+        lessons.add(new Lesson("", songs, ""));
+        DataWriter.saveLessons(lessons);
+        assertNotNull(DataLoader.getAllLessons());
     }
 
     @Test
     public void testNullLessonSave() {
-        
+        assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
+            @Override
+            public void run() throws Throwable {
+                lessons.add(new Lesson(null, songs, null));
+                DataWriter.saveLessons(lessons);
+            }
+        });
     }
 
     @Test
     public void testGetLessonJSON() {
-        
+        Lesson lesson = new Lesson(null, songs, "Brendan's lesson");
+        JSONObject jsonOutput = DataWriter.getLessonJSON(lesson);
+        assertNotNull(jsonOutput);
     }
 
     @Test
@@ -343,7 +410,9 @@ public class DataWriterTest {
 
     @Test
     public void testOneScore() {
-        
+        Score newScore = new Score("401", Instrument.ACOUSTIC_BASS, 10);
+        DataWriter.saveNewScore(newScore, "JSON/scores.json");
+        assertEquals(10, DataLoader.getScoreFromID("401").getTempo());
     }
 
     @Test

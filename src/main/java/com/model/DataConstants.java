@@ -7,6 +7,7 @@ package com.model;
 
 public class DataConstants {
     protected static final String USER_FILE_NAME = "JSON/users.json";
+    protected static final String USER_FILE_NAME_JUNIT = "src/test/resources/users.json";
     protected static final String USER_ID = "id";
     protected static final String USER_USERNAME = "username";
     protected static final String USER_PASSWORD = "password";
@@ -20,10 +21,12 @@ public class DataConstants {
     protected static final String USER_LAST_PLAYED = "lastPlayed";
 
     protected static final String TEACHER_FILE_NAME = "JSON/teachers.json";
+    protected static final String TEACHER_FILE_NAME_JUNIT = "/resources/teachers.json";
     protected static final String TEACHER_CLASSES = "classes";
     protected static final String TEACHER_LESSONS = "lessons";
 
     protected static final String SONG_FILE_NAME = "JSON/songs.json";
+    protected static final String SONG_FILE_NAME_JUNIT = "/resources/songs.json";
     protected static final String SONG_ID = "id";
     protected static final String SONG_TITLE = "title";
     protected static final String SONG_ARTIST = "artist";
@@ -34,6 +37,7 @@ public class DataConstants {
     protected static final String SONG_SCORE = "score";
 
     protected static final String PLAYLIST_FILE_NAME = "JSON/playlists.json";
+    protected static final String PLAYLIST_FILE_NAME_JUNIT = "src/test/resources/playlists.json";
     protected static final String PLAYLIST_ID = "id";
     protected static final String PLAYLIST_TITLE = "title";
     protected static final String PLAYLIST_AUTHOR = "author";
@@ -41,6 +45,7 @@ public class DataConstants {
     protected static final String PLAYLIST_SONGS = "songs";
 
     protected static final String LESSONS_FILE_NAME = "JSON/lessons.json";
+    protected static final String LESSONS_FILE_NAME_JUNIT = "src/test/resources/lessons.json";
     protected static final String LESSONS_ID = "id";
     protected static final String LESSONS_SONGS = "songs";
     protected static final String LESSONS_TITLE = "title";
@@ -50,6 +55,7 @@ public class DataConstants {
      * @author ryanMazz
      */
     protected static final String SCORE_FILE_NAME = "JSON/scores.json";
+    protected static final String SCORE_FILE_NAME_JUNIT = "src/test/resources/scores.json";
 
     protected static final String SCORE_ID = "uuid";
     protected static final String SCORE_INSTRUMENT = "instrument";
@@ -72,4 +78,17 @@ public class DataConstants {
     
     /**@author Christopher Ferguson */  
     protected static final String MIDI_FOLDER = "src/main/midi/";
+
+    /**
+     * @author brenskrz
+     * from PortiaPortiaPortia Github
+     */
+    public static boolean isJUnitTest() {  
+		for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+		  if (element.getClassName().startsWith("org.junit.")) {
+			return true;
+		  }           
+		}
+		return false;
+	  }
 }
