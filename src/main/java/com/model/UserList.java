@@ -69,7 +69,7 @@ public class UserList {
      * @return True if the creation was a success, false if not
      */
     public boolean createUser(boolean teacher, String first, String last, String email, String user, String pass) {
-        if(!User.isValidUsername(user) || !User.isValidPassword(pass))
+        if(first == null || last == null || email == null || !User.isValidUsername(user) || !User.isValidPassword(pass))
             return false;
         if(teacher)
             users.add(new Teacher(null, first, last, email, user, pass, 0, 0,
@@ -77,7 +77,7 @@ public class UserList {
             new ArrayList<ArrayList<User>>(), new ArrayList<Lesson>()));
         else
             users.add(new User(null, first, last, email, user, pass, 0, 0,
-                  new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
+                new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
         return true;
     }
 

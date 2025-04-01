@@ -111,6 +111,10 @@ public class UserTest {
         assertTrue(User.isValidUsername("uniqueUsername"));
     }
     @Test
+    public void isValidUsernameTest7(){
+        assertFalse(User.isValidUsername("including spaces"));
+    }
+    @Test
     public void isValidPasswordTest1(){
         assertFalse(User.isValidPassword("s"));
     }
@@ -137,6 +141,10 @@ public class UserTest {
     @Test
     public void isValidPasswordTest7(){
         assertTrue(User.isValidPassword("ValidPassword&%123123"));
+    }
+    @Test
+    public void isValidPasswordTest8(){
+        assertFalse(User.isValidPassword("Includes spac3$"));
     }
     @Test
     public void updateStreakTest1(){
