@@ -37,6 +37,7 @@ public class DataWriterTest {
     private LessonList lessonList = LessonList.getInstance();
     private ArrayList<Lesson> lessons = new ArrayList<>();
     private ArrayList<Score> scores = new ArrayList<>();
+    
 
 
 
@@ -47,13 +48,25 @@ public class DataWriterTest {
         songs.clear();
         playlists.clear();
         lessons.clear();
-        scores.clear();
         DataWriter.saveUsers(users);
         DataWriter.saveTeachers(teachers);
         DataWriter.saveSongs(songs);
         DataWriter.savePlaylists(playlists);
         DataWriter.saveLessons(lessons);
-        DataWriter.saveScores(scores);
+        // Score score1 = DataLoader.getScoreFromID("a42d710f-afcb-4bce-bfd7-ecb43e6a5a89");
+        // Score score2 = DataLoader.getScoreFromID("3a6c83d2-2235-4fff-84dc-7ad6ec2dabf8");
+        // Score score3 = DataLoader.getScoreFromID("d3f280ff-4f4c-498e-a8c5-8406067be730");
+        // Score score4 = DataLoader.getScoreFromID("82cd6a4e-adae-4fc4-b96c-f767de9e2cb8");
+        // Score score5 = DataLoader.getScoreFromID("b5eca77c-d611-439f-89d6-44e3127e85b5");
+        // Score score6 = DataLoader.getScoreFromID("7ca4352f-b2fb-4f15-8437-fe23dede5572");
+
+        // scores.add(score1);
+        // scores.add(score2);
+        // scores.add(score3);
+        // scores.add(score4);
+        // scores.add(score5);
+        // scores.add(score6);
+
     }
 
     @After 
@@ -405,33 +418,55 @@ public class DataWriterTest {
 
     @Test
     public void testZeroScores() {
-        
+        scores = DataLoader.getAllScores("JSON/scores.json");
+        assertEquals(0, scores.size());
     }
 
     @Test
     public void testOneScore() {
-        Score newScore = new Score("401", Instrument.ACOUSTIC_BASS, 10);
-        DataWriter.saveNewScore(newScore, "JSON/scores.json");
-        assertEquals(10, DataLoader.getScoreFromID("401").getTempo());
+        scores.add( new Score(null, Instrument.ACOUSTIC_BASS, 10));
+        DataWriter.saveScores(scores);
+        assertEquals(Instrument.ACOUSTIC_BASS, DataLoader.getAllScores("JSON/scores.json").get(0).getInstrument());
+
     }
 
     @Test
     public void testTwoScores() {
-        
+        scores.add(new Score(null, Instrument.ACOUSTIC_BASS, 100));
+        scores.add(new Score(null, Instrument.DISTORTION_GUITAR, 200));
+        DataWriter.saveScores(scores);
+        assertEquals(200, DataLoader.getAllScores("JSON/scores.json").get(1).getTempo());
     }
 
     @Test
-    public void testEmptyScore() {
-        
+    public void testEmptyScoreUUID() {
+        scores.add(new Score("", Instrument.ACOUSTIC_BASS, 0));
+        DataWriter.saveScores(scores);
+        assertNotNull(DataLoader.getAllScores("JSON/scores.json").get(0));
     }
 
     @Test
-    public void testNullScore() {
-        
+    public void testNullScoreInstrument() {
+        assertThrows(NullPointerException.class, new ThrowingRunnable() {
+            @Override
+            public void run() throws Throwable {
+                scores.add(new Score(null, null, 10));
+                DataWriter.saveScores(scores);
+                }
+        });
     }
 
+    @Test
+    public void testZeroScoreTempo() {
+        scores.add(new Score("null", Instrument.ACOUSTIC_BASS, 0));
+        DataWriter.saveScores(scores);
+        assertEquals(0, DataLoader.getAllScores("JSON/scores.json").get(0).getTempo());
+    }
     @Test
     public void testGetScoreJSON() {
-        
+        Score newScore = new Score(null, Instrument.ACOUSTIC_BASS, 50);
+        JSONObject jsonOutput = DataWriter.getScoreJSON(newScore);
+        assertNotNull(jsonOutput);
     }
+
 }
