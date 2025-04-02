@@ -150,6 +150,5 @@ public class NoteTest {
         n1.tieFront(n2);
         assertNull(n1.getFrontTie());
     }
-    
 }
 
