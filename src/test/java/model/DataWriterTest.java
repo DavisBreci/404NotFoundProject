@@ -293,6 +293,24 @@ public class DataWriterTest {
     }
 
     @Test
+    public void testOneClassStudent() {
+        ArrayList<Teacher> teachers = new ArrayList<>();
+        teachers = DataLoader.getTeachers();
+        ArrayList<ArrayList<User>> classes = new ArrayList<>();
+        ArrayList<User> firstClass = new ArrayList<>();
+        firstClass.add(new User("Test", "User",  "Name", "email", "username", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN));
+        classes.add(firstClass);
+        Teacher teacher = new Teacher(null, "first", "last", "email", "teacher", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, classes,  new ArrayList<Lesson>());
+        teachers.add(teacher);
+        DataWriter.saveTeachers(teachers);
+        ArrayList<Teacher> loadedTeachers = DataLoader.getTeachers();
+        assertFalse(loadedTeachers.isEmpty());
+        Teacher loadedTeacher = loadedTeachers.get(0);
+        assertEquals(1, loadedTeacher.getClasses().get(0).size());
+    }
+    
+
+    @Test
     public void testGetTeacherJSON() {
         Teacher teacher = new Teacher(null, "first", "last", "email", "teacher", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>());
         JSONObject jsonOutput = DataWriter.getTeacherJSON(teacher);
