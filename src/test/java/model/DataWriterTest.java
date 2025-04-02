@@ -145,16 +145,18 @@ public class DataWriterTest {
     
     //Attempmting to check getUserJSON returns correctly for null playlists
     @Test
-    public void testGetUserJSON2() {
+    public void testGetUserJSONPlaylist() {
         User newUser =  new User("Test", "User",  "Name", "email", "username", "iHaTeMyBr0tHeR*", 2, 2, null, new ArrayList<Lesson>(), LocalDate.MIN);
         JSONObject jsonOutput = DataWriter.getUserJSON(newUser);
+        assertEquals("[]", jsonOutput.get("playlists").toString());
     }
 
     //Attempmting to check getUserJSON returns correctly for null lessons
     @Test
-    public void testGetUserJSON3() {
+    public void testGetUserJSONLesson() {
         User newUser =  new User("Test", "User",  "Name", "email", "username", "iHaTeMyBr0tHeR*", 2, 2, new ArrayList<Playlist>(), null,  LocalDate.MIN);
         JSONObject jsonOutput = DataWriter.getUserJSON(newUser);
+        assertNull(jsonOutput.get("lessons"));
     }
 
     @Test
@@ -278,6 +280,37 @@ public class DataWriterTest {
     }
 
     @Test
+    public void testTeacherGetJSONPlaylist() {
+        Teacher newteacher = new Teacher(null, "first", "last", "email", "teacher", "iHaTeMyBr0tHeR*", 0, 0, null, new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>());
+        JSONObject jsonOutput = DataWriter.getTeacherJSON(newteacher);
+        assertNull(jsonOutput.get("playlists"));
+    }
+
+    @Test
+    public void testTeacherGetJSONAssignedLesson() {
+        Teacher newteacher = new Teacher(null, "first", "last", "email", "teacher", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), null, LocalDate.MIN, new ArrayList<ArrayList<User>>(),  new ArrayList<Lesson>());
+        JSONObject jsonOutput = DataWriter.getTeacherJSON(newteacher);
+        assertEquals("[]", jsonOutput.get("assignedLessons").toString());
+
+    }
+
+    @Test
+    public void testTeacherGetJSONClasses() {
+        Teacher newteacher = new Teacher(null, "first", "last", "email", "teacher", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, null,  new ArrayList<Lesson>());
+        JSONObject jsonOutput = DataWriter.getTeacherJSON(newteacher);
+        assertEquals("[]", jsonOutput.get("classes").toString());
+
+    }
+
+    @Test
+    public void testTeacherGetJSONLessons() {
+        Teacher newteacher = new Teacher(null, "first", "last", "email", "teacher", "iHaTeMyBr0tHeR*", 0, 0, new ArrayList<Playlist>(), new ArrayList<Lesson>(), LocalDate.MIN, new ArrayList<ArrayList<User>>(),  null);
+        JSONObject jsonOutput = DataWriter.getTeacherJSON(newteacher);
+        assertEquals("[]", jsonOutput.get("lessons").toString());
+
+    }
+
+    @Test
     public void testZeroSongs() {
         songs = DataLoader.getAllSongs();
         assertEquals(0, songs.size());
@@ -324,6 +357,23 @@ public class DataWriterTest {
         assertNotNull( "jsonOutput is null.", jsonOutput);
     }
 
+    //COME BACK
+    @Test
+    public void testGetSongJSONTitle() {
+        Song newSong = new Song("Song", null, "me", "rock", Key.CMAJOR_AMINOR , DifficultyLevel.BEGINNER, Instrument.DISTORTION_GUITAR, new Score(null, Instrument.ACOUSTIC_BASS, 10));
+        JSONObject jsonOutput = DataWriter.getSongJSON(newSong);
+        assertNull( jsonOutput.get("artist"));
+
+    }
+    //COME BACK
+    @Test
+    public void testGetSongJSONArtist() {
+        Song newSong = new Song("Song", "title", null, "rock", Key.CMAJOR_AMINOR , DifficultyLevel.BEGINNER, Instrument.DISTORTION_GUITAR, new Score(null, Instrument.ACOUSTIC_BASS, 10));
+        JSONObject jsonOutput = DataWriter.getSongJSON(newSong);
+        assertNull( jsonOutput.get("artist"));
+
+    }
+
     @Test
     public void testZeroPlaylists() {
         playlists = DataLoader.getAllPlaylists();
@@ -364,6 +414,26 @@ public class DataWriterTest {
         Playlist newPlaylist = new Playlist(null, "Brendan Playlist", "Brendan", "awesome", songs);
         JSONObject jsonOutput = DataWriter.getPlaylistJSON(newPlaylist, null);
         assertNotNull("Should not be null.", jsonOutput);
+    }
+
+    @Test
+    public void testGetPlaylistJSONTitle() {
+
+    }
+
+    @Test
+    public void testGetPlaylistJSONAuthor() {
+
+    }
+
+    @Test
+    public void testGetPlaylistJSONDescription() {
+
+    }
+
+    @Test 
+    public void testGetPlaylistJSONSongs() {
+
     }
 
     @Test
@@ -416,6 +486,16 @@ public class DataWriterTest {
         assertNotNull(jsonOutput);
     }
 
+    @Test 
+    public void testGetLessonJSONSongs() {
+
+    }
+
+    @Test
+    public void testGetLessonJSONTitle() {
+
+    }
+
     @Test
     public void testZeroScores() {
         scores = DataLoader.getAllScores("JSON/scores.json");
@@ -442,9 +522,16 @@ public class DataWriterTest {
     public void testEmptyScoreUUID() {
         scores.add(new Score("", Instrument.ACOUSTIC_BASS, 0));
         DataWriter.saveScores(scores);
-        assertNotNull(DataLoader.getAllScores("JSON/scores.json").get(0));
+        assertNotNull(DataLoader.getAllScores("JSON/scores.json").get(0).id);
     }
 
+    @Test
+    public void testScoreNullUUID() {
+        scores.add(new Score(null, Instrument.ACOUSTIC_BASS, 0));
+        DataWriter.saveScores(scores);
+        assertNotNull(DataLoader.getAllScores("JSON/scores.json").get(0).id);
+
+    }
     @Test
     public void testNullScoreInstrument() {
         assertThrows(NullPointerException.class, new ThrowingRunnable() {
@@ -462,11 +549,22 @@ public class DataWriterTest {
         DataWriter.saveScores(scores);
         assertEquals(0, DataLoader.getAllScores("JSON/scores.json").get(0).getTempo());
     }
+
     @Test
     public void testGetScoreJSON() {
         Score newScore = new Score(null, Instrument.ACOUSTIC_BASS, 50);
         JSONObject jsonOutput = DataWriter.getScoreJSON(newScore);
         assertNotNull(jsonOutput);
+    }
+
+    @Test
+    public void testGetScoreJSONInstrument() {
+
+    }
+
+    @Test
+    public void testGetScoreJSONTempo() {
+        
     }
 
 }
