@@ -3,13 +3,16 @@ package model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import com.model.Note;
 import com.model.PitchClass;
-
+/**
+ * @author Christopher Ferguson
+ */
 public class NoteTest {
     @Test
     public void testDeepCopy(){
@@ -72,6 +75,83 @@ public class NoteTest {
         assertEquals(9, Note.noteNumToOctave(127));
     }
 
-    
+    @Test
+    public void testSetLocationNormal(){
+        Note n = new Note(PitchClass.C, 3);
+        assertTrue(n.setLocation(1, 3));
+        assertEquals(1, n.getString());
+        assertEquals(3, n.getFret());
+        
+    }
 
+    @Test
+    public void testSetLocationInvalid(){
+        Note n = new Note(PitchClass.C, 3);
+        n.restring(0);
+        assertFalse(n.setLocation(1, 4)); // Wrong fret
+        assertEquals(0, n.getString());
+        assertEquals(8, n.getFret());
+    }
+
+    @Test
+    public void testSetLocationNegative(){
+        Note n = new Note(PitchClass.C, 3);
+        n.restring(0);
+        assertFalse(n.setLocation(-1, -1));
+        assertEquals(0, n.getString());
+        assertEquals(8, n.getFret());
+    }
+
+    @Test
+    public void testSetLocationOutOfBounds(){
+        Note n = new Note(PitchClass.C, 3);
+        n.restring(0);
+        assertFalse(n.setLocation(Integer.MAX_VALUE, Integer.MAX_VALUE)); 
+        assertEquals(0, n.getString());
+        assertEquals(8, n.getFret());
+    }
+
+    @Test
+    public void  testTieNormal(){
+        Note n1 = new Note(PitchClass.C, 3);
+        Note n2 = n1.deepCopy();
+        n1.tieFront(n2);
+        assertEquals(n2 ,n1.getFrontTie());
+        assertEquals(n1 ,n2.getBackTie());
+    }
+
+    @Test
+    public void testTieRet(){
+        Note n1 = new Note(PitchClass.C, 3);
+        assertEquals(n1, n1.tieFront(null));
+    }
+
+    @Test
+    public void testTieNull(){
+        Note n1 = new Note(PitchClass.C, 3);
+        assertNull(n1.tieFront(null).getFrontTie());
+    }
+
+    @Test
+    public void testTieSameNoteDifferentString(){
+        Note n1 = new Note(PitchClass.C, 3);
+        n1.restring(0);
+        Note n2 = n1.deepCopy();
+        n2.restring(1);
+        n1.tieFront(n2);
+        assertNull(n1.getFrontTie());
+    }
+
+    @Test
+    public void testTieDifferentNote(){
+        Note n1 = new Note(PitchClass.C, 3);
+        n1.restring(0);
+        Note n2 = new Note(PitchClass.E, 2);
+        n1.tieFront(n2);
+        assertNull(n1.getFrontTie());
+    }
+
+    // Tests for transposing notes are omitted because this functionality
+    // is indirectly tested through transposing chords
 }
+

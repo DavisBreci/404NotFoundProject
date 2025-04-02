@@ -1,7 +1,6 @@
 package model;
 
 import org.junit.Test;
-import org.junit.function.ThrowingRunnable;
 
 import com.model.BarObj;
 import com.model.Chord;
@@ -23,7 +22,9 @@ import java.util.Map.Entry;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Iterator;
 
-
+/**
+ * @author Christopher Ferguson
+ */
 public class MeasureTest {
 
     @Test

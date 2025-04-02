@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -44,7 +45,6 @@ public class ScoreTest {
             Synthesizer synth;
             Sequencer sequencer;
             boolean noteActive;
-            boolean resultObtained;
             boolean result;
 
             BankSwitchTester(Instrument instrument, Synthesizer synth, Sequencer sequencer){
@@ -52,7 +52,6 @@ public class ScoreTest {
                 this.synth = synth;
                 this.sequencer = sequencer;
                 noteActive = false;
-                resultObtained = false;
                 result = false;
             }
 
@@ -66,7 +65,6 @@ public class ScoreTest {
                     if(noteStatus.active == false) continue;
                     if(instrument.bank == noteStatus.bank && instrument.patch == noteStatus.program)
                         result = true;
-                    resultObtained = true;
                 }
             }
             
@@ -383,7 +381,83 @@ public class ScoreTest {
                     ;
             }
         }
-        assertTrue(hasMSB && hasLSB && hasInstrument && hasTempo);
-        
+        assertTrue(hasMSB && hasLSB && hasInstrument && hasTempo);   
+    }
+
+    @Test
+    public void testToStringIncludeBars(){
+        Score s = new Score(null, Instrument.GUITAR, 120);
+        Measure m = new Measure(Instrument.GUITAR, new Rational(5, 4));
+        m.put(new Rational(0, 1), new Note(PitchClass.C, 3), 0);
+        s.add(m);
+        s.add(new Measure(Instrument.GUITAR, new Rational(4)));
+        assertEquals(" C3w Rq | Rw |", s.toString(0, s.size(), true));
+    }
+
+    @Test 
+    public void testToStringSansBars(){
+        Score s = new Score(null, Instrument.GUITAR, 120);
+        Measure m = new Measure(Instrument.GUITAR, new Rational(5, 4));
+        m.put(new Rational(0, 1), new Note(PitchClass.C, 3), 0);
+        s.add(m);
+        s.add(new Measure(Instrument.GUITAR, new Rational(4)));
+        assertEquals(" C3w Rq  Rw ", s.toString(0, s.size(), false));
+    }
+
+    @Test
+    public void testToStringSlice(){
+        Score s = new Score(null, Instrument.GUITAR, 120);
+        Measure m = new Measure(Instrument.GUITAR, new Rational(5, 4));
+        m.put(new Rational(0, 1), new Note(PitchClass.C, 3), 0);
+        s.add(m);
+        assertEquals(" C3w Rq |", s.toString(0, 1, true));
+    }
+
+    @Test
+    public void testToStringNegativeSlice(){
+        Score s = new Score(null, Instrument.GUITAR, 120);
+        Measure m = new Measure(Instrument.GUITAR, new Rational(5, 4));
+        m.put(new Rational(0, 1), new Note(PitchClass.C, 3), 0);
+        s.add(m);
+        assertEquals("", s.toString(-2, -1, true));
+    }
+
+    @Test
+    public void testToStringZeroSlice(){
+        Score s = new Score(null, Instrument.GUITAR, 120);
+        Measure m = new Measure(Instrument.GUITAR, new Rational(5, 4));
+        m.put(new Rational(0, 1), new Note(PitchClass.C, 3), 0);
+        s.add(m);
+        assertEquals("", s.toString(0, 0, true));
+    }
+
+    @Test
+    public void testGetMeasureTablatureNoteOrder(){ // Make sure note order for tabs is descending. It's what musicians expect
+        String s = Score.getMeasureTablature(new Measure(Instrument.ELECTRIC_CLEAN_GUITAR, new Rational(4)));
+        char [] descendingOrder = {'E', 'B', 'G', 'D', 'A', 'E'};
+        String [] strings = s.split("\n");
+        for(int i = 0; i < descendingOrder.length; i++)
+            assertEquals(descendingOrder[i], strings[i].charAt(0));
+    }
+
+    @Test
+    public void testGetMeasureTablatureEmpty(){
+        String s = Score.getMeasureTablature(new Measure(Instrument.ELECTRIC_CLEAN_GUITAR, new Rational(4)));
+        char [] descendingOrder = {'E', 'B', 'G', 'D', 'A', 'E'};
+        String [] strings = s.split("\n");
+        for(int i = 0; i < descendingOrder.length; i++)
+            assertEquals(descendingOrder[i] + " |-", strings[i]);
+    }
+
+    @Test
+    public void testGetMeasureTablatureNull(){
+        assertNull(Score.getMeasureTablature(null));
+    }
+
+    @Test
+    public void testGetTablatureNumbering(){ // Make sure measures aren't counted from zero
+        Score s = new Score(null, Instrument.GUITAR, 120);
+        s.add(new Measure(Instrument.ELECTRIC_CLEAN_GUITAR, new Rational(4))); 
+        assertEquals("Measure #1:", s.getTablature().split("\n")[0]);
     }
 }

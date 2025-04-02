@@ -303,7 +303,7 @@ public class Measure {
             );
             temp = remainder.deepCopy();
             temp.minus(dot);
-            if((dotted = remainder.compareTo(dot) <= 0 && temp.compareTo(new Rational("0/1")) == 1))
+            if((dotted = remainder.compareTo(dot) >= 0 && temp.compareTo(new Rational("0/1")) == 1))
                 remainder = temp;
             currentNote = new Note(value, dotted, instrument, pitchClass, octave); // Create a new note and handle ties
             currentNote.tieBack(prevNote);

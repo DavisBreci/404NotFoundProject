@@ -2,7 +2,7 @@
     {
         "firstName": "Davis",
         "lastName": "Breci",
-        "password": "404nf",
+        "password": "404NF!",
         "songsPlayed": 9,
         "playlists": [
             "39a48119-e368-40a9-9d4e-c10139338e7c"
@@ -33,7 +33,7 @@
     {
         "firstName": "Christopher",
         "lastName": "Ferguson",
-        "password": "247sucks",
+        "password": "247Sucks%",
         "songsPlayed": 22,
         "playlists": [
             "039a23f6-317b-4577-a78b-a9d8005adcd9"
@@ -72,6 +72,6 @@
         "email": "fred^2@gmail.com",
         "lastPlayed": "-999999999-01-01",
         "assignedLessons": [],
-        "username": "ffredrickson"
+        "username": "ffred"
     }
 ]

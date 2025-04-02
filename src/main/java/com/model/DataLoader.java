@@ -33,14 +33,22 @@ public class DataLoader extends DataConstants {
             
             for(int i=0; i < usersJSON.size(); i++) {
                 JSONObject individual = (JSONObject)usersJSON.get(i);
-                String id = (String)individual.get(USER_ID);
-                String userName = (String)individual.get(USER_USERNAME);
-                String password = (String)individual.get(USER_PASSWORD);
-                String email = (String)individual.get(USER_EMAIL);
-                String firstName = (String)individual.get(USER_FIRST_NAME);
-                String lastName = (String)individual.get(USER_LAST_NAME);
-                long Streak = (long)individual.get(USER_STREAK);
-                long songsPlayed = (long)individual.get(USER_SONGS_PLAYED);
+                String id = "";
+                id = (String)individual.get(USER_ID);
+                String userName = "";
+                userName = (String)individual.get(USER_USERNAME);
+                String password = "";
+                password = (String)individual.get(USER_PASSWORD);
+                String email = "";
+                email = (String)individual.get(USER_EMAIL);
+                String firstName = "";
+                firstName = (String)individual.get(USER_FIRST_NAME);
+                String lastName = "";
+                lastName = (String)individual.get(USER_LAST_NAME);
+                long Streak = 0;
+                Streak = (long)individual.get(USER_STREAK);
+                long songsPlayed = 0;
+                songsPlayed = (long)individual.get(USER_SONGS_PLAYED);
                 JSONArray playlistIDs = (JSONArray)individual.get(USER_PLAYLISTS);
                 ArrayList<Playlist> playlists =  new ArrayList<Playlist>();
                 for(int j=0; j < playlistIDs.size(); j++) {
@@ -51,14 +59,17 @@ public class DataLoader extends DataConstants {
                 for(int j=0; j < assignedLessonIDs.size(); j++) {
                     assignedLessons.add(getLessonFromID((String)assignedLessonIDs.get(j)));
                 }  
-                String lastPlayedDate = (String)individual.get(USER_LAST_PLAYED);
+                String lastPlayedDate = "";
+                lastPlayedDate = (String)individual.get(USER_LAST_PLAYED);
                 users.add(new User(id, firstName, lastName, email, userName, password, (int)Streak, (int)songsPlayed,
                 playlists, assignedLessons, LocalDate.parse(lastPlayedDate)));      
             }
 
             
         } catch (Exception e) {
+            System.out.println(USER_FILE_NAME + " cannot be read. Data is missing or corrupt.");
             e.printStackTrace();
+            return new ArrayList<User>();
         }
 
         return users;
@@ -80,13 +91,20 @@ public class DataLoader extends DataConstants {
                 JSONObject individual = (JSONObject)usersJSON.get(i);
                 if (inputID.equals((String)individual.get(USER_ID))) {
                     userID = (String)individual.get(USER_ID);
-                    String userName = (String)individual.get(USER_USERNAME);
-                    String password = (String)individual.get(USER_PASSWORD);
-                    String email = (String)individual.get(USER_EMAIL);
-                    String firstName = (String)individual.get(USER_FIRST_NAME);
-                    String lastName = (String)individual.get(USER_LAST_NAME);
-                    long Streak = (long)individual.get(USER_STREAK);
-                    long songsPlayed = (long)individual.get(USER_SONGS_PLAYED);
+                    String userName = "";
+                    userName = (String)individual.get(USER_USERNAME);
+                    String password = "";
+                    password = (String)individual.get(USER_PASSWORD);
+                    String email = "";
+                    email = (String)individual.get(USER_EMAIL);
+                    String firstName = "";
+                    firstName = (String)individual.get(USER_FIRST_NAME);
+                    String lastName = "";
+                    lastName = (String)individual.get(USER_LAST_NAME);
+                    long Streak = 0;
+                    Streak = (long)individual.get(USER_STREAK);
+                    long songsPlayed = 0;
+                    songsPlayed = (long)individual.get(USER_SONGS_PLAYED);
                     JSONArray playlistIDs = (JSONArray)individual.get(USER_PLAYLISTS);
                     ArrayList<Playlist> playlists =  new ArrayList<Playlist>();
                     for(int j=0; j < playlistIDs.size(); j++) {
@@ -97,7 +115,8 @@ public class DataLoader extends DataConstants {
                     for(int j=0; j < assignedLessonIDs.size(); j++) {
                         assignedLessons.add(getLessonFromID((String)assignedLessonIDs.get(j)));
                     }  
-                    String lastPlayedDate = (String)individual.get(USER_LAST_PLAYED);
+                    String lastPlayedDate = "";
+                    lastPlayedDate = (String)individual.get(USER_LAST_PLAYED);
                     return new User(userID, firstName, lastName, email, userName, password, (int)Streak, (int)songsPlayed,
                     playlists, assignedLessons, LocalDate.parse(lastPlayedDate));
                 }
@@ -107,7 +126,9 @@ public class DataLoader extends DataConstants {
                 return null;
             }
         } catch (Exception e) {
+            System.out.println(USER_FILE_NAME + " cannot be read. Data is missing or corrupt.");
             e.printStackTrace();
+            return null;
         }
         return null;
     }
@@ -125,14 +146,22 @@ public class DataLoader extends DataConstants {
             
             for(int i=0; i < usersJSON.size(); i++) {
                 JSONObject individual = (JSONObject)usersJSON.get(i);
-                String id = (String)individual.get(USER_ID);
-                String userName = (String)individual.get(USER_USERNAME);
-                String password = (String)individual.get(USER_PASSWORD);
-                String email = (String)individual.get(USER_EMAIL);
-                String firstName = (String)individual.get(USER_FIRST_NAME);
-                String lastName = (String)individual.get(USER_LAST_NAME);
-                long Streak = (long)individual.get(USER_STREAK);
-                long songsPlayed = (long)individual.get(USER_SONGS_PLAYED);
+                String id = "";
+                id = (String)individual.get(USER_ID);
+                String userName = "";
+                userName = (String)individual.get(USER_USERNAME);
+                String password = "";
+                password = (String)individual.get(USER_PASSWORD);
+                String email = "";
+                email = (String)individual.get(USER_EMAIL);
+                String firstName = "";
+                firstName = (String)individual.get(USER_FIRST_NAME);
+                String lastName = "";
+                lastName = (String)individual.get(USER_LAST_NAME);
+                long Streak = 0;
+                Streak = (long)individual.get(USER_STREAK);
+                long songsPlayed = 0;
+                songsPlayed = (long)individual.get(USER_SONGS_PLAYED);
                 JSONArray playlistIDs = (JSONArray)individual.get(USER_PLAYLISTS);
                 ArrayList<Playlist> playlists =  new ArrayList<Playlist>();
                 for(int j=0; j < playlistIDs.size(); j++) {
@@ -158,12 +187,15 @@ public class DataLoader extends DataConstants {
                     }
                     classes.add(classUsers);
                 } 
-                String lastPlayedDate = (String)individual.get(USER_LAST_PLAYED);
+                String lastPlayedDate = "";
+                lastPlayedDate = (String)individual.get(USER_LAST_PLAYED);
                 teachers.add(new Teacher(id, firstName, lastName, email, userName, password, (int)Streak, (int)songsPlayed,
                 playlists, assignedLessons, LocalDate.parse(lastPlayedDate), classes, lessons));      
             }
         } catch (Exception e) {
+            System.out.println(TEACHER_FILE_NAME + " cannot be read. Data is missing or corrupt.");
             e.printStackTrace();
+            return new ArrayList<Teacher>();
         }
         return teachers;
     }
@@ -180,19 +212,29 @@ public class DataLoader extends DataConstants {
 			JSONArray songJSON = (JSONArray)new JSONParser().parse(reader);
             for(int i=0; i < songJSON.size(); i++) {
                 JSONObject individual = (JSONObject)songJSON.get(i);
-                String id = (String)individual.get(SONG_ID);
-                String title = (String)individual.get(SONG_TITLE);
-                String artist = (String)individual.get(SONG_ARTIST);
-                String genre = (String)individual.get(SONG_GENRE);
-                String difficultyLevel = (String)individual.get(SONG_DIFFICULTY_LEVEL);
-                String key = (String)individual.get(SONG_KEY);
-                String instrument = (String)individual.get(SONG_INSTRUMENT);
-                String scoreID = (String)individual.get(SONG_SCORE);
+                String id = "";
+                id = (String)individual.get(SONG_ID);
+                String title = "";
+                title = (String)individual.get(SONG_TITLE);
+                String artist = "";
+                artist = (String)individual.get(SONG_ARTIST);
+                String genre = "";
+                genre = (String)individual.get(SONG_GENRE);
+                String difficultyLevel = "BEGINNER";
+                difficultyLevel = (String)individual.get(SONG_DIFFICULTY_LEVEL);
+                String key = "GMAJOR_EMINOR";
+                key = (String)individual.get(SONG_KEY);
+                String instrument = "GUITAR";
+                instrument = (String)individual.get(SONG_INSTRUMENT);
+                String scoreID = "";
+                scoreID = (String)individual.get(SONG_SCORE);
                 songs.add(new Song(id, title, artist, genre, Key.valueOf(key), DifficultyLevel.valueOf(difficultyLevel), 
                 Instrument.valueOf(instrument), getScoreFromID(scoreID)));
             }
         } catch(Exception e) {
+            System.out.println(SONG_FILE_NAME + " cannot be read. Data is missing or corrupt.");
             e.printStackTrace();
+            return new ArrayList<Song>();
         }
         return songs;
     }
@@ -213,13 +255,20 @@ public class DataLoader extends DataConstants {
                 JSONObject individual = (JSONObject)songJSON.get(i);
                 if (inputID.equals((String)individual.get(SONG_ID))) {
                     songID = (String)individual.get(SONG_ID);
-                    String title = (String)individual.get(SONG_TITLE);
-                    String artist = (String)individual.get(SONG_ARTIST);
-                    String genre = (String)individual.get(SONG_GENRE);
-                    String difficultyLevel = (String)individual.get(SONG_DIFFICULTY_LEVEL);
-                    String key = (String)individual.get(SONG_KEY);
-                    String instrument = (String)individual.get(SONG_INSTRUMENT);
-                    String scoreID = (String)individual.get(SONG_SCORE);
+                    String title = "";
+                    title = (String)individual.get(SONG_TITLE);
+                    String artist = "";
+                    artist = (String)individual.get(SONG_ARTIST);
+                    String genre = "";
+                    genre = (String)individual.get(SONG_GENRE);
+                    String difficultyLevel = "BEGINNER";
+                    difficultyLevel = (String)individual.get(SONG_DIFFICULTY_LEVEL);
+                    String key = "GMAJOR_EMINOR";
+                    key = (String)individual.get(SONG_KEY);
+                    String instrument = "GUITAR";
+                    instrument = (String)individual.get(SONG_INSTRUMENT);
+                    String scoreID = "";
+                    scoreID = (String)individual.get(SONG_SCORE);
                     return new Song(songID, title, artist, genre, Key.valueOf(key), DifficultyLevel.valueOf(difficultyLevel),
                     Instrument.valueOf(instrument), getScoreFromID(scoreID));
                 }
@@ -229,7 +278,9 @@ public class DataLoader extends DataConstants {
                 return null;
             }
         } catch(Exception e) {
+            System.out.println(SONG_FILE_NAME + " cannot be read. Data is missing or corrupt.");
             e.printStackTrace();
+            return null;
         }
         return null;
     }
@@ -292,7 +343,9 @@ public class DataLoader extends DataConstants {
                 return null;
             }
         } catch(Exception e) {
+            System.out.println(SCORE_FILE_NAME + " cannot be read. Data is missing or corrupt.");
             e.printStackTrace();
+            return null;
         }
         return null;
     }
@@ -310,10 +363,14 @@ public class DataLoader extends DataConstants {
             
             for(int i=0; i < playlistsJSON.size(); i++) {
                 JSONObject individual = (JSONObject)playlistsJSON.get(i);
-                String id = (String)individual.get(PLAYLIST_ID);
-                String title = (String)individual.get(PLAYLIST_TITLE);
-                String author = (String)individual.get(PLAYLIST_AUTHOR);
-                String desc = (String)individual.get(PLAYLIST_DESCRIPTION);
+                String id = "";
+                id = (String)individual.get(PLAYLIST_ID);
+                String title = "";
+                title = (String)individual.get(PLAYLIST_TITLE);
+                String author = "";
+                author = (String)individual.get(PLAYLIST_AUTHOR);
+                String desc = "";
+                desc = (String)individual.get(PLAYLIST_DESCRIPTION);
                 JSONArray SongIDs = (JSONArray)individual.get(PLAYLIST_SONGS);
                 ArrayList<Song> songOutput =  new ArrayList<Song>();
                 for(int j=0; j < SongIDs.size(); j++) {
@@ -322,7 +379,9 @@ public class DataLoader extends DataConstants {
                 playlists.add(new Playlist(id, title, author, desc, songOutput));
             }
         } catch (Exception e) {
+            System.out.println(SCORE_FILE_NAME + " cannot be read. Data is missing or corrupt.");
             e.printStackTrace();
+            return new ArrayList<Playlist>();
         }
         return playlists;
     }
@@ -342,10 +401,14 @@ public class DataLoader extends DataConstants {
             for(int i=0; i < playlistJSON.size(); i++) {
                 JSONObject individual = (JSONObject)playlistJSON.get(i);
                 if (inputID.equals((String)individual.get(SONG_ID))) {
-                    String id = (String)individual.get(PLAYLIST_ID);
-                    String title = (String)individual.get(PLAYLIST_TITLE);
-                    String author = (String)individual.get(PLAYLIST_AUTHOR);
-                    String desc = (String)individual.get(PLAYLIST_DESCRIPTION);
+                    String id = "";
+                    id = (String)individual.get(PLAYLIST_ID);
+                    String title = "";
+                    title = (String)individual.get(PLAYLIST_TITLE);
+                    String author = "";
+                    author = (String)individual.get(PLAYLIST_AUTHOR);
+                    String desc = "";
+                    desc = (String)individual.get(PLAYLIST_DESCRIPTION);
                     JSONArray SongIDs = (JSONArray)individual.get(PLAYLIST_SONGS);
                     ArrayList<Song> songOutput =  new ArrayList<Song>();
                     for(int j=0; j < SongIDs.size(); j++) {
@@ -359,7 +422,9 @@ public class DataLoader extends DataConstants {
                 return null;
             }
         } catch(Exception e) {
+            System.out.println(SCORE_FILE_NAME + " cannot be read. Data is missing or corrupt.");
             e.printStackTrace();
+            return null;
         }
         return null;
     }
@@ -376,8 +441,10 @@ public class DataLoader extends DataConstants {
             JSONArray lessonsJSON = (JSONArray)new JSONParser().parse(reader);
             for (int i=0; i < lessonsJSON.size(); i++) {
                 JSONObject individual = (JSONObject)lessonsJSON.get(i);
-                String id = (String)individual.get(LESSONS_ID);
-                String title = (String)individual.get(LESSONS_TITLE);
+                String id = "";
+                id = (String)individual.get(LESSONS_ID);
+                String title = "";
+                title = (String)individual.get(LESSONS_TITLE);
                 JSONArray songIDs = (JSONArray)individual.get(LESSONS_SONGS);
                 ArrayList<Song> songs =  new ArrayList<Song>();
                 for(int j=0; j < songIDs.size(); j++) {
@@ -386,7 +453,9 @@ public class DataLoader extends DataConstants {
                 lessons.add(new Lesson(id, songs, title));
             }
         } catch (Exception e) {
+            System.out.println(LESSONS_FILE_NAME + " cannot be read. Data is missing or corrupt.");
             e.printStackTrace();
+            return new ArrayList<Lesson>();
         }   
         return lessons;
     }
@@ -406,8 +475,10 @@ public class DataLoader extends DataConstants {
             for(int i=0; i < lessonsJSON.size(); i++) {
                 JSONObject individual = (JSONObject)lessonsJSON.get(i);
                 if (inputID.equals((String)individual.get(LESSONS_ID))) {
-                    String id = (String)individual.get(LESSONS_ID);
-                    String title = (String)individual.get(LESSONS_TITLE);
+                    String id = "";
+                    id = (String)individual.get(LESSONS_ID);
+                    String title = "";
+                    title = (String)individual.get(LESSONS_TITLE);
                     JSONArray songIDs = (JSONArray)individual.get(LESSONS_SONGS);
                     ArrayList<Song> songs =  new ArrayList<Song>();
                     for(int j=0; j < songIDs.size(); j++) {
@@ -421,7 +492,9 @@ public class DataLoader extends DataConstants {
                 return null;
             }
         } catch (Exception e) {
+            System.out.println(LESSONS_FILE_NAME + " cannot be read. Data is missing or corrupt.");
             e.printStackTrace();
+            return null;
         }
         
         return null;
@@ -438,11 +511,39 @@ public class DataLoader extends DataConstants {
 		try {
 			loadedSequence = MidiSystem.getSequence(new File(MIDI_FOLDER + filename));
 		} catch(IOException e) {
-			e.printStackTrace();
+            System.out.println("Could not find \"" + filename + "\" in " + MIDI_FOLDER + ".");
+            e.printStackTrace();
 		} catch (InvalidMidiDataException e) {
+            System.out.println(filename + " could not be read. The file may be corrupt.");
 			e.printStackTrace();
 		}
 		return loadedSequence;
 	}
 
+
+    //MADE SOLELY FOR DATAWRITER TESTING PURPOSES. TO BE REMOVED POST-TESTING
+    public static ArrayList<Score> getAllScores(String filePath) {
+        ArrayList<Score> scores = new ArrayList<>();
+
+        try {
+            JSONParser parser = new JSONParser();
+            JSONArray scoreArray = (JSONArray) parser.parse(new FileReader(filePath));
+
+            for (Object obj : scoreArray) {
+                JSONObject jsonScore = (JSONObject) obj;
+
+                String scoreID = (String) jsonScore.get("scoreID");
+                String instrument = (String) jsonScore.get("instrument");
+                String tempo = String.valueOf(jsonScore.get("tempo"));
+                Instrument instrumentEnum = Instrument.valueOf(instrument.toUpperCase()); 
+                int tempoValue = Integer.parseInt(tempo);
+                scores.add(new Score(scoreID, instrumentEnum, tempoValue));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return scores;
+    }
 }
+

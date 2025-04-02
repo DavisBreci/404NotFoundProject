@@ -15,8 +15,10 @@ import com.model.Note;
 import com.model.NoteValue;
 import com.model.PitchClass;
 
+/**
+ * @author Christopher Ferguson
+ */
 public class ChordTest {
-
     @Test
     public void testGetNotesDeepCopy(){
         Note n = new Note(PitchClass.E, 2);

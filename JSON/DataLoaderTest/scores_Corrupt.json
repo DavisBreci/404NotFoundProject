@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-[]
-=======
 [
     {
         "measures": [
@@ -13,25 +10,7 @@
                                 "string": "3",
                                 "backTie": "false",
                                 "pitchClass": "G",
-                                "frontTie": "false"
-                            }
-                        ],
-                        "offset": "0\/1",
-                        "value": "EIGHTH",
-                        "dotted": "false"
-                    },
-                    {
-                        "notes": [
-                            {
-                                "octave": "4",
-                                "string": "3",
-                                "backTie": "false",
-                                "pitchClass": "A",
-                                "frontTie": "false"
-                            }
-                        ],
-                        "offset": "1\/4",
-                        "value": "EIGHTH",
+                                "frontT
                         "dotted": "false"
                     },
                     {
@@ -23330,4 +23309,3 @@
         "uuid": "7ca4352f-b2fb-4f15-8437-fe23dede5572"
     }
 ]
->>>>>>> 0b2d510495db35ed2f4adc252f546fc547c2180c
