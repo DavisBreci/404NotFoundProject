@@ -118,4 +118,8 @@ public abstract class BarObj implements Comparable<BarObj>{
 
         return staccato + (dotted ? "." : "");
     }
+
+    public static void main(String[] args) {
+        System.out.println(calcDuration(NoteValue.HALF, true));
+    }
 }
