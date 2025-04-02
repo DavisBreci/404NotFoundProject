@@ -484,6 +484,7 @@ public class Score {
      * @return the tablature
      */
     public static String getMeasureTablature(Measure m){
+        if(m == null) return null;
         StringBuilder tablature = new StringBuilder();
         Note n;
         String toAppend;

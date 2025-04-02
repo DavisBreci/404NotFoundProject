@@ -150,5 +150,8 @@ public class NoteTest {
         n1.tieFront(n2);
         assertNull(n1.getFrontTie());
     }
+
+    // Tests for transposing notes are omitted because this functionality
+    // is indirectly tested through transposing chords
 }
 
