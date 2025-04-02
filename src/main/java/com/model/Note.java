@@ -292,7 +292,6 @@ public class Note extends BarObj {
         return true;
     }
 
-
 	/**
      * @author brenskrz
      * @return Whether the note is tied in the front
