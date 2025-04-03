@@ -58,4 +58,61 @@ public class SongListTest{
         sl.createSong("title", "me", "phonk", Key.AMAJOR_GbMINOR, DifficultyLevel.ADVANCED, Instrument.ACOUSTIC_BASS, new Score(null, Instrument.ACOUSTIC_BASS, 100));
         assertNotNull(sl.getSongByTitle("title"));
     }
+
+    @Test
+    public void createSongTest() {
+        sl.createSong("Song1", "Brendan", "rock", Key.AMAJOR_GbMINOR, DifficultyLevel.ADVANCED, Instrument.ACOUSTIC_BASS, new Score(null, Instrument.ACOUSTIC_BASS, 100));
+        assertEquals("Song1", sl.getSongByTitle("Song1").getTitle());
+    }
+    @Test
+    public void createSongTest2() {
+        sl.createSong("Song1", "Brendan", "rock", Key.AMAJOR_GbMINOR, DifficultyLevel.ADVANCED, Instrument.ACOUSTIC_BASS, new Score(null, Instrument.ACOUSTIC_BASS, 100));
+        sl.createSong("Song2", "Chris", "jazz", Key.AMAJOR_GbMINOR, DifficultyLevel.ADVANCED, Instrument.ACOUSTIC_BASS, new Score(null, Instrument.ACOUSTIC_BASS, 100));
+        assertEquals("Chris", sl.getSongsByArtist("Chris").get(0).getArtist());
+    }
+    //Does not pass, should throw an illegal argument exception to prevent two identical songs being made
+    @Test
+    public void createSongTest3() {
+        sl.createSong("Song1", "Brendan", "rock", Key.AMAJOR_GbMINOR, DifficultyLevel.ADVANCED, Instrument.ACOUSTIC_BASS, new Score(null, Instrument.ACOUSTIC_BASS, 100));
+        assertThrows(
+            IllegalArgumentException.class,
+            new ThrowingRunnable() {
+                @Override
+                public void run() throws Throwable {
+                    sl.createSong("Song1", "Brendan", "rock", Key.AMAJOR_GbMINOR, DifficultyLevel.ADVANCED, Instrument.ACOUSTIC_BASS, new Score(null, Instrument.ACOUSTIC_BASS, 100));
+                }
+            }
+        );   
+    }
+    //Does not pass, should be null when passed an empty string for Title Artist and genre
+    @Test
+    public void createSongTest4() {
+        sl.createSong("", "", "", Key.AMAJOR_GbMINOR, DifficultyLevel.ADVANCED, Instrument.ACOUSTIC_BASS, new Score(null, Instrument.ACOUSTIC_BASS, 100));
+        assertNull("", sl.getSongByTitle(""));
+    }
+    @Test
+    public void createSongTest5() {
+        assertThrows(
+            IllegalArgumentException.class,
+            new ThrowingRunnable() {
+                @Override
+                public void run() throws Throwable {
+                    sl.createSong(null, null, null, Key.AMAJOR_GbMINOR, DifficultyLevel.ADVANCED, Instrument.ACOUSTIC_BASS, new Score(null, Instrument.ACOUSTIC_BASS, 100));
+                }
+            });
+    }
+    //Does not run, a song should not be able to be created with a null instrument and should throw an illegalArgumentException
+    @Test
+    public void createSongTest6() {
+        sl.createSong("title", "me!", "jazz", Key.AMAJOR_GbMINOR, DifficultyLevel.ADVANCED, Instrument.ACOUSTIC_BASS, new Score(null, null, 0));
+        assertEquals("title", sl.getSongsByArtist("me!").get(0).getTitle());
+        assertThrows(
+            IllegalArgumentException.class,
+            new ThrowingRunnable() {
+                @Override
+                public void run() throws Throwable {
+                    sl.createSong("title", "me!", "jazz", Key.AMAJOR_GbMINOR, DifficultyLevel.ADVANCED, Instrument.ACOUSTIC_BASS, new Score(null, null, 0));
+                }
+            });
+    }
 }
