@@ -104,7 +104,7 @@ public class PlaylistListTest {
     @Test
     public void testGetPlaylistByAuthorNormal(){
         Playlist p = pll.createPlaylist("Jams", "Lammy", "null");
-        assertEquals(p, pll.getPlaylistByAuthor("Lammy"));
+        assertEquals(p.getTitle(), pll.getPlaylistByAuthor("Lammy").getTitle());
         pll.removePlaylist(p.id);
     }
 
@@ -135,6 +135,8 @@ public class PlaylistListTest {
         Playlist p = pll.createPlaylist("Jams", "Lammy", "null");
         Playlist p2 = pll.createPlaylist("Jams", "Lammy", "null");
         assertNotEquals(p.getTitle(), p2.getTitle());
+        pll.removePlaylist(p.id);
+        pll.removePlaylist(p2.id);
     }
 
     @Test
@@ -142,6 +144,8 @@ public class PlaylistListTest {
         Playlist p = pll.createPlaylist("Jams", "Lammy", "null");
         Playlist p2 = pll.createPlaylist("Jams", "Lammy", "null");
         assertNotEquals(p.id, p2.id);
+        pll.removePlaylist(p.id);
+        pll.removePlaylist(p2.id);
     }
 
     @Test

@@ -10,6 +10,9 @@ import java.time.LocalDate;
 
 import com.model.*;
 
+/**
+ * @author Davis Breci
+ */
 public class SongListTest{
     @Test
     public void getInstanceTest1(){
@@ -115,4 +118,54 @@ public class SongListTest{
                 }
             });
     }
+    public void testGetSongsByDifficultyNull(){
+        assertEquals(0, sl.getSongsByDifficulty(null).size());
+    }
+
+    @Test
+    public void testGetSongsByDifficultyNormal(){
+        for(Song s : sl.getSongsByDifficulty(DifficultyLevel.ADVANCED))
+            assertEquals(DifficultyLevel.ADVANCED, s.getDifficultyLevel());
+    }
+
+    @Test
+    public void testGetSongsByKeyNull(){
+        assertEquals(0, sl.getSongsByKey(null).size());
+    }
+
+    @Test
+    public void testGetSongsByKeyNormal(){
+        Song a = new Song(null, "Placeholder", "Penny Placeholder", "Placeholder music", Key.GMAJOR_EMINOR, DifficultyLevel.ADVANCED, Instrument.GUITAR, new Score(null, Instrument.GUITAR, 120));
+        sl.add(a);
+        for(Song s : sl.getSongsByKey(Key.GMAJOR_EMINOR))
+            assertEquals(Key.GMAJOR_EMINOR, s.getKey());
+        sl.removeSong(a);
+    }
+
+    @Test
+    public void testGetSongsByGenreNull(){
+        assertEquals(0, sl.getSongsByGenre(null).size());
+    }
+
+    @Test
+    public void testGetSongsByGenreNormal(){
+        Song a = new Song(null, "Placeholder", "Penny Placeholder", "Placeholder music", Key.GMAJOR_EMINOR, DifficultyLevel.ADVANCED, Instrument.GUITAR, new Score(null, Instrument.GUITAR, 120));
+        sl.add(a);
+        assertTrue(sl.getSongsByGenre("Placeholder music").contains(a));
+        sl.removeSong(a);
+    }
+
+    @Test
+    public void testGetSongsByArtistNull(){
+        assertEquals(0, sl.getSongsByArtist(null).size());
+    }
+
+    @Test
+    public void testGetSongsByArtistNormal(){
+        Song a = new Song(null, "Placeholder", "Penny Placeholder", "Placeholder music", Key.GMAJOR_EMINOR, DifficultyLevel.ADVANCED, Instrument.GUITAR, new Score(null, Instrument.GUITAR, 120));
+        sl.add(a);
+        assertTrue(sl.getSongsByArtist("Penny Placeholder").contains(a));
+        sl.removeSong(a);
+    }
+    
 }

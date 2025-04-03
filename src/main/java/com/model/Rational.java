@@ -5,8 +5,8 @@ package com.model;
  * @author Christopher Ferguson
  */
 public class Rational implements Comparable<Rational>{
-    private int numerator;
-    private int denominator;
+    private int numerator  = 0;
+    private int denominator = 1;
 
     /**
      * Constructs a rational number
@@ -14,6 +14,9 @@ public class Rational implements Comparable<Rational>{
      * @param denominator the denominator
      */
     public Rational(int numerator, int denominator){
+        if (denominator == 0) {
+            throw new IllegalArgumentException("Denominator cannot be zero.");
+        }
         this.numerator = numerator;
         this.denominator = denominator;
     }
@@ -23,6 +26,9 @@ public class Rational implements Comparable<Rational>{
      * @param scalar the scalar
      */
     public Rational(int scalar){
+        if (scalar == 0) {
+            throw new IllegalArgumentException("Denominator cannot be zero.");
+        }
         numerator = denominator = scalar;
     }
     
@@ -33,10 +39,11 @@ public class Rational implements Comparable<Rational>{
     public Rational(String literal){
         String [] values = literal.split("/");
 		if(values.length != 2) {
-			numerator = 0;
-			denominator = 1;
 			return;
 		}
+        if (Integer.parseInt(values[1]) == 0) {
+            throw new IllegalArgumentException("Denominator cannot be zero.");
+        }
 		numerator = Integer.parseInt(values[0]);
 		denominator = Integer.parseInt(values[1]);
     }
@@ -137,7 +144,11 @@ public class Rational implements Comparable<Rational>{
      * @param denominator the nenw denominator
      */
     public void setDenominator(int denominator){
-        this.denominator = denominator; // Allowing the denominator to be zero is useful for Stern-Brocot
+        if (denominator != 0) { 
+            this.denominator = denominator;
+        } else {
+           System.out.println("0 cannot be the denominator."); 
+        }
     }
 
     /**
@@ -265,41 +276,6 @@ public class Rational implements Comparable<Rational>{
      */
     public String toString() {
 		return numerator + "/" + denominator;
-	}
-    
-    /**
-     * Computes the mediant of two rational numbers
-     * @param a
-     * @param b
-     * @return
-     */
-    private static Rational mediant(Rational a, Rational b) {
-		return new Rational(a.getNumerator() + b.getNumerator(), a.getDenominator() + b.getDenominator());
-	}
-
-    /**
-     * Standard implementation of the Stern-Brocot algorithm for rational approximation 
-     * @param q the double to be approximated
-     * @param tolerance the maximum error
-     * @return the double's rational approximation
-     */
-    public static Rational sternBrocot(double q, double tolerance) {
-        if(q == 0) return new Rational(0, 1);
-		Rational rL = new Rational(0, 1);
-		Rational rH = new Rational(1, 0);
-		Rational rM;
-		double dM;
-		while(true) {
-			rM = mediant(rL, rH);
-			dM = rM.toDouble();
-			if(Math.abs(dM - q) <= tolerance)
-				break;
-			else if(dM < q)
-				rL = rM;
-			else 
-				rH = rM;
-		}
-		return rM;
 	}
 
     /**
