@@ -7,13 +7,18 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 
 import com.model.Chord;
 import com.model.Instrument;
+import com.model.Lesson;
+import com.model.LessonList;
 import com.model.Note;
 import com.model.NoteValue;
 import com.model.PitchClass;
+import com.model.Song;
 
 /**
  * @author Christopher Ferguson

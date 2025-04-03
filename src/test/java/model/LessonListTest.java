@@ -65,4 +65,40 @@ public class LessonListTest {
 
     }
 
+    @Test
+    public void testGetLessonNull(){
+        LessonList ll = LessonList.getInstance();
+        assertNull(ll.getLesson(null));
+    }
+
+    @Test
+    public void testGetLessonNormal(){
+        LessonList ll = LessonList.getInstance();
+        Lesson l = new Lesson(null, new ArrayList<Song>(), "abcbab");
+        
+        ll.getLessons().add(l);
+        assertEquals(l, ll.getLesson(ll.getLessons().get(ll.getLessons().indexOf(l)).getTitle()));
+        ll.getLessons().remove(l);
+    }
+    
+    @Test
+    public void testGetLessonWithoutUniqueTitle(){ // Lesson names are prepended with a unique identifier to prevent collisions
+        LessonList ll = LessonList.getInstance();
+        Lesson l = new Lesson(null, new ArrayList<Song>(), "abcbab");
+        
+        ll.getLessons().add(l);
+        assertNull(ll.getLesson("abcbab"));
+        ll.getLessons().remove(l);
+    }
+    
+    @Test
+    public void testGetLessonFake(){
+        LessonList ll = LessonList.getInstance();
+        Lesson l = new Lesson(null, new ArrayList<Song>(), "abcbab");
+        
+        ll.getLessons().add(l);
+        assertNull(ll.getLesson("General Mojo's Well Laid Plan"));
+        ll.getLessons().remove(l);
+    }
+
 }
