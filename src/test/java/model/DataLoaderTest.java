@@ -11,12 +11,10 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Assert;
 import com.model.*;
 
+/**
+ * @author Ryan Mazzella
+ */
 public class DataLoaderTest extends DataConstants {
-    @Test
-    public void testTesting(){
-        assertTrue(true);
-    }
-
     /*
      * REMINDER: SWITCH TO THE JSON FILE APPROPRIATE FOR EACH TEST
      * Test JSON files are located in JSON/DataLoaderTest/
