@@ -8,7 +8,9 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 
 import com.model.*;
-
+/**
+ * @author Davis Breci
+ */
 public class LessonTest {
     @Test
     public void constructorTest1(){

@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 
 import com.model.*;
-
+/**
+ * @author Davis Breci
+ */
 public class UserTest {
     @Test
     public void constructorTest1(){

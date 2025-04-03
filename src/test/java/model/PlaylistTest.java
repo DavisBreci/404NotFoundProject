@@ -9,7 +9,9 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 
 import com.model.*;
-
+/**
+ * @author Davis Breci
+ */
 public class PlaylistTest {
     @Test
     public void constructorTest1(){
