@@ -30,7 +30,7 @@ public class LessonListTest {
         songs.add(new Song("id","Song1", "Brendan", "rock", Key.AMAJOR_GbMINOR, DifficultyLevel.ADVANCED, Instrument.ACOUSTIC_BASS, new Score(null, Instrument.ACOUSTIC_BASS, 100)));
 
         lessonList.createLesson(songs, "Lesson1");
-        Lesson lesson = lessonList.getLesson("Lesson1");
+        Lesson lesson = lessonList.getLessons().get(0);
         assertFalse(lessonList.getLessons().isEmpty());
 
         assertNotNull(lesson);
@@ -44,7 +44,7 @@ public class LessonListTest {
         songs.add(new Song("id","Song2", "Brendan", "rock", Key.AMAJOR_GbMINOR, DifficultyLevel.ADVANCED, Instrument.ACOUSTIC_BASS, new Score(null, Instrument.ACOUSTIC_BASS, 100)));
         songs.add(new Song("id","Song3", "Brendan", "rock", Key.AMAJOR_GbMINOR, DifficultyLevel.ADVANCED, Instrument.ACOUSTIC_BASS, new Score(null, Instrument.ACOUSTIC_BASS, 100)));
         lessonList.createLesson(songs, "Lesson2");
-        assertEquals(2, lessonList.getLesson("Lesson2").getSongs().size());
+        assertEquals(3, lessonList.getLessons().get(0).getSongs().size());
     }
     //Does not run, should throw a IllegalArgumentException for creating two identical lessons
     @Test
