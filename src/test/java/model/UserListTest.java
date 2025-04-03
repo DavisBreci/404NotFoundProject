@@ -110,4 +110,90 @@ public class UserListTest{
     public void removeUserTest3(){
         assertFalse(ul.removeUser(null));
     }
+    @Test
+    public void getTeachersTest1(){
+        ArrayList<Teacher> teachers = ul.getTeachers();
+        ArrayList<String> usernames = new ArrayList<String>();
+        for(Teacher t : teachers){
+            usernames.add(t.getUsername());
+        }
+        assertFalse(usernames.contains("dbreci"));
+    }
+    @Test
+    public void getTeachersTest2(){
+        ArrayList<Teacher> teachers = ul.getTeachers(); 
+        ArrayList<String> usernames = new ArrayList<String>();
+        for(Teacher t : teachers){
+            usernames.add(t.getUsername());
+        }
+        System.out.println(usernames.size());
+        assertTrue(usernames.contains("MzFrizz"));
+    }
+    @Test
+    public void getTeachersTest3(){
+        ArrayList<Teacher> teachers = ul.getTeachers(); 
+        ArrayList<String> usernames = new ArrayList<String>();
+        for(Teacher t : teachers){
+            usernames.add(t.getUsername());
+        }
+        System.out.println(usernames.size());
+        assertFalse(usernames.contains(""));
+    }
+    @Test
+    public void getUsersTest1(){
+        ArrayList<User> users = ul.getUsers(); 
+        ArrayList<String> usernames = new ArrayList<String>();
+        for(User u : users){
+            usernames.add(u.getUsername());
+        }
+        System.out.println(usernames.size());
+        assertTrue(usernames.contains("dbreci"));
+    }
+    @Test
+    public void getUsersTest2(){
+        ArrayList<User> users = ul.getUsers(); 
+        ArrayList<String> usernames = new ArrayList<String>();
+        for(User u : users){
+            usernames.add(u.getUsername());
+        }
+        System.out.println(usernames.size());
+        assertTrue(usernames.contains("ctferg"));
+    }
+    @Test
+    public void getUsersTest3(){
+        ArrayList<User> users = ul.getUsers(); 
+        ArrayList<String> usernames = new ArrayList<String>();
+        for(User u : users){
+            usernames.add(u.getUsername());
+        }
+        System.out.println(usernames.size());
+        assertFalse(usernames.contains("MzFrizz"));
+    }
+    @Test
+    public void getUsersTest4(){
+        ul.createUser(false, "hello", "world", "email", "unique", "PassWord$1");
+        ArrayList<User> users = ul.getUsers(); 
+        ArrayList<String> usernames = new ArrayList<String>();
+        for(User u : users){
+            usernames.add(u.getUsername());
+        }
+        System.out.println(usernames.size());
+        assertTrue(usernames.contains("unique"));
+    }
+    @Test
+    public void containsTest1(){
+        assertTrue(ul.contains("MzFrizz"));
+    }
+    @Test
+    public void containsTest2(){
+        assertFalse(ul.contains("@Bc123"));
+    }
+    @Test
+    public void containsTest3(){
+        assertTrue(ul.contains("dbreci"));
+    }
+    @Test
+    public void containsTest4(){
+        assertFalse(ul.contains(null));
+    }
 }
