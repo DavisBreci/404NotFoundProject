@@ -21,7 +21,7 @@ public final class MIDIHelper {
     public static final int MAX_VOL = 16383;
     public static final int TEMPO = 0x51;
     public static final byte INSTRUMENT_NAME = (byte)0x04;
-
+    public static final int EOT = 0x2F;
     /**
      * Snaps the elapsed time between two events to a 1/64-based grid
      * @param a the start event
@@ -113,5 +113,9 @@ public final class MIDIHelper {
         for(int i = 3; i < end; i++)
             name.append((char)msg[i]);
         return name.toString();
+    }
+
+    public static boolean isEOT(MidiEvent m){
+        return Byte.toUnsignedInt(m.getMessage().getMessage()[1]) == EOT;
     }
 }

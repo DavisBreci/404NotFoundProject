@@ -5,6 +5,7 @@ package com.model;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Pattern;
@@ -308,6 +309,15 @@ public class Score {
             long barDuration = resolution * 4; // Length of current bar in ticks
             long barEnd = barDuration; // MIDI tick the current bar ends at
             long barsLept = 0; // Used when note being processed doesn't start at measure beginning
+        /* Variables for bite() */
+            SimpleEntry<Rational, Note> prevBite;
+            Note backTie;
+            Rational remainder;
+            int biteMeasure;   
+            Rational biteOffset;
+            PitchClass pitch;
+            int octave;
+            int string;
 		// TODO: Should be able to switch to new measure based on measure content
 		for(int i = 0; i < track.size(); i++) {
 			currentEvent = track.get(i);
@@ -315,20 +325,21 @@ public class Score {
             /*
                 Before putting notes in the measure, we must establish the context.
              */ 
-			if(currentEvent.getTick() == barEnd){ // TODO: Fix note off changing measure
+			if(currentEvent.getTick() == barEnd && !MIDIHelper.isEOT(currentEvent)){ // TODO: Fix note off changing measure
                 barStart = barEnd;
                 barCount++;
-                score.add(m);
                 m = new Measure(instrument, timeSignature.deepCopy());
+                score.add(m);
             } else if (currentEvent.getTick() > barEnd){
             	barsLept = ((currentEvent.getTick() - barStart)/barDuration);
             	barCount += barsLept;
                 barStart += barsLept * barDuration;
-                score.add(m);
                 for(int j = 0; j < barsLept - 2; j++){
                     score.add(new Measure(instrument, timeSignature.deepCopy()));
                 }
                 m = new Measure(instrument, timeSignature);
+                score.add(m);
+
             }
 			if(currentMessage[0] == MIDIHelper.META){
 				if(currentMessage[1] == MIDIHelper.TIME_SIGNATURE) {
@@ -337,10 +348,13 @@ public class Score {
                     barStart = currentEvent.getTick();
                     barDuration = MIDIHelper.getBarDuration(resolution, timeSignature);
                     if(m == null){
-                        m = new Measure(instrument, timeSignature);
-                    } else{
+                        m = new Measure(instrument, timeSignature); 
+                        score.add(m);  
+                    } else {
                         m.setTimeSignature(timeSignature);
-                    }    
+                    }
+                    m = new Measure(instrument, timeSignature); 
+                    score.add(m);  
 				} else if(currentMessage[1] == MIDIHelper.TEMPO) { // Please avoid MIDI files with tempo changes
 					score.setTempo(MIDIHelper.mpqToBpm(MIDIHelper.getLong(currentMessage, 3, 3)));
 				}
@@ -349,26 +363,38 @@ public class Score {
 				if(noteMemo[noteNum] != null) { // Note off
 					duration = MIDIHelper.midiQuantize(noteMemo[noteNum].noteEvent, currentEvent, resolution);
                     duration.times(new Rational(64 / duration.getDenominator()));
-                    double lg = Math.log(duration.getNumerator())/ Math.log(2); // Index NoteValue via log2
-                    // System.out.println("Barcount: " + barCount + " Duration: " + duration + " Offset: " + offset);
-                    Note n = new Note(
-                        NoteValue.values()[(int)lg],
-                        lg % 1 != 0, // lg will be fractional if there's a dot
-                        instrument,
-                        Note.noteNumToPitchClass(noteNum), 
-                        Note.noteNumToOctave(noteNum)
-                    );
-                    int string = getIdealString(currentChord, prevNote, n);
+                    // Start of note addtion
+                    pitch = Note.noteNumToPitchClass(noteNum);
+                    octave = Note.noteNumToOctave(noteNum);
+                    string = getIdealString(currentChord, prevNote, new Note(pitch, octave));
                     if(string == -1){
                         noteMemo[noteNum] = null;
                         continue;
+                    } 
+                    prevBite = null;
+                    backTie = null;
+                    remainder = duration.deepCopy();
+                    biteMeasure = noteMemo[noteNum].measureIndex;
+                    biteOffset = noteMemo[noteNum].offset;
+                    if(barCount == 15){
+                        System.out.println("");;
                     }
-                    Note tempNote = n.deepCopy(); // necessary because we're not changing the chord's duration
-                    currentChord.put(tempNote, string);
-                    n.setLocation(string, tempNote.getFret());
-                    prevNote = n;
-					m.put(noteMemo[noteNum].offset.deepCopy(), n, string); // Add note to measure
-					noteMemo[noteNum] = null;
+                    prevBite = score.get(biteMeasure - 1).bite(backTie, biteOffset , pitch, octave, remainder, string);
+         
+                    if(prevBite != null && !prevBite.getKey().isZero()){
+                        biteOffset = new Rational(0, 1);
+                        backTie = prevBite.getValue();
+                        remainder = prevBite.getKey();
+                        do{
+                            prevBite = score.get(biteMeasure).bite(backTie, biteOffset , pitch, octave, remainder, string);
+                            if(prevBite == null) break;
+                            backTie = prevBite.getValue();
+                            remainder = prevBite.getKey();
+                            biteMeasure++;
+                        } while(!prevBite.getKey().isZero());
+                    } 
+                    currentChord.put(new Note(pitch, octave), string);
+                    noteMemo[noteNum] = null;
 				} else { // Note on
                     if(currentEvent.getTick() != lastNoteOnTick){ // On different chord 
                         currentChord.clear();
@@ -380,9 +406,15 @@ public class Score {
 			}
 			barEnd = barStart + barDuration;
 		}
-		// TODO: fix trailing fermata creates erroneous trailing measure 
-        score.add(m);
         return score;
+    }
+
+    public static void main(String[] args)  {
+        Score s = Score.midiToScore(DataLoader.loadSequence("Larks_II_GuitarOnly.mid"), 0, Instrument.DISTORTION_GUITAR);
+        Player p = new Player();
+        System.out.println(s);
+        p.play(s.getSequence(0, s.size(), null, 1));
+       
     }
 
     /**
@@ -508,63 +540,7 @@ public class Score {
         return tablature.toString();
     }
 
-    public static void main(String[] args) throws MidiUnavailableException, InvalidMidiDataException {
-        testBankSwitching();
-    }
+    
 
-
-     public static void testBankSwitching() throws MidiUnavailableException, InvalidMidiDataException{
-        class BankSwitchTester implements Receiver, EndOfTrackListener{
-            Instrument instrument;
-            Synthesizer synth;
-            Sequencer sequencer;
-            boolean noteActive;
-            boolean passedTest;
-
-            BankSwitchTester(Instrument instrument, Synthesizer synth, Sequencer sequencer){
-                this.instrument = instrument;
-                this.synth = synth;
-                this.sequencer = sequencer;
-                noteActive = false;
-                passedTest = false;
-            }
-
-            public void send(MidiMessage message, long timeStamp) { // Called by the sequencer when it receives a MIDI event
-                int status = message.getStatus();
-                if(status != ShortMessage.NOTE_ON && status != ShortMessage.NOTE_OFF) return;
-                if(noteActive){ noteActive = false; return;}
-                noteActive = true;
-                VoiceStatus [] voiceStatuses = synth.getVoiceStatus();
-                for(VoiceStatus noteStatus : voiceStatuses){
-                    if(noteStatus.active == false) continue;
-                    if(instrument.bank == noteStatus.bank && instrument.patch == noteStatus.program);
-                        passedTest = true;
-                }
-            }
-            
-            public void close() {}
-
-            @Override
-            public void onEndOfTrack() {
-                synth.close();
-                sequencer.close();
-            }
-        }
-
-        Instrument instrument = Instrument.SOPRANO_UKULELE;
-        Synthesizer synth = SynthesizerManager.getInstance().getSynthesizer();
-        Sequencer sequencer =  SequencerManager.getInstance().getSequencer();
-        synth.open(); // Allow the synth to receive info
-        sequencer.getTransmitters().get(0).setReceiver(synth.getReceiver()); // Manually connect sequencer to singleton synthesizer
-        BankSwitchTester tester = new BankSwitchTester(instrument, synth, sequencer);
-        sequencer.getTransmitter().setReceiver(tester); // Connect sequencer to tester
-        SequencerManager.getInstance().addEndOfTrackListener(tester);
-        Score testScore  = new Score(null, instrument, 120);
-        Measure testMeasure = new Measure(instrument, new Rational(4));
-        testMeasure.put(new Rational(0, 1), new Note(PitchClass.C, 4), 1);
-        testScore.add(testMeasure);
-        ManagedPlayer p = new ManagedPlayer();
-        p.start(testScore.getSequence(0, testScore.size(), null, 1));
-        
-    }
+    
 }
