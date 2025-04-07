@@ -183,6 +183,7 @@ public class Chord extends BarObj{
      */
     public void clear(){
         notes = new Note[instrument.tuning.length];
+        noteCount = 0;
     }
     
     /**

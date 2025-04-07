@@ -303,11 +303,11 @@ public class Score {
             Note prevNote = instrument.tuning[0]; // Starts on the instrument's lowest note
 		/* Measure properties */
             Rational timeSignature = new Rational(4, 4);
-            Measure m = null; // The current measure
-            int barCount = 1; // How many bars are in the piece
+            Measure currentMeasure = null;// The current measure
+            // score.add(m);
             long barStart = 0; // MIDI tick the current bar starts at
             long barDuration = resolution * 4; // Length of current bar in ticks
-            long barEnd = barDuration; // MIDI tick the current bar ends at
+            long barEnd = barStart; // MIDI tick the current bar ends at
             long barsLept = 0; // Used when note being processed doesn't start at measure beginning
         /* Variables for bite() */
             SimpleEntry<Rational, Note> prevBite;
@@ -318,52 +318,35 @@ public class Score {
             PitchClass pitch;
             int octave;
             int string;
-		// TODO: Should be able to switch to new measure based on measure content
 		for(int i = 0; i < track.size(); i++) {
 			currentEvent = track.get(i);
 			currentMessage = currentEvent.getMessage().getMessage();
-            /*
-                Before putting notes in the measure, we must establish the context.
-             */ 
-			if(currentEvent.getTick() == barEnd && !MIDIHelper.isEOT(currentEvent)){ // TODO: Fix note off changing measure
-                barStart = barEnd;
-                barCount++;
-                m = new Measure(instrument, timeSignature.deepCopy());
-                score.add(m);
-            } else if (currentEvent.getTick() > barEnd){
-            	barsLept = ((currentEvent.getTick() - barStart)/barDuration);
-            	barCount += barsLept;
-                barStart += barsLept * barDuration;
-                for(int j = 0; j < barsLept - 2; j++){
-                    score.add(new Measure(instrument, timeSignature.deepCopy()));
-                }
-                m = new Measure(instrument, timeSignature);
-                score.add(m);
-
+   
+            if (currentEvent.getTick() >= barEnd && !MIDIHelper.isEOT(currentEvent)){
+            	barsLept = (currentEvent.getTick() - barEnd)/barDuration + 1;
+                barStart = barEnd + (barsLept - 1) * barDuration;
+                for(int j = 0; j < barsLept; j++)
+                    score.add(new Measure(instrument, timeSignature));
+                currentMeasure = score.get(score.size() - 1);
             }
-			if(currentMessage[0] == MIDIHelper.META){
+			
+            if(currentMessage[0] == MIDIHelper.META){
 				if(currentMessage[1] == MIDIHelper.TIME_SIGNATURE) {
-                    timeSignature.setNumerator(Byte.toUnsignedInt(currentMessage[3]));
-                    timeSignature.setDenominator(2 << (Byte.toUnsignedInt(currentMessage[4]) - 1)); // Power of 2
-                    barStart = currentEvent.getTick();
+                    timeSignature = MIDIHelper.getTimeSignature(currentMessage);
                     barDuration = MIDIHelper.getBarDuration(resolution, timeSignature);
-                    if(m == null){
-                        m = new Measure(instrument, timeSignature); 
-                        score.add(m);  
-                    } else {
-                        m.setTimeSignature(timeSignature);
-                    }
-                    m = new Measure(instrument, timeSignature); 
-                    score.add(m);  
+                    currentMeasure.setTimeSignature(timeSignature);
 				} else if(currentMessage[1] == MIDIHelper.TEMPO) { // Please avoid MIDI files with tempo changes
 					score.setTempo(MIDIHelper.mpqToBpm(MIDIHelper.getLong(currentMessage, 3, 3)));
-				}
-			} else if(MIDIHelper.isNoteOn(currentMessage[0]) || MIDIHelper.isNoteOff(currentMessage[0])) {
+			    }
+            }
+
+			barEnd = barStart + barDuration;
+
+			if(MIDIHelper.isNoteOn(currentMessage[0]) || MIDIHelper.isNoteOff(currentMessage[0])) {
 				noteNum = currentMessage[1];
 				if(noteMemo[noteNum] != null) { // Note off
 					duration = MIDIHelper.midiQuantize(noteMemo[noteNum].noteEvent, currentEvent, resolution);
                     duration.times(new Rational(64 / duration.getDenominator()));
-                    // Start of note addtion
                     pitch = Note.noteNumToPitchClass(noteNum);
                     octave = Note.noteNumToOctave(noteNum);
                     string = getIdealString(currentChord, prevNote, new Note(pitch, octave));
@@ -376,11 +359,8 @@ public class Score {
                     remainder = duration.deepCopy();
                     biteMeasure = noteMemo[noteNum].measureIndex;
                     biteOffset = noteMemo[noteNum].offset;
-                    if(barCount == 15){
-                        System.out.println("");;
-                    }
+
                     prevBite = score.get(biteMeasure - 1).bite(backTie, biteOffset , pitch, octave, remainder, string);
-         
                     if(prevBite != null && !prevBite.getKey().isZero()){
                         biteOffset = new Rational(0, 1);
                         backTie = prevBite.getValue();
@@ -393,6 +373,7 @@ public class Score {
                             biteMeasure++;
                         } while(!prevBite.getKey().isZero());
                     } 
+                    
                     currentChord.put(new Note(pitch, octave), string);
                     noteMemo[noteNum] = null;
 				} else { // Note on
@@ -400,17 +381,19 @@ public class Score {
                         currentChord.clear();
                         lastNoteOnTick = currentEvent.getTick();
                         offset = MIDIHelper.midiQuantize(barStart, currentEvent, resolution);
+                        if(offset.compareTo(new Rational(1)) >= 0){
+                            System.out.println();
+                        }
                     } 
-					noteMemo[noteNum] = new MemoEntry(currentEvent, barCount, offset.deepCopy());
+					noteMemo[noteNum] = new MemoEntry(currentEvent, score.size(), offset.deepCopy());
 				}
 			}
-			barEnd = barStart + barDuration;
 		}
         return score;
     }
 
     public static void main(String[] args)  {
-        Score s = Score.midiToScore(DataLoader.loadSequence("Larks_II_GuitarOnly.mid"), 0, Instrument.DISTORTION_GUITAR);
+        Score s = Score.midiToScore(DataLoader.loadSequence("BlackestEyesElectric.mid"), 0, Instrument.DISTORTION_GUITAR);
         Player p = new Player();
         System.out.println(s);
         p.play(s.getSequence(0, s.size(), null, 1));
@@ -476,7 +459,7 @@ public class Score {
                 } 
                 transposed.append(String.join("+", transposedChordComponents) + " ");
             } else{
-                if(!Pattern.matches("[ABCDEFG]b?[0-9][w,h,q,i,s,t,x,o]?\\.?", tokens[i])){
+                if(!Pattern.matches("[ABCDEFG]b?[0-9]-?[w,h,q,i,s,t,x,o]\\.?-?", tokens[i])){
                     transposed.append(tokens[i]+ " ");
                     continue;
                 }

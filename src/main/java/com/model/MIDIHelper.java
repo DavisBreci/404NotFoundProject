@@ -1,5 +1,6 @@
 package com.model;
 
+import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiEvent;
 
 /**
@@ -116,6 +117,13 @@ public final class MIDIHelper {
     }
 
     public static boolean isEOT(MidiEvent m){
-        return Byte.toUnsignedInt(m.getMessage().getMessage()[1]) == EOT;
+        return m.getMessage().getStatus() == MetaMessage.META && Byte.toUnsignedInt(m.getMessage().getMessage()[1]) == EOT;
+    }
+
+    public static Rational getTimeSignature(byte [] msg){
+        Rational ts = new Rational(4);
+        ts.setNumerator(Byte.toUnsignedInt(msg[3]));
+        ts.setDenominator(2 << (Byte.toUnsignedInt(msg[4]) - 1)); // Power of 2
+        return ts;
     }
 }
