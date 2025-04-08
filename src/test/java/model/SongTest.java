@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 
 import com.model.*;
-
+/**
+ * @author Davis Breci
+ */
 public class SongTest {
     Score score;
     @Before public void initialize(){
