@@ -346,21 +346,22 @@ public class Score {
 				noteNum = currentMessage[1];
 				if(noteMemo[noteNum] != null) { // Note off
 					duration = MIDIHelper.midiQuantize(noteMemo[noteNum].noteEvent, currentEvent, resolution);
-                    duration.times(new Rational(64 / duration.getDenominator()));
                     pitch = Note.noteNumToPitchClass(noteNum);
                     octave = Note.noteNumToOctave(noteNum);
                     string = getIdealString(currentChord, prevNote, new Note(pitch, octave));
+                    
                     if(string == -1){
                         noteMemo[noteNum] = null;
                         continue;
                     } 
+
                     prevBite = null;
                     backTie = null;
                     remainder = duration.deepCopy();
                     biteMeasure = noteMemo[noteNum].measureIndex;
                     biteOffset = noteMemo[noteNum].offset;
-
                     prevBite = score.get(biteMeasure - 1).bite(backTie, biteOffset , pitch, octave, remainder, string);
+                    
                     if(prevBite != null && !prevBite.getKey().isZero()){
                         biteOffset = new Rational(0, 1);
                         backTie = prevBite.getValue();
@@ -381,9 +382,6 @@ public class Score {
                         currentChord.clear();
                         lastNoteOnTick = currentEvent.getTick();
                         offset = MIDIHelper.midiQuantize(barStart, currentEvent, resolution);
-                        if(offset.compareTo(new Rational(1)) >= 0){
-                            System.out.println();
-                        }
                     } 
 					noteMemo[noteNum] = new MemoEntry(currentEvent, score.size(), offset.deepCopy());
 				}
@@ -393,7 +391,7 @@ public class Score {
     }
 
     public static void main(String[] args)  {
-        Score s = Score.midiToScore(DataLoader.loadSequence("BlackestEyesElectric.mid"), 0, Instrument.DISTORTION_GUITAR);
+        Score s = Score.midiToScore(DataLoader.loadSequence("Teen_Town.mid"), 0, Instrument.FRETLESS_BASS);
         Player p = new Player();
         System.out.println(s);
         p.play(s.getSequence(0, s.size(), null, 1));

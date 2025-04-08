@@ -70,8 +70,12 @@ public class Measure {
 
     public boolean put(Rational offset, Note note, int string){
         Chord container = null;
-        if((container = chords.get(offset)) != null)
-            return container.put(note, string);
+        if((container = chords.get(offset)) != null){
+            if(container.getDuration().compareTo(note.getDuration()) == 0)
+                return container.put(note, string);
+            else 
+                return false;
+        }
         container = new Chord(note.getValue(), note.isDotted(), instrument);
         if(!container.put(note, string))
             return false;
