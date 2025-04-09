@@ -31,7 +31,7 @@ public class Measure {
     public Measure(Instrument instrument, Rational timeSignature){
         Entry.comparingByKey();
         this.instrument = instrument;
-        this.timeSignature = timeSignature;
+        this.timeSignature = timeSignature.deepCopy();
         this.chords = new TreeMap<Rational, Chord>();
         this.rests = new TreeMap<Rational, Rest>();
         greedyRestFill(new Rational(0, 1), timeSignature);
@@ -70,8 +70,12 @@ public class Measure {
 
     public boolean put(Rational offset, Note note, int string){
         Chord container = null;
-        if((container = chords.get(offset)) != null)
-            return container.put(note, string);
+        if((container = chords.get(offset)) != null){
+            if(container.getDuration().compareTo(note.getDuration()) == 0)
+                return container.put(note, string);
+            else 
+                return false;
+        }
         container = new Chord(note.getValue(), note.isDotted(), instrument);
         if(!container.put(note, string))
             return false;
@@ -272,6 +276,7 @@ public class Measure {
      */
     public AbstractMap.SimpleEntry<Rational, Note> bite(Note backTie, Rational offset, PitchClass pitchClass, int octave, Rational duration, int string){
         Rational _offset = offset.deepCopy();
+        Rational half = new Rational(1,2);
         double noteIndex;
         Note prevNote = backTie;
         Note currentNote = null;
@@ -298,12 +303,14 @@ public class Measure {
                 Math.min(NoteValue.values().length - 1, (int)noteIndex)
             ];
             remainder.minus(value.duration);
-            dot = new Rational(
-                value.duration.getNumerator()/2, value.duration.getDenominator()
-            );
+            // dot = new Rational(
+            //     value.duration.getNumerator()/2, value.duration.getDenominator()
+            // );
+            dot = value.duration.deepCopy();
+            dot.times(half);
             temp = remainder.deepCopy();
             temp.minus(dot);
-            if((dotted = remainder.compareTo(dot) >= 0 && temp.compareTo(new Rational("0/1")) == 1))
+            if((dotted = remainder.compareTo(dot) >= 0) && temp.compareTo(new Rational("0/1")) >= 0)
                 remainder = temp;
             currentNote = new Note(value, dotted, instrument, pitchClass, octave); // Create a new note and handle ties
             currentNote.tieBack(prevNote);

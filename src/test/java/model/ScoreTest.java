@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -183,7 +184,7 @@ public class ScoreTest {
     public void testMidiToScoreTuplet(){ // Method doesn't support tuplets, but they shouldn't break the parser
         Sequence rawMidi = DataLoader.loadSequence("triplet_test.mid");
         Score tripletTest = Score.midiToScore(rawMidi, 0, Instrument.ELECTRIC_JAZZ_GUITAR);
-        assertEquals(" Rq G3s. Ri Rt ",tripletTest.toString(0, 1, false));
+        assertEquals(" Rq G3s- G3-x G3s- G3-x Rx G3s- G3-x ",tripletTest.toString(0, 1, false));
     }
 
     @Test 
@@ -198,8 +199,8 @@ public class ScoreTest {
     public void testMidiToScoreTied(){ // Method should ignore notes that cross barlines
         Sequence rawMidi = DataLoader.loadSequence("tiedNoteTest.mid");
         Score tiedTest = Score.midiToScore(rawMidi, 0, Instrument.FRETLESS_BASS);
-        assertTrue(tiedTest.get(0).isEmpty());
-        assertTrue(tiedTest.get(1).isEmpty());
+        assertNotNull(tiedTest.get(0).get(new Rational(1, 4)));
+        assertNotNull(tiedTest.get(1).get(new Rational(0, 1)));
     }
 
     @Test

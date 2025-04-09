@@ -5,6 +5,7 @@ package com.model;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Pattern;
@@ -302,87 +303,99 @@ public class Score {
             Note prevNote = instrument.tuning[0]; // Starts on the instrument's lowest note
 		/* Measure properties */
             Rational timeSignature = new Rational(4, 4);
-            Measure m = null; // The current measure
-            int barCount = 1; // How many bars are in the piece
+            Measure currentMeasure = null;// The current measure
+            // score.add(m);
             long barStart = 0; // MIDI tick the current bar starts at
             long barDuration = resolution * 4; // Length of current bar in ticks
-            long barEnd = barDuration; // MIDI tick the current bar ends at
+            long barEnd = barStart; // MIDI tick the current bar ends at
             long barsLept = 0; // Used when note being processed doesn't start at measure beginning
-		// TODO: Should be able to switch to new measure based on measure content
+        /* Variables for bite() */
+            SimpleEntry<Rational, Note> prevBite;
+            Note backTie;
+            Rational remainder;
+            int biteMeasure;   
+            Rational biteOffset;
+            PitchClass pitch;
+            int octave;
+            int string;
 		for(int i = 0; i < track.size(); i++) {
 			currentEvent = track.get(i);
 			currentMessage = currentEvent.getMessage().getMessage();
-            /*
-                Before putting notes in the measure, we must establish the context.
-             */ 
-			if(currentEvent.getTick() == barEnd){ // TODO: Fix note off changing measure
-                barStart = barEnd;
-                barCount++;
-                score.add(m);
-                m = new Measure(instrument, timeSignature.deepCopy());
-            } else if (currentEvent.getTick() > barEnd){
-            	barsLept = ((currentEvent.getTick() - barStart)/barDuration);
-            	barCount += barsLept;
-                barStart += barsLept * barDuration;
-                score.add(m);
-                for(int j = 0; j < barsLept - 2; j++){
-                    score.add(new Measure(instrument, timeSignature.deepCopy()));
-                }
-                m = new Measure(instrument, timeSignature);
+   
+            if (currentEvent.getTick() >= barEnd && !MIDIHelper.isEOT(currentEvent)){
+            	barsLept = (currentEvent.getTick() - barEnd)/barDuration + 1;
+                barStart = barEnd + (barsLept - 1) * barDuration;
+                for(int j = 0; j < barsLept; j++)
+                    score.add(new Measure(instrument, timeSignature));
+                currentMeasure = score.get(score.size() - 1);
             }
-			if(currentMessage[0] == MIDIHelper.META){
+			
+            if(currentMessage[0] == MIDIHelper.META){
 				if(currentMessage[1] == MIDIHelper.TIME_SIGNATURE) {
-                    timeSignature.setNumerator(Byte.toUnsignedInt(currentMessage[3]));
-                    timeSignature.setDenominator(2 << (Byte.toUnsignedInt(currentMessage[4]) - 1)); // Power of 2
-                    barStart = currentEvent.getTick();
+                    timeSignature = MIDIHelper.getTimeSignature(currentMessage);
                     barDuration = MIDIHelper.getBarDuration(resolution, timeSignature);
-                    if(m == null){
-                        m = new Measure(instrument, timeSignature);
-                    } else{
-                        m.setTimeSignature(timeSignature);
-                    }    
+                    currentMeasure.setTimeSignature(timeSignature);
 				} else if(currentMessage[1] == MIDIHelper.TEMPO) { // Please avoid MIDI files with tempo changes
 					score.setTempo(MIDIHelper.mpqToBpm(MIDIHelper.getLong(currentMessage, 3, 3)));
-				}
-			} else if(MIDIHelper.isNoteOn(currentMessage[0]) || MIDIHelper.isNoteOff(currentMessage[0])) {
+			    }
+            }
+
+			barEnd = barStart + barDuration;
+
+			if(MIDIHelper.isNoteOn(currentMessage[0]) || MIDIHelper.isNoteOff(currentMessage[0])) {
 				noteNum = currentMessage[1];
 				if(noteMemo[noteNum] != null) { // Note off
 					duration = MIDIHelper.midiQuantize(noteMemo[noteNum].noteEvent, currentEvent, resolution);
-                    duration.times(new Rational(64 / duration.getDenominator()));
-                    double lg = Math.log(duration.getNumerator())/ Math.log(2); // Index NoteValue via log2
-                    // System.out.println("Barcount: " + barCount + " Duration: " + duration + " Offset: " + offset);
-                    Note n = new Note(
-                        NoteValue.values()[(int)lg],
-                        lg % 1 != 0, // lg will be fractional if there's a dot
-                        instrument,
-                        Note.noteNumToPitchClass(noteNum), 
-                        Note.noteNumToOctave(noteNum)
-                    );
-                    int string = getIdealString(currentChord, prevNote, n);
+                    pitch = Note.noteNumToPitchClass(noteNum);
+                    octave = Note.noteNumToOctave(noteNum);
+                    string = getIdealString(currentChord, prevNote, new Note(pitch, octave));
+                    
                     if(string == -1){
                         noteMemo[noteNum] = null;
                         continue;
-                    }
-                    Note tempNote = n.deepCopy(); // necessary because we're not changing the chord's duration
-                    currentChord.put(tempNote, string);
-                    n.setLocation(string, tempNote.getFret());
-                    prevNote = n;
-					m.put(noteMemo[noteNum].offset.deepCopy(), n, string); // Add note to measure
-					noteMemo[noteNum] = null;
+                    } 
+
+                    prevBite = null;
+                    backTie = null;
+                    remainder = duration.deepCopy();
+                    biteMeasure = noteMemo[noteNum].measureIndex;
+                    biteOffset = noteMemo[noteNum].offset;
+                    prevBite = score.get(biteMeasure - 1).bite(backTie, biteOffset , pitch, octave, remainder, string);
+                    
+                    if(prevBite != null && !prevBite.getKey().isZero()){
+                        biteOffset = new Rational(0, 1);
+                        backTie = prevBite.getValue();
+                        remainder = prevBite.getKey();
+                        do{
+                            prevBite = score.get(biteMeasure).bite(backTie, biteOffset , pitch, octave, remainder, string);
+                            if(prevBite == null) break;
+                            backTie = prevBite.getValue();
+                            remainder = prevBite.getKey();
+                            biteMeasure++;
+                        } while(!prevBite.getKey().isZero());
+                    } 
+                    
+                    currentChord.put(new Note(pitch, octave), string);
+                    noteMemo[noteNum] = null;
 				} else { // Note on
                     if(currentEvent.getTick() != lastNoteOnTick){ // On different chord 
                         currentChord.clear();
                         lastNoteOnTick = currentEvent.getTick();
                         offset = MIDIHelper.midiQuantize(barStart, currentEvent, resolution);
                     } 
-					noteMemo[noteNum] = new MemoEntry(currentEvent, barCount, offset.deepCopy());
+					noteMemo[noteNum] = new MemoEntry(currentEvent, score.size(), offset.deepCopy());
 				}
 			}
-			barEnd = barStart + barDuration;
 		}
-		// TODO: fix trailing fermata creates erroneous trailing measure 
-        score.add(m);
         return score;
+    }
+
+    public static void main(String[] args)  {
+        Score s = Score.midiToScore(DataLoader.loadSequence("Teen_Town.mid"), 0, Instrument.FRETLESS_BASS);
+        Player p = new Player();
+        System.out.println(s);
+        p.play(s.getSequence(0, s.size(), null, 1));
+       
     }
 
     /**
@@ -444,7 +457,7 @@ public class Score {
                 } 
                 transposed.append(String.join("+", transposedChordComponents) + " ");
             } else{
-                if(!Pattern.matches("[ABCDEFG]b?[0-9][w,h,q,i,s,t,x,o]?\\.?", tokens[i])){
+                if(!Pattern.matches("[ABCDEFG]b?[0-9]-?[w,h,q,i,s,t,x,o]\\.?-?", tokens[i])){
                     transposed.append(tokens[i]+ " ");
                     continue;
                 }
@@ -508,63 +521,7 @@ public class Score {
         return tablature.toString();
     }
 
-    public static void main(String[] args) throws MidiUnavailableException, InvalidMidiDataException {
-        testBankSwitching();
-    }
+    
 
-
-     public static void testBankSwitching() throws MidiUnavailableException, InvalidMidiDataException{
-        class BankSwitchTester implements Receiver, EndOfTrackListener{
-            Instrument instrument;
-            Synthesizer synth;
-            Sequencer sequencer;
-            boolean noteActive;
-            boolean passedTest;
-
-            BankSwitchTester(Instrument instrument, Synthesizer synth, Sequencer sequencer){
-                this.instrument = instrument;
-                this.synth = synth;
-                this.sequencer = sequencer;
-                noteActive = false;
-                passedTest = false;
-            }
-
-            public void send(MidiMessage message, long timeStamp) { // Called by the sequencer when it receives a MIDI event
-                int status = message.getStatus();
-                if(status != ShortMessage.NOTE_ON && status != ShortMessage.NOTE_OFF) return;
-                if(noteActive){ noteActive = false; return;}
-                noteActive = true;
-                VoiceStatus [] voiceStatuses = synth.getVoiceStatus();
-                for(VoiceStatus noteStatus : voiceStatuses){
-                    if(noteStatus.active == false) continue;
-                    if(instrument.bank == noteStatus.bank && instrument.patch == noteStatus.program);
-                        passedTest = true;
-                }
-            }
-            
-            public void close() {}
-
-            @Override
-            public void onEndOfTrack() {
-                synth.close();
-                sequencer.close();
-            }
-        }
-
-        Instrument instrument = Instrument.SOPRANO_UKULELE;
-        Synthesizer synth = SynthesizerManager.getInstance().getSynthesizer();
-        Sequencer sequencer =  SequencerManager.getInstance().getSequencer();
-        synth.open(); // Allow the synth to receive info
-        sequencer.getTransmitters().get(0).setReceiver(synth.getReceiver()); // Manually connect sequencer to singleton synthesizer
-        BankSwitchTester tester = new BankSwitchTester(instrument, synth, sequencer);
-        sequencer.getTransmitter().setReceiver(tester); // Connect sequencer to tester
-        SequencerManager.getInstance().addEndOfTrackListener(tester);
-        Score testScore  = new Score(null, instrument, 120);
-        Measure testMeasure = new Measure(instrument, new Rational(4));
-        testMeasure.put(new Rational(0, 1), new Note(PitchClass.C, 4), 1);
-        testScore.add(testMeasure);
-        ManagedPlayer p = new ManagedPlayer();
-        p.start(testScore.getSequence(0, testScore.size(), null, 1));
-        
-    }
+    
 }

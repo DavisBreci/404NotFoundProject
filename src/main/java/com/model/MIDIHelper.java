@@ -1,5 +1,6 @@
 package com.model;
 
+import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiEvent;
 
 /**
@@ -21,7 +22,7 @@ public final class MIDIHelper {
     public static final int MAX_VOL = 16383;
     public static final int TEMPO = 0x51;
     public static final byte INSTRUMENT_NAME = (byte)0x04;
-
+    public static final int EOT = 0x2F;
     /**
      * Snaps the elapsed time between two events to a 1/64-based grid
      * @param a the start event
@@ -113,5 +114,16 @@ public final class MIDIHelper {
         for(int i = 3; i < end; i++)
             name.append((char)msg[i]);
         return name.toString();
+    }
+
+    public static boolean isEOT(MidiEvent m){
+        return m.getMessage().getStatus() == MetaMessage.META && Byte.toUnsignedInt(m.getMessage().getMessage()[1]) == EOT;
+    }
+
+    public static Rational getTimeSignature(byte [] msg){
+        Rational ts = new Rational(4);
+        ts.setNumerator(Byte.toUnsignedInt(msg[3]));
+        ts.setDenominator(2 << (Byte.toUnsignedInt(msg[4]) - 1)); // Power of 2
+        return ts;
     }
 }
