@@ -2,6 +2,8 @@ package com.urock;
 
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
+
 import com.model.MusicSystemFACADE;
 
 import javafx.event.ActionEvent;
@@ -26,13 +28,15 @@ public class LoginController {
     private TextField username_txt;
 
     @FXML
-    void login(ActionEvent event) {
+    void login(ActionEvent event) throws IOException {
         username = username_txt.getText();
         password = password_txt.getText();
         teacher = teacherToggle.isSelected();
         MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
-        if(facade.login(username, password))
+        if(facade.login(username, password)){
             System.out.println("le epic login complete");
+            App.setRoot("UserHome");
+        }
     }
 
 }

@@ -5,6 +5,8 @@ module com.urock {
     requires jfugue;
     requires transitive java.desktop;
     requires junit;
+    requires javafx.graphics;
+    requires javafx.base;
     
     opens com.urock to javafx.fxml;
     exports com.urock;
