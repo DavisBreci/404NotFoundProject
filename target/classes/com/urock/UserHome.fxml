@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.urock.UserHomeController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.urock.UserHomeController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -50,16 +50,16 @@
       <Button fx:id="buttonCompose" layoutX="137.0" layoutY="75.0" mnemonicParsing="false" prefHeight="92.0" prefWidth="153.0" text="Compose" GridPane.columnIndex="8" GridPane.rowIndex="4" />
       <ScrollPane fx:id="scrollLessons" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.columnSpan="6" GridPane.rowIndex="10" GridPane.rowSpan="2">
          <content>
-            <HBox fx:id="scrollLessonsContent" prefHeight="100.0" prefWidth="200.0" />
+            <HBox fx:id="scrollLessonsContent" prefHeight="52.0" prefWidth="436.0" />
          </content>
       </ScrollPane>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Home" GridPane.columnIndex="3" GridPane.rowIndex="2" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Playlists" GridPane.columnIndex="3" GridPane.rowIndex="5" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned Lessons" GridPane.columnIndex="3" GridPane.rowIndex="8" />
-      <Button mnemonicParsing="false" text="Log out" GridPane.columnIndex="10" GridPane.rowIndex="11" />
+      <Button mnemonicParsing="false" onAction="#onLogout" text="Log out" GridPane.columnIndex="10" GridPane.rowIndex="11" />
       <ScrollPane fx:id="scrollPlaylists" prefHeight="36.0" prefWidth="172.0" GridPane.columnIndex="3" GridPane.columnSpan="6" GridPane.rowIndex="6" GridPane.rowSpan="2">
          <content>
-            <HBox fx:id="scrollPlaylistsContent" prefHeight="100.0" prefWidth="200.0" />
+            <HBox fx:id="scrollPlaylistsContent" prefHeight="48.0" prefWidth="428.0" />
          </content>
       </ScrollPane>
    </children>

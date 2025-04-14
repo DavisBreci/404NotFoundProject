@@ -29,6 +29,14 @@ public class MusicSystemFACADE {
     }
 
     /**
+     * Retrieves the user who is currently logged in
+     * @return the user
+     */
+    public User getCurrentUser(){
+        return user;
+    }
+
+    /**
      * Retrieves the instance of MusicSystemFACADE
      * @return the MusicSystemFACADE
      */
