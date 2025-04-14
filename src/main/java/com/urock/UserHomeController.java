@@ -42,12 +42,14 @@ public class UserHomeController implements Initializable {
     void onLogout(ActionEvent event) throws IOException {
         facade.logout();
         App.setRoot("login");
+        System.out.println("Logged out");
     }
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1){
        try {
             initializePlaylists();
+            initializeLessons();
        } catch (IOException e) {
             e.printStackTrace();
        }

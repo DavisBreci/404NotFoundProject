@@ -18,8 +18,8 @@ public class Lesson {
      */
     public Lesson(String id, ArrayList<Song> songs, String title){
         this.id = (id == null) ? UUID.randomUUID().toString(): id;
-        if(title == null || title.length() > 30)
-            throw new IllegalArgumentException();
+        // if(title == null || title.length() > 30)
+        //     throw new IllegalArgumentException();
         if(songs == null)
             songs = new ArrayList<Song>();
         else if(songs.contains(null))
