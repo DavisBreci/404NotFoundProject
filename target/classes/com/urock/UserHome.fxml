@@ -46,8 +46,8 @@
             <Image url="@../../../../../../../../../Downloads/HomeScreen.png" />
          </image>
       </ImageView>
-      <Button fx:id="buttonSearch" mnemonicParsing="false" prefHeight="78.0" prefWidth="150.0" text="Search" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-      <Button fx:id="buttonCompose" layoutX="137.0" layoutY="75.0" mnemonicParsing="false" prefHeight="92.0" prefWidth="153.0" text="Compose" GridPane.columnIndex="8" GridPane.rowIndex="4" />
+      <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#search" prefHeight="78.0" prefWidth="150.0" text="Search" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+      <Button fx:id="buttonCompose" layoutX="137.0" layoutY="75.0" mnemonicParsing="false" onAction="#compose" prefHeight="92.0" prefWidth="153.0" text="Compose" GridPane.columnIndex="8" GridPane.rowIndex="4" />
       <ScrollPane fx:id="scrollLessons" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.columnSpan="6" GridPane.rowIndex="10" GridPane.rowSpan="2">
          <content>
             <HBox fx:id="scrollLessonsContent" prefHeight="52.0" prefWidth="436.0" />

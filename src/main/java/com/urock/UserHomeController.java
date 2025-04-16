@@ -87,4 +87,15 @@ public class UserHomeController implements Initializable {
             }
     }
 
+    @FXML
+    void search(ActionEvent event) throws IOException {
+        System.out.println("Search page");
+        App.setRoot("SearchPage");
+    }
+
+    @FXML 
+    void compose(ActionEvent event) throws IOException {
+        System.out.println("Compose a score");
+        App.setRoot("ScoreEditor");
+    }
 }
