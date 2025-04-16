@@ -1,9 +1,13 @@
 package com.urock;
 
 import java.net.URL;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
 import javax.sound.midi.Sequence;
+
+import org.jfugue.player.Player;
 
 import com.model.Chord;
 import com.model.DataLoader;
@@ -15,9 +19,13 @@ import com.model.Rational;
 import com.model.Score;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -29,10 +37,16 @@ public class ScoreEditorController implements Initializable{
     private VBox contentArea;
 
     class FretView extends TextField {
-        Note n;
-        public FretView(Note n){
+        public Note note;
+        public StaffLine line;
+        public Rational offset;
+        public FretView(StaffLine line, Rational offset, Note note){
             super();
-            promptTextProperty().set(n.getFret() + "");
+            this.note = note;
+            this.line = line;
+            this.offset = offset;
+            promptTextProperty().set(note.getFret() + "");
+            // setText(getPromptText());
             setPrefColumnCount(2);
             setStyle("""
                     -fx-background-color: white; 
@@ -42,7 +56,33 @@ public class ScoreEditorController implements Initializable{
                     -fx-padding: 4 4 4 4;
                     -fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);
                 """);
-        }   
+            setOnKeyPressed( 
+                new EventHandler<KeyEvent>(){
+                    public void handle(KeyEvent arg0) {
+                        if(arg0.getCode().equals(KeyCode.DELETE)){
+                            FretView src = (FretView)arg0.getSource();
+                            if(src.line.measure.remove(src.offset, src.note))
+                                src.line.notes.getChildren().remove(src); 
+                        }
+                    }
+                }
+            );
+
+            setOnAction(
+                new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent arg0) {
+                        FretView src = (FretView)arg0.getSource();
+                        try{
+                            src.note.setLocationAndPitch(src.note.getString(), Integer.parseInt(src.getText()));
+                        } catch(NumberFormatException e){}
+                        src.setText(src.note.getFret() + "");  
+                        Player p = new Player();
+                        p.play(src.line.measure.toString());
+                    }
+                }
+            );
+        } 
+        
     }
 
     class StaffLine extends Pane{
@@ -66,16 +106,28 @@ public class ScoreEditorController implements Initializable{
             notes = new HBox();
             getChildren().add(notes);
             notes.setSpacing(20);
-            for(Chord c: measure.getChords()){
-                Note [] n = c.getNotes(false);
+            Iterator<Entry<Rational, Chord>> cIterator = measure.chordIterator();
+            Entry<Rational, Chord> c;
+            while(cIterator.hasNext()){
+                c = cIterator.next();
+                Note [] n = c.getValue().getNotes(false);
                 if(n[string] != null)
-                    notes.getChildren().add(new FretView(n[string]));
-            }
+                    notes.getChildren().add(new FretView(this, c.getKey(), n[string]));
+                }
         }
     }
     
-    class MeasureView extends HBox{
-
+    class MeasureView extends VBox{
+        Measure measure;
+        public MeasureView(Measure measure){
+            this.measure = measure;
+            StaffLine sl = null;
+            for(int i = measure.getInstrument().tuning.length - 1; i >= 0 ; i--){
+                sl = new StaffLine(measure, i);
+                getChildren().add(sl);
+            }
+            spacingProperty().bind(heightProperty().divide(measure.getInstrument().tuning.length));
+        }
     }
 
     @Override
@@ -85,6 +137,9 @@ public class ScoreEditorController implements Initializable{
         Score s = DataLoader.getScoreFromID("a42d710f-afcb-4bce-bfd7-ecb43e6a5a89");
         // m.put(new Rational(0, 1), new Note(PitchClass.E, 2), 0);
         StaffLine l = new StaffLine(s.get(0), 2);
+        MeasureView mv = new MeasureView(s.get(0));
+        Pane p = new Pane();
+        p.getChildren().add(mv);
         /*
          * .fret { 
         -fx-background-color: white;
@@ -100,7 +155,7 @@ public class ScoreEditorController implements Initializable{
         // l.setPrefWidth(contentArea.getWidth());
         // l.prefHeightProperty().bind(contentArea.prefHeightProperty());
         // l.prefWidthProperty().bind(contentArea.prefWidthProperty());
-        contentArea.getChildren().add(l);
+        contentArea.getChildren().add(p);
     }
     
 }

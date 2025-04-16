@@ -42,6 +42,7 @@ public class UserHomeController implements Initializable {
     void onLogout(ActionEvent event) throws IOException {
         facade.logout();
         App.setRoot("login");
+        
         System.out.println("Logged out");
     }
 
