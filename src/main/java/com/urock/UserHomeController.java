@@ -42,6 +42,7 @@ public class UserHomeController implements Initializable {
     void onLogout(ActionEvent event) throws IOException {
         facade.logout();
         App.setRoot("login");
+        
         System.out.println("Logged out");
     }
 
@@ -87,4 +88,15 @@ public class UserHomeController implements Initializable {
             }
     }
 
+    @FXML
+    void search(ActionEvent event) throws IOException {
+        System.out.println("Search page");
+        App.setRoot("SearchPage");
+    }
+
+    @FXML 
+    void compose(ActionEvent event) throws IOException {
+        System.out.println("Compose a score");
+        App.setRoot("ScoreEditor");
+    }
 }

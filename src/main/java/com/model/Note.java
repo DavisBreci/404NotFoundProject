@@ -92,6 +92,24 @@ public class Note extends BarObj {
         }
         return false;
     }
+    
+    public boolean setLocationAndPitch(int string, int fret){
+        if(string < 0 || fret < 0 || string > instrument.tuning.length || fret > instrument.frets)
+            return false;
+        this.string = string;
+        this.fret = fret;
+        Note pcHolder = instrument.tuning[string].deepCopy();
+        pcHolder.transpose(fret);
+        pitchClass = pcHolder.getPitchClass();
+        octave = pcHolder.getOctave();
+        return false;
+    }
+
+    public static void main(String[] args) {
+        Note n = new Note(PitchClass.E, 2);
+        n.setLocationAndPitch(5, 6);
+        System.out.println(n);
+    }
     /**
      * Attempts to change the string of the note
      * @param string string to be changed to

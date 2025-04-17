@@ -1,5 +1,6 @@
 package com.urock;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -15,8 +16,10 @@ import com.model.Rational;
 import com.model.Score;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
@@ -25,5 +28,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 
 public class SearchPageController {
+
+    @FXML 
+    private Button buttonGoHome;
+
     
+    @FXML 
+    void home(ActionEvent event) throws IOException {
+        System.out.println("Go home");
+        App.setRoot("UserHome");
+    }
 }
