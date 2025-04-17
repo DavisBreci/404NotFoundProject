@@ -21,6 +21,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -34,7 +35,7 @@ public class PlaylistViewerController implements Initializable{
         p = curr;
     }
     MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
-    
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1){
        try {
@@ -45,6 +46,6 @@ public class PlaylistViewerController implements Initializable{
     }
 
     public void initializeSongs() throws IOException {
-        
+
     }
 }
