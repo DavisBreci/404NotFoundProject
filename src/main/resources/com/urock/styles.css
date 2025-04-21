@@ -15,9 +15,8 @@
 }
 .TemplateSong .headerText {
     -fx-font-size: 22;
-    -fx-font-style: bold;
 }
 .PlaylistViewer {
     -fx-background-color:#303030;
-    
+
 }

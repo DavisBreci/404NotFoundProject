@@ -91,7 +91,9 @@ public class UserHomeController implements Initializable {
     @FXML
     void search(ActionEvent event) throws IOException {
         System.out.println("Search page");
-        App.setRoot("SearchPage");
+//      App.setRoot("SearchPage"); <---- REAL CODE
+        PlaylistViewerController.setCurrent(facade.getCurrentUser().getPlaylists().get(0));
+        App.setRoot("PlaylistViewer");
     }
 
     @FXML 
