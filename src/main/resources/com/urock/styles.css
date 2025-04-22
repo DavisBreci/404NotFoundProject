@@ -17,6 +17,12 @@
 .TemplateSong .headerText {
     -fx-font-size: 22;
 }
+.list-view .scroll-bar:vertical,
+           .scroll-bar:horizontal {
+    -fx-opacity:0;
+    -fx-max-width:0;
+    -fx-max-height:0;
+}
 
 .login {
     -fx-background-color:#303030;
@@ -52,4 +58,8 @@
 
 .backButton {
     -fx-fill:#cabf61;
+}
+.button {
+    -fx-background-color:#cabf61;
+    -fx-text-fill:#000000;
 }
