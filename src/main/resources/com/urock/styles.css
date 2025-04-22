@@ -16,6 +16,25 @@
 .TemplateSong .headerText {
     -fx-font-size: 22;
 }
+
+.login {
+    -fx-background-color:#303030;
+}
+.login .loginButton {
+    -fx-background-color:#cabf61;
+    -fx-text-fill: white;
+
+}
+.login .teacherToggle {
+    -fx-background-color:#cabf61;
+    -fx-text-fill: white;
+
+}
+
+.UserHome {
+    -fx-background-color:#303030;
+}
+
 .PlaylistViewer {
     -fx-background-color:#303030;
 

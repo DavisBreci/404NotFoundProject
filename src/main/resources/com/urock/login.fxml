@@ -1,18 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TextField?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.urock.LoginController">
+<VBox alignment="CENTER" spacing="20.0" styleClass="login" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.urock.LoginController">
    <children>
-      <TextField fx:id="username_txt" />
-      <TextField fx:id="password_txt" />
-      <ToggleButton fx:id="teacherToggle" mnemonicParsing="false" text="Teacher" />
-      <Button fx:id="loginButton" onAction="#login" text="Login" />
+      <GridPane prefHeight="265.0" prefWidth="600.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TextField fx:id="username_txt" alignment="CENTER" promptText="Username" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets top="75.0" />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="password_txt" alignment="CENTER" promptText="Password" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets top="35.0" />
+               </GridPane.margin>
+            </TextField>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+               <image>
+                  <Image url="@Images/Login/LOGO.2.PNG" />
+               </image>
+            </ImageView>
+         </children>
+      </GridPane>
+      <GridPane prefHeight="72.0" prefWidth="600.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="loginButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#login" prefWidth="119.0" text="Login" styleClass="loginButton" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Button>
+            <ToggleButton fx:id="teacherToggle" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Teacher" styleClass="teacherToggle" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </ToggleButton>
+         </children>
+      </GridPane>
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
