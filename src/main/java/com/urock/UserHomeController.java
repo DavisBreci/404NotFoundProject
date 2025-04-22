@@ -65,6 +65,12 @@ public class UserHomeController implements Initializable {
                     new EventHandler<ActionEvent>() {
                         public void handle(ActionEvent arg0) {
                             System.out.println("Go to " + "\"" +  p.getTitle() + "\"");
+                            try{
+                                PlaylistViewerController.setCurrent(p);
+                                App.setRoot("PlaylistViewer");
+                            }catch(Exception e){
+                                e.printStackTrace();
+                            }
                         }
                     }
                 );
@@ -91,9 +97,7 @@ public class UserHomeController implements Initializable {
     @FXML
     void search(ActionEvent event) throws IOException {
         System.out.println("Search page");
-//      App.setRoot("SearchPage"); <---- REAL CODE
-        PlaylistViewerController.setCurrent(facade.getCurrentUser().getPlaylists().get(0));
-        App.setRoot("PlaylistViewer");
+        App.setRoot("SearchPage");
     }
 
     @FXML 

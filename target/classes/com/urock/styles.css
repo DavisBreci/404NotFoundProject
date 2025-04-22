@@ -44,3 +44,12 @@
     -fx-border-color:#000000;
     -fx-border-width:1;
 }
+
+.titleText {
+    -fx-text-fill:#000000;
+    -fx-font-size: 40;
+}
+
+.backButton {
+    -fx-fill:#cabf61;
+}

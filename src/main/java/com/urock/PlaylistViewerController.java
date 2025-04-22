@@ -18,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.*;
 import javafx.util.Callback;
@@ -27,6 +28,24 @@ public class PlaylistViewerController implements Initializable{
     
     @FXML
     private ListView<Song> allSongs;
+
+    @FXML
+    private Label author;
+
+    @FXML
+    private Polygon backButton;
+
+    @FXML
+    private Label playlist_title;
+
+    @FXML
+    void back(MouseEvent event) {
+        try{
+            App.setRoot("UserHome");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
     
     private static Playlist p;
     public static void setCurrent(Playlist curr){
@@ -41,6 +60,8 @@ public class PlaylistViewerController implements Initializable{
        } catch (IOException e) {
             e.printStackTrace();
        }
+       playlist_title.setText(p.getTitle());
+       author.setText(p.getAuthor());
     }
 
     public void initializeSongs() throws IOException {
