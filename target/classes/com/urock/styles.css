@@ -1,3 +1,22 @@
-.label {
+.text {
     -fx-text-fill:#549df9;
+}
+.TemplateSong {
+    -fx-background-color:#777777;
+    -fx-border-color:#000000;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+}
+.TemplateSong .infoText {
+    -fx-text-fill:#000000;
+    -fx-font-size: 15;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+}
+.TemplateSong .headerText {
+    -fx-font-size: 22;
+}
+.PlaylistViewer {
+    -fx-background-color:#303030;
+
 }
