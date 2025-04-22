@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
@@ -7,6 +8,11 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="PlaylistViewer" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.urock.PlaylistViewerController">
    <children>
       <Region layoutX="22.0" layoutY="14.0" prefHeight="125.0" prefWidth="556.0" styleClass="TemplateSong" stylesheets="@styles.css" />
-      <ListView layoutX="22.0" layoutY="150.0" prefHeight="250.0" prefWidth="556.0" styleClass="PlaylistViewer" stylesheets="@styles.css" />
+      <ListView fx:id="allSongs" layoutX="22.0" layoutY="150.0" prefHeight="237.0" prefWidth="556.0" stylesheets="@styles.css">
+         <styleClass>
+            <String fx:value="PlaylistViewer" />
+            <String fx:value="ListView" />
+         </styleClass>
+      </ListView>
    </children>
 </Pane>

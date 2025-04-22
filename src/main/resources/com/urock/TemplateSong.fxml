@@ -5,29 +5,28 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-
-<HBox id="hbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="600.0" styleClass="TemplateSong" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox id="hbox" fx:id="cell" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMousePressed="#onMouseClick" prefHeight="120.0" prefWidth="600.0" styleClass="TemplateSong" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.urock.SongListViewCell">
    <children>
       <AnchorPane prefHeight="116.0" prefWidth="303.0">
          <children>
-            <Label id="song_label" layoutX="14.0" layoutY="14.0" prefHeight="60.0" prefWidth="98.0" stylesheets="@styles.css" text="Song Title">
+            <Label id="song_label" fx:id="title" layoutX="14.0" layoutY="14.0" prefHeight="60.0" prefWidth="98.0" stylesheets="@styles.css" text="Song Title">
                <styleClass>
                   <String fx:value="headerText" />
                   <String fx:value="infoText" />
                </styleClass>
             </Label>
-            <Label id="artist_label" layoutX="14.0" layoutY="74.0" styleClass="infoText" stylesheets="@styles.css" text="Artist" />
+            <Label id="artist_label" fx:id="artist" layoutX="14.0" layoutY="74.0" styleClass="infoText" stylesheets="@styles.css" text="Artist" />
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="116.0" prefWidth="165.0">
          <children>
-            <Label id="instrument_label" layoutX="14.0" layoutY="28.0" styleClass="infoText" stylesheets="@styles.css" text="Instrument" />
-            <Label id="difficulty_label" layoutX="14.0" layoutY="72.0" styleClass="infoText" stylesheets="@styles.css" text="Difficulty" />
+            <Label id="instrument_label" fx:id="instrument" layoutX="14.0" layoutY="28.0" styleClass="infoText" stylesheets="@styles.css" text="Instrument" />
+            <Label id="difficulty_label" fx:id="difficulty" layoutX="14.0" layoutY="72.0" styleClass="infoText" stylesheets="@styles.css" text="Difficulty" />
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="116.0" prefWidth="135.0">
          <children>
-            <Label id="measures_label" layoutX="17.0" layoutY="48.0" styleClass="infoText" stylesheets="@styles.css" text="Num Measures" />
+            <Label id="measures_label" fx:id="measures" layoutX="17.0" layoutY="48.0" styleClass="infoText" stylesheets="@styles.css" text="Num Measures" />
          </children>
       </AnchorPane>
    </children>

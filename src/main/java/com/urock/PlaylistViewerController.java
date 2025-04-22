@@ -13,20 +13,20 @@ import javafx.beans.property.DoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.shape.*;
+import javafx.util.Callback;
 
 
 public class PlaylistViewerController implements Initializable{
     
     @FXML
-    private ListView<HBox> allSongs;
-
-    @FXML
-    private HBox song;
+    private ListView<Song> allSongs;
     
     private static Playlist p;
     public static void setCurrent(Playlist curr){
@@ -36,7 +36,7 @@ public class PlaylistViewerController implements Initializable{
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1){
-       try {
+        try {
             initializeSongs();
        } catch (IOException e) {
             e.printStackTrace();
@@ -44,23 +44,29 @@ public class PlaylistViewerController implements Initializable{
     }
 
     public void initializeSongs() throws IOException {
-        allSongs = new ListView<HBox>();
-        ObservableList<HBox> fill = FXCollections.observableArrayList();
-        HBox song = null;
-        for(Song s : p.getSongs()) {
-            song = (HBox)App.loadFXML("TemplateSong");
-            ObservableList<Node> rootChildren = song.getChildren();
-            ObservableList<Node> items = ((AnchorPane)rootChildren.get(0)).getChildren();
-            ((Label)items.get(0)).setText(s.getTitle());
-            ((Label)items.get(1)).setText(s.getArtist());
-            items = ((AnchorPane)rootChildren.get(1)).getChildren();
-            ((Label)items.get(0)).setText(s.getInstrument().toString());
-            ((Label)items.get(1)).setText(s.getDifficultyLevel().toString());
-            items = ((AnchorPane)rootChildren.get(2)).getChildren();
-            ((Label)items.get(0)).setText(s.getScore().getMeasures().size()+" Measures");
-            fill.add(song);
-        }
+        ObservableList<Song> fill = FXCollections.observableArrayList(p.getSongs());
         allSongs.setItems(fill);
-        
+        allSongs.setCellFactory(listView -> new ListCell<>() {
+            @Override
+            public void updateItem(Song song, boolean empty) {
+                super.updateItem(song, empty);
+                if(empty || song == null) {
+
+                    setText(null);
+                    setGraphic(null);
+
+                } else {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(App.class.getResource("TemplateSong.fxml"));                        
+                        Parent cellRoot = loader.load();
+                        SongListViewCell controller = loader.getController();
+                        controller.setSong(song);
+                        setGraphic(cellRoot);
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 }
