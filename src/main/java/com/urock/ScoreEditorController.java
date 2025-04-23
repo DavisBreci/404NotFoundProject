@@ -82,6 +82,18 @@ public class ScoreEditorController implements Initializable{
     @FXML
     private ToggleButton playPause;
 
+    @FXML
+    private Button noteInserter;
+
+    @FXML
+    private TextField measureInput;
+
+    @FXML 
+    private TextField offsetInput;
+
+    @FXML
+    private TextField stringInput;
+
     private ObservableList<NoteValue> fill;
     
     private ManagedPlayer managedPlayer;
@@ -96,6 +108,7 @@ public class ScoreEditorController implements Initializable{
     static final double QUAVER_SELECT_WIDTH = BUTTON_SIZE * NoteValue.values().length * 1.3;
 
     private static Score loadedScore;
+    private ScoreView tablature;
 
     class FretView extends TextField {
         Note note;
@@ -281,9 +294,16 @@ public class ScoreEditorController implements Initializable{
     public void initialize(URL arg0, ResourceBundle arg1) { 
         managedPlayer = new ManagedPlayer();
         initializeQuaverSelect();
-        if(loadedScore == null) return;
+
+        if(loadedScore == null){
+            loadedScore = new Score(null, Instrument.GUITAR, 120);
+            for(int i = 0; i < 32; i++){
+                loadedScore.add(new Measure(Instrument.GUITAR, new Rational(4)));
+            }
+        }
+
         Pane p = new Pane();
-        ScoreView tablature = new ScoreView(INITIAL_MEASURE_WIDTH, 200, loadedScore);
+        tablature = new ScoreView(INITIAL_MEASURE_WIDTH, 200, loadedScore);
         p.getChildren().add(tablature);
         // scoreScroller.setContent(p);
         scoreArea.getChildren().add(p);
@@ -347,6 +367,24 @@ public class ScoreEditorController implements Initializable{
             playPause.setSelected(false);
         }
         managedPlayer.reset();
+    }
+
+    @FXML
+    void onInsertNote(ActionEvent event){
+        if(quaverSelect.getSelectionModel().getSelectedItem() != null){
+            try{
+                Rational offset = new Rational(offsetInput.getText());
+                offset.simplify();
+                if(Math.log(offset.getDenominator()) / Math.log(2) != 0) throw new Exception();
+                int measure = Integer.parseInt(measureInput.getText()) - 1;
+                if(measure < 0 || measure >= loadedScore.getMeasures().size()) throw new Exception();
+                int string = Integer.parseInt(stringInput.getText()) - 1;
+                if(string < 0 || string >= loadedScore.getInstrument().tuning.length) throw new Exception();
+                ((MeasureView)tablature.getChildren().get(measure * 2)).addNote(offset, loadedScore.getInstrument().tuning[string].deepCopy(), measure);
+            } catch (Exception e){
+                System.out.println("Note insertion failed");
+            }
+        }
     }
 
 

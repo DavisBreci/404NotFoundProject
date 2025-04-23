@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -24,11 +25,19 @@
       <AnchorPane fx:id="playbackPanel" prefHeight="60.0" prefWidth="200.0" styleClass="playbackPanel" stylesheets="@ScoreEditorStyles.css">
          <children>
             <Button fx:id="buttonGoHomeScoreEditor" mnemonicParsing="false" onAction="#goHome" text="Home" />
-            <HBox layoutX="204.0" layoutY="18.0" prefHeight="0.0" prefWidth="193.0">
+            <HBox layoutX="113.0" layoutY="18.0" prefHeight="25.0" prefWidth="477.0">
                <children>
                   <ToggleButton fx:id="playPause" mnemonicParsing="false" onAction="#onPlayPauseToggle" styleClass="playPause" text="Play" />
                   <Button fx:id="stopButton" mnemonicParsing="false" onAction="#onStop" styleClass="stopButton" text="Stop" />
                   <ToggleButton fx:id="metronomeButton" mnemonicParsing="false" styleClass="metronomeButton" text="Metronome" />
+                  <HBox prefHeight="25.0" prefWidth="293.0">
+                     <children>
+                        <TextField fx:id="measureInput" prefHeight="25.0" prefWidth="76.0" text="Measure" />
+                        <TextField fx:id="offsetInput" prefHeight="25.0" prefWidth="79.0" text="Offset" />
+                        <TextField fx:id="stringInput" prefHeight="25.0" prefWidth="79.0" text="String" />
+                        <Button fx:id="noteInserter" mnemonicParsing="false" onAction="#onInsertNote" prefHeight="25.0" prefWidth="136.0" text="Insert Note" />
+                     </children>
+                  </HBox>
                </children>
             </HBox>
          </children>
