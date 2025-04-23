@@ -76,6 +76,7 @@ public class Measure {
             else 
                 return false;
         }
+        
         container = new Chord(note.getValue(), note.isDotted(), instrument);
         if(!container.put(note, string))
             return false;

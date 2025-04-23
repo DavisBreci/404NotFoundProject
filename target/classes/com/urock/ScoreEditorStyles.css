@@ -1,0 +1,30 @@
+.quaverSelect {
+    -fx-background-color:transparent;
+}
+
+.toolbar{
+    -fx-background-color: #333333;
+    -fx-border-color: #1F1F1F;
+    -fx-border-width: 0 0 5 0;
+}
+
+.list-cell{
+    -fx-background-color: #333333;
+}
+
+.list-cell:selected{
+    -fx-background-color: #6d6d6d;
+}
+
+.playbackPanel{
+    -fx-background-color: #333333;
+    -fx-border-color: #1F1F1F;
+    -fx-border-width: 5 0 0 0;
+}
+
+
+.homeButton{
+    -fx-background-color: #333333;
+    -fx-border-color: #1F1F1F;
+    -fx-border-width: 5 5 5 5;
+}

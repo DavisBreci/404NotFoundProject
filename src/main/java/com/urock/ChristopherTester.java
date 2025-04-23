@@ -2,6 +2,10 @@ package com.urock;
 
 import java.io.IOException;
 
+import com.model.DataLoader;
+import com.model.Instrument;
+import com.model.Score;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,10 +18,12 @@ public class ChristopherTester extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("ScoreEditor"), 1280, 720);
+        ScoreEditorController.loadScore(Score.midiToScore(DataLoader.loadSequence("Teen_Town.mid"), 0, Instrument.FRETLESS_BASS));
+        Parent newRoot = loadFXML("ScoreEditor");
+        ScoreEditorController.loadScore(null);
+        scene = new Scene(newRoot, 1280, 720);
         stage.setScene(scene);
         stage.show();
-        // System.out.println(scene.getRoot().getChildrenUnmodifiable().get(0));
     }
 
     static void setRoot(String fxml) throws IOException {

@@ -1,11 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-
 
 <VBox fx:id="contentArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.urock.ScoreEditorController">
    <children>
-      <Button fx:id="buttonGoHomeScoreEditor" mnemonicParsing="false" onAction="#goHome" text="Home" />
+      <AnchorPane fx:id="toolbar" prefHeight="60.0" prefWidth="200.0" styleClass="toolbar" stylesheets="@ScoreEditorStyles.css">
+         <children>
+            <ListView fx:id="quaverSelect" layoutX="14.0" layoutY="5.0" orientation="HORIZONTAL" prefHeight="50.0" prefWidth="200.0" styleClass="quaverSelect" stylesheets="@ScoreEditorStyles.css" />
+         </children>
+      </AnchorPane>
+      <ScrollPane fx:id="scoreScroller" hbarPolicy="ALWAYS" pannable="true" prefHeight="280.0" prefWidth="600.0" styleClass="scoreScroller" vbarPolicy="ALWAYS">
+         <content>
+            <StackPane fx:id="scoreArea" prefHeight="150.0" prefWidth="200.0" />
+         </content>
+      </ScrollPane>
+      <AnchorPane fx:id="playbackPanel" prefHeight="60.0" prefWidth="200.0" styleClass="playbackPanel" stylesheets="@ScoreEditorStyles.css">
+         <children>
+            <Button fx:id="buttonGoHomeScoreEditor" mnemonicParsing="false" onAction="#goHome" text="Home" />
+            <HBox layoutX="204.0" layoutY="18.0" prefHeight="0.0" prefWidth="193.0">
+               <children>
+                  <ToggleButton fx:id="playPause" mnemonicParsing="false" onAction="#onPlayPauseToggle" styleClass="playPause" text="Play" />
+                  <Button fx:id="stopButton" mnemonicParsing="false" onAction="#onStop" styleClass="stopButton" text="Stop" />
+                  <ToggleButton fx:id="metronomeButton" mnemonicParsing="false" styleClass="metronomeButton" text="Metronome" />
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
    </children>
 </VBox>
