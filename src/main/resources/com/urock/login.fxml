@@ -31,12 +31,12 @@
           <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="username_txt" alignment="CENTER" promptText="Username" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+            <TextField fx:id="username_txt" alignment="CENTER" promptText="Username" styleClass="username_txt" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets top="75.0" />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="password_txt" alignment="CENTER" promptText="Password" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3">
+            <TextField fx:id="password_txt" alignment="CENTER" promptText="Password" styleClass="password_txt" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets top="35.0" />
                </GridPane.margin>

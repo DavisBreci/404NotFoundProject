@@ -24,6 +24,20 @@
     -fx-max-height:0;
 }
 
+.buttonStandard {
+    -fx-background-color:#cabf61;
+    -fx-text-fill: white;
+
+    -fx-background-radius: 25;
+    -fx-border-radius: 15;
+    -fx-border-color:black;
+    -fx-border-width:3;
+    -fx-padding: 0 10 0 10;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+
+}
+
 .login {
     -fx-background-color:#303030;
 }
