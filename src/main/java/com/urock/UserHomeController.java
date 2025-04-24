@@ -15,11 +15,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
 public class UserHomeController implements Initializable {
 
     MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
 
+    @FXML
+    private Text HomeText;
+
+    @FXML
+    private Rectangle TextBackground_HomeText;
+    
     @FXML
     private Button buttonCompose;
 

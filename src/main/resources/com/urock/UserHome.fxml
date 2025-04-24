@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="UserHome" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.urock.UserHomeController">
@@ -46,17 +47,18 @@
             <Image url="@../../../../../../../../../Downloads/HomeScreen.png" />
          </image>
       </ImageView>
-      <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#search" prefHeight="78.0" prefWidth="150.0" text="Search" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-      <Button fx:id="buttonCompose" layoutX="137.0" layoutY="75.0" mnemonicParsing="false" onAction="#compose" prefHeight="92.0" prefWidth="153.0" text="Compose" GridPane.columnIndex="8" GridPane.rowIndex="4" />
+      <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#search" prefHeight="78.0" prefWidth="150.0" styleClass="buttonStandard" text="Search" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+      <Button fx:id="buttonCompose" layoutX="137.0" layoutY="75.0" mnemonicParsing="false" onAction="#compose" prefHeight="92.0" prefWidth="153.0" styleClass="buttonStandard" text="Compose" GridPane.columnIndex="8" GridPane.rowIndex="4" />
       <ScrollPane fx:id="scrollLessons" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.columnSpan="6" GridPane.rowIndex="10" GridPane.rowSpan="2">
          <content>
             <HBox fx:id="scrollLessonsContent" prefHeight="52.0" prefWidth="436.0" />
          </content>
       </ScrollPane>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Home" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+      <Rectangle fx:id="TextBackground_HomeText" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="35.0" stroke="BLACK" strokeType="INSIDE" width="50.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="HomeText" text="Home" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Playlists" GridPane.columnIndex="3" GridPane.rowIndex="5" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned Lessons" GridPane.columnIndex="3" GridPane.rowIndex="8" />
-      <Button mnemonicParsing="false" onAction="#onLogout" text="Log out" GridPane.columnIndex="10" GridPane.rowIndex="11" />
+      <Button mnemonicParsing="false" onAction="#onLogout" styleClass="buttonStandard" text="Log out" GridPane.columnIndex="10" GridPane.rowIndex="11" />
       <ScrollPane fx:id="scrollPlaylists" prefHeight="36.0" prefWidth="172.0" GridPane.columnIndex="3" GridPane.columnSpan="6" GridPane.rowIndex="6" GridPane.rowSpan="2">
          <content>
             <HBox fx:id="scrollPlaylistsContent" prefHeight="48.0" prefWidth="428.0" />

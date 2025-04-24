@@ -92,6 +92,19 @@
     -fx-background-color:#303030;
 }
 
+.UserHome .TextBackground_HomeText {
+    -fx-background-color:white;
+    -fx-background-radius: 25;
+    -fx-border-radius: 15;
+    -fx-border-color:black;
+    -fx-border-width:3;
+    -fx-padding: 0 10 0 10;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+
+
+}
+
 .PlaylistViewer {
     -fx-background-color:#303030;
 

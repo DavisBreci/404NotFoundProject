@@ -1,1 +1,49 @@
-[{"firstName":"Davis","lastName":"Breci","password":"404NF!","songsPlayed":9,"playlists":["39a48119-e368-40a9-9d4e-c10139338e7c"],"id":"d22d8a52-6b53-4508-b3e6-7c1e5d51fc1c","streak":12,"email":"dbreci@email.sc.edu","lastPlayed":"2025-03-26","assignedLessons":["61d2e47a-a8f9-41b2-88c3-1656a626c433"],"username":"dbreci"},{"firstName":"Christopher","lastName":"Ferguson","password":"247Sucks%","songsPlayed":22,"playlists":["039a23f6-317b-4577-a78b-a9d8005adcd9"],"id":"8d666f44-a46c-4d5d-8877-48917befec86","streak":3,"email":"CTF2@email.sc.edu","lastPlayed":"2025-03-26","assignedLessons":["e9b9c2c5-0383-480d-b92c-2ffce330d3f1"],"username":"ctferg"},{"firstName":"Fred","lastName":"Fredrickson","password":"I<3mysister","songsPlayed":0,"playlists":[],"id":"ba646da5-4c28-4961-954e-7233a1e4ba77","streak":0,"email":"fred^2@gmail.com","lastPlayed":"-999999999-01-01","assignedLessons":[],"username":"ffred"}]
+[
+    {
+        "firstName": "Davis",
+        "lastName": "Breci",
+        "password": "404NF!",
+        "songsPlayed": 9,
+        "playlists": [
+            "39a48119-e368-40a9-9d4e-c10139338e7c"
+        ],
+        "id": "d22d8a52-6b53-4508-b3e6-7c1e5d51fc1c",
+        "streak": 12,
+        "email": "dbreci@email.sc.edu",
+        "lastPlayed": "2025-03-26",
+        "assignedLessons": [
+            "61d2e47a-a8f9-41b2-88c3-1656a626c433"
+        ],
+        "username": "dbreci"
+    },
+    {
+        "firstName": "Christopher",
+        "lastName": "Ferguson",
+        "password": "247Sucks%",
+        "songsPlayed": 22,
+        "playlists": [
+            "039a23f6-317b-4577-a78b-a9d8005adcd9"
+        ],
+        "id": "8d666f44-a46c-4d5d-8877-48917befec86",
+        "streak": 3,
+        "email": "CTF2@email.sc.edu",
+        "lastPlayed": "2025-03-26",
+        "assignedLessons": [
+            "e9b9c2c5-0383-480d-b92c-2ffce330d3f1"
+        ],
+        "username": "ctferg"
+    },
+    {
+        "firstName": "Fred",
+        "lastName": "Fredrickson",
+        "password": "I<3mysister",
+        "songsPlayed": 0,
+        "playlists": [],
+        "id": "ba646da5-4c28-4961-954e-7233a1e4ba77",
+        "streak": 0,
+        "email": "fred^2@gmail.com",
+        "lastPlayed": "-999999999-01-01",
+        "assignedLessons": [],
+        "username": "ffred"
+    }
+]
