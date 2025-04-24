@@ -14,6 +14,7 @@ import javax.sound.midi.Sequence;
 import org.jfugue.player.ManagedPlayer;
 import org.jfugue.player.Player;
 
+import com.model.BarObj;
 import com.model.Chord;
 import com.model.DataLoader;
 import com.model.Instrument;
@@ -249,7 +250,6 @@ public class ScoreEditorController implements Initializable{
                 line.addNote(offset, note);
                 return true;
             }
-            System.out.println("Failure");
             return false;
         }
     }
@@ -361,7 +361,6 @@ public class ScoreEditorController implements Initializable{
 
     @FXML
     void onStop(ActionEvent event){
-        System.out.println("Stopped");
         if(managedPlayer.isPlaying()){
             managedPlayer.pause();
             playPause.setSelected(false);
@@ -371,16 +370,20 @@ public class ScoreEditorController implements Initializable{
 
     @FXML
     void onInsertNote(ActionEvent event){
-        if(quaverSelect.getSelectionModel().getSelectedItem() != null){
+        NoteValue selected = null;
+        if((selected = quaverSelect.getSelectionModel().getSelectedItem()) != null){
             try{
                 Rational offset = new Rational(offsetInput.getText());
                 offset.simplify();
-                if(Math.log(offset.getDenominator()) / Math.log(2) != 0) throw new Exception();
+                double lg2 = (Math.log(offset.getDenominator()) / Math.log(2));
+                if(Math.ceil(lg2) != Math.floor(lg2)) throw new Exception();
                 int measure = Integer.parseInt(measureInput.getText()) - 1;
                 if(measure < 0 || measure >= loadedScore.getMeasures().size()) throw new Exception();
                 int string = Integer.parseInt(stringInput.getText()) - 1;
                 if(string < 0 || string >= loadedScore.getInstrument().tuning.length) throw new Exception();
-                ((MeasureView)tablature.getChildren().get(measure * 2)).addNote(offset, loadedScore.getInstrument().tuning[string].deepCopy(), measure);
+                Note template = loadedScore.getInstrument().tuning[string].deepCopy();
+                Note toAdd = new Note(selected, false, loadedScore.getInstrument(),template.getPitchClass(), template.getOctave());
+                ((MeasureView)tablature.getChildren().get(measure * 2)).addNote(offset,toAdd , measure);
             } catch (Exception e){
                 System.out.println("Note insertion failed");
             }
