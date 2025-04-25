@@ -35,9 +35,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -49,9 +51,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 
 public class ScoreEditorController implements Initializable{
     @FXML
@@ -84,7 +89,7 @@ public class ScoreEditorController implements Initializable{
     private ToggleButton playPause;
 
     @FXML
-    private Button noteInserter;
+    private Label noteInserter;
 
     @FXML
     private TextField measureInput;
@@ -94,6 +99,9 @@ public class ScoreEditorController implements Initializable{
 
     @FXML
     private TextField stringInput;
+
+    @FXML
+    private HBox noteInsertionPanel;
 
     private ObservableList<NoteValue> fill;
     
@@ -184,15 +192,6 @@ public class ScoreEditorController implements Initializable{
                 updateSpacing();
             });
             getChildren().add(notes);
-            // Iterator<Entry<Rational, Chord>> cIterator = measure.chordIterator();
-            // Entry<Rational, Chord> c;
-            // while(cIterator.hasNext()){
-            //     c = cIterator.next();
-            //     Note [] n = c.getValue().getNotes(false);
-            //     if(n[string] != null){
-            //         notes.getChildren().add(new FretView(this, c.getKey(), n[string]));
-            //     }
-            // } 
         }
         
         void addNote(Rational offset, Note n){
@@ -301,15 +300,39 @@ public class ScoreEditorController implements Initializable{
                 loadedScore.add(new Measure(Instrument.GUITAR, new Rational(4)));
             }
         }
-
         Pane p = new Pane();
         tablature = new ScoreView(INITIAL_MEASURE_WIDTH, 200, loadedScore);
         p.getChildren().add(tablature);
-        // scoreScroller.setContent(p);
-        scoreArea.getChildren().add(p);
-        scoreArea.prefWidthProperty().bind(p.prefWidthProperty());
-        scoreArea.prefHeightProperty().bind(p.prefHeightProperty().multiply(10));
+        VBox contentBox = new VBox(p);
+        contentBox.setAlignment(Pos.CENTER);
+        contentBox.prefHeightProperty().bind(scoreScroller.heightProperty());
+        scoreArea.getChildren().add(contentBox);
+        scoreArea.prefWidthProperty().bind(contentBox.prefWidthProperty());
+        scoreArea.prefHeightProperty().bind(contentBox.prefHeightProperty().multiply(1.5));
         scoreScroller.prefHeightProperty().bind(contentArea.heightProperty().subtract(toolbar.heightProperty()).subtract(playbackPanel.heightProperty()));
+        quaverSelect.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
+                noteInsertionPanel.setLayoutY(quaverSelect.getLayoutY() + 8);
+                }
+            } 
+        );
+
+        quaverSelect.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
+                noteInsertionPanel.setLayoutX(900 - noteInsertionPanel.getWidth());
+            }            
+        });
+
+        noteInserter.setMinSize(BUTTON_SIZE, BUTTON_SIZE);
+        noteInserter.setPrefSize(BUTTON_SIZE, BUTTON_SIZE);
+        noteInserter.setMaxSize(BUTTON_SIZE, BUTTON_SIZE);
+        // noteInserter.setFill(Color.web("333333"));
+        // noteInserter.setStyle("-fx-stroke:#1F1F1F;");
+        // noteInserter.setArcHeight(30);
+        // noteInserter.setArcWidth(30);
+        // noteInserter.setStrokeWidth(4);
     }
 
     public void initializeQuaverSelect(){
@@ -383,10 +406,13 @@ public class ScoreEditorController implements Initializable{
                 if(string < 0 || string >= loadedScore.getInstrument().tuning.length) throw new Exception();
                 Note template = loadedScore.getInstrument().tuning[string].deepCopy();
                 Note toAdd = new Note(selected, false, loadedScore.getInstrument(),template.getPitchClass(), template.getOctave());
-                ((MeasureView)tablature.getChildren().get(measure * 2)).addNote(offset,toAdd , measure);
+                ((MeasureView)tablature.getChildren().get(measure * 2)).addNote(offset, toAdd , string);
             } catch (Exception e){
-                System.out.println("Note insertion failed");
+                
             }
+            measureInput.clear();
+            offsetInput.clear();
+            stringInput.clear();
         }
     }
 

@@ -28,3 +28,28 @@
     -fx-border-color: #1F1F1F;
     -fx-border-width: 5 5 5 5;
 }
+
+.noteInserter {
+    -fx-background-color: transparent;
+    -fx-border-color: #1F1F1F;
+    -fx-border-width: 5 5 5 5;
+    -fx-border-radius: 5;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    -fx-font-size: 30;
+    -fx-font-weight: bold;
+}
+
+.noteInsertionPanel{
+    -fx-spacing: 20;
+}
+
+.text-field{
+    -fx-min-width: 80;
+    -fx-max-width: 80;
+    -fx-max-height: 80;
+}
+
+.label{
+    -fx-border-radius: 10;
+}
