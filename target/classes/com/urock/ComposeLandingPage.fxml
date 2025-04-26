@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+
+
+<AnchorPane fx:id="bg" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="bg" stylesheets="@ScoreEditorStyles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.urock.ComposeLandingPageController">
+   <children>
+      <ImageView fitHeight="164.0" fitWidth="178.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/Login/LOGO.2.PNG" />
+         </image>
+      </ImageView>
+      <Line endX="1001.6666259765625" layoutX="257.0" layoutY="183.0" startX="-223.0" stroke="#1f1f1f" strokeWidth="5.0" />
+      <Line endX="-162.34326171875" endY="592.0" layoutX="360.0" layoutY="106.0" startX="-162.34326171875" startY="-84.0" stroke="#1f1f1f" strokeWidth="5.0" />
+      <Label layoutX="223.0" layoutY="61.0" prefHeight="118.0" prefWidth="793.0" styleClass="title" stylesheets="@ScoreEditorStyles.css" text="Create a Song" />
+      <HBox layoutX="236.0" layoutY="190.0" prefHeight="544.0" prefWidth="905.0">
+         <children>
+            <VBox prefHeight="544.0" prefWidth="674.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="88.0" prefWidth="256.0" styleClass="subtitle" stylesheets="@ScoreEditorStyles.css" text="Title" />
+                  <TextField fx:id="titleInput" prefColumnCount="20" prefHeight="80.0" prefWidth="1116.0" styleClass="songData" stylesheets="@ScoreEditorStyles.css" />
+                  <Label prefHeight="88.0" prefWidth="180.0" styleClass="subtitle" stylesheets="@ScoreEditorStyles.css" text="Artist" />
+                  <TextField fx:id="artistInput" prefHeight="60.0" prefWidth="368.0" styleClass="songData" stylesheets="@ScoreEditorStyles.css" />
+                  <Label prefHeight="88.0" prefWidth="175.0" styleClass="subtitle" stylesheets="@ScoreEditorStyles.css" text="Genre" />
+                  <TextField fx:id="genreInput" styleClass="songData" stylesheets="@ScoreEditorStyles.css" />
+                  <Label fx:id="createButton" onMouseClicked="#onCreate" prefHeight="82.0" prefWidth="242.0" styleClass="createButton" stylesheets="@ScoreEditorStyles.css" text="Create" />
+               </children>
+            </VBox>
+            <VBox prefHeight="544.0" prefWidth="565.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="88.0" prefWidth="322.0" styleClass="subtitle" stylesheets="@ScoreEditorStyles.css" text="Instrument" />
+                  <ComboBox fx:id="instrumentSelect" prefWidth="150.0" styleClass="songData" stylesheets="@ScoreEditorStyles.css" />
+                  <Label styleClass="subtitle" stylesheets="@ScoreEditorStyles.css" text="Key" />
+                  <ComboBox fx:id="keySelect" prefWidth="150.0" styleClass="songData" stylesheets="@ScoreEditorStyles.css" />
+                  <Label styleClass="subtitle" stylesheets="@ScoreEditorStyles.css" text="Difficulty" />
+                  <ComboBox fx:id="difficultySelect" prefWidth="150.0" styleClass="songData" stylesheets="@ScoreEditorStyles.css" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

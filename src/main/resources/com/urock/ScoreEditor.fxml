@@ -19,10 +19,10 @@
             <ListView fx:id="quaverSelect" orientation="HORIZONTAL" prefHeight="100.0" prefWidth="294.0" styleClass="quaverSelect" stylesheets="@ScoreEditorStyles.css" />
             <HBox fx:id="noteInsertionPanel" prefHeight="25.0" prefWidth="293.0" styleClass="noteInsertionPanel">
                <children>
-                  <TextField fx:id="measureInput" prefHeight="25.0" prefWidth="76.0" promptText="Measure" />
-                  <TextField fx:id="offsetInput" prefHeight="25.0" prefWidth="79.0" promptText="Offset" />
-                  <TextField fx:id="stringInput" prefHeight="25.0" prefWidth="79.0" promptText="String" />
-                  <Label fx:id="noteInserter" styleClass="noteInserter" stylesheets="@ScoreEditorStyles.css" text="+">
+                  <TextField fx:id="measureInput" prefHeight="25.0" prefWidth="76.0" promptText="Measure" styleClass="noteInsertData" />
+                  <TextField fx:id="offsetInput" prefHeight="25.0" prefWidth="79.0" promptText="Offset" styleClass="noteInsertData" />
+                  <TextField fx:id="stringInput" prefHeight="25.0" prefWidth="79.0" promptText="String" styleClass="noteInsertData" />
+                  <Label fx:id="noteInserter" onMouseClicked="#onInsertNote" styleClass="noteInserter" stylesheets="@ScoreEditorStyles.css" text="+">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>

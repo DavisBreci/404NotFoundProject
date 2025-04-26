@@ -44,12 +44,51 @@
     -fx-spacing: 20;
 }
 
-.text-field{
+.noteInsertData{
     -fx-min-width: 80;
     -fx-max-width: 80;
     -fx-max-height: 80;
 }
 
-.label{
-    -fx-border-radius: 10;
+.bg{
+    -fx-background-color: #333333;
+}
+
+.title {
+    -fx-text-fill: white;
+    -fx-font-size: 80;
+    -fx-font-weight: bold;  
+}
+
+.subtitle{
+    -fx-text-fill: white;
+    -fx-font-size: 60;
+    -fx-font-weight: bold;  
+
+}
+
+.createButton{
+    -fx-background-color: transparent;
+    -fx-border-color: #1F1F1F;
+    -fx-border-width: 5;
+    -fx-border-radius: 5;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    -fx-font-size: 30;
+    -fx-font-weight:bold
+}
+
+.songData{
+    -fx-min-width: 30;
+    -fx-pref-width: 200;
+    -fx-max-width: 200;
+    -fx-pref-height: 30;
+}
+
+.combo-box .list-cell {
+    -fx-background-color: white;
+    -fx-text-fill: black; 
+}
+.combo-box-popup .list-view {
+    -fx-background-color: white;
 }

@@ -47,6 +47,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
@@ -392,7 +393,7 @@ public class ScoreEditorController implements Initializable{
     }
 
     @FXML
-    void onInsertNote(ActionEvent event){
+    void onInsertNote(MouseEvent event){
         NoteValue selected = null;
         if((selected = quaverSelect.getSelectionModel().getSelectedItem()) != null){
             try{

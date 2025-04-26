@@ -111,6 +111,6 @@ public class UserHomeController implements Initializable {
     @FXML 
     void compose(ActionEvent event) throws IOException {
         System.out.println("Compose a score");
-        App.setRoot("ScoreEditor");
+        App.setRoot("ComposeLandingPage");
     }
 }
