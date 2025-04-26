@@ -23,7 +23,9 @@
     -fx-max-width:0;
     -fx-max-height:0;
 }
-
+.list-view .list-cell {
+    -fx-background-color:#303030;
+}
 .login {
     -fx-background-color:#303030;
 }
@@ -47,8 +49,8 @@
 
 }
 .PlaylistViewer .ListView {
-    -fx-border-color:#000000;
-    -fx-border-width:1;
+    -fx-border-color:transparent;
+    -fx-border-width:0;
 }
 
 .titleText {
@@ -62,4 +64,15 @@
 .button {
     -fx-background-color:#cabf61;
     -fx-text-fill:#000000;
+    -fx-background-radius: 10;
+}
+.button .text {
+    -fx-font-size:20;
+}
+.border {
+    -fx-border-color:#000000;
+    -fx-border-width: 3;
+}
+.line {
+    -fx-stroke:#ffffff;
 }

@@ -39,6 +39,12 @@ public class PlaylistViewerController implements Initializable{
     private Label playlist_title;
 
     @FXML
+    private Pane root;
+
+    @FXML
+    private Region header_box;
+
+    @FXML
     void back(MouseEvent event) {
         try{
             App.setRoot("UserHome");
@@ -48,13 +54,21 @@ public class PlaylistViewerController implements Initializable{
     }
     
     private static Playlist p;
-    public static void setCurrent(Playlist curr){
+    public static void setPlaylist(Playlist curr) {
         p = curr;
+    }
+    public static void setLesson(Lesson curr) {
+        String title = curr.getTitle();
+        String[] split = title.split("~");
+        title = split[split.length-1];
+        p = new Playlist(null, title, "", "", curr.getSongs());
     }
     MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1){
+        allSongs.prefWidthProperty().bind(root.widthProperty().subtract(allSongs.getLayoutX()*1.5));
+        header_box.prefWidthProperty().bind(root.widthProperty().subtract(allSongs.getLayoutX()*2));
         try {
             initializeSongs();
        } catch (IOException e) {
@@ -82,6 +96,7 @@ public class PlaylistViewerController implements Initializable{
                         Parent cellRoot = loader.load();
                         SongListViewCell controller = loader.getController();
                         controller.setSong(song);
+                        controller.setWithd(allSongs.getWidth()-30-allSongs.getInsets().getLeft());
                         setGraphic(cellRoot);
                     } catch(Exception e) {
                         e.printStackTrace();
