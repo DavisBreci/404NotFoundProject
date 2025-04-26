@@ -107,6 +107,7 @@ public class ScoreEditorController implements Initializable{
     private ObservableList<NoteValue> fill;
     
     private ManagedPlayer managedPlayer;
+    private Keytar keytar;
 
     static final int STROKE_WIDTH = 5;
     static final double STAFFLINE_HEIGHT = 10;
@@ -142,6 +143,7 @@ public class ScoreEditorController implements Initializable{
                     -fx-padding: 4 4 4 4;
                     -fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);
                 """);
+
             setOnKeyPressed( 
                 new EventHandler<KeyEvent>(){
                     public void handle(KeyEvent arg0) {
@@ -292,6 +294,7 @@ public class ScoreEditorController implements Initializable{
     
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) { 
+       
         managedPlayer = new ManagedPlayer();
         initializeQuaverSelect();
 
@@ -301,6 +304,7 @@ public class ScoreEditorController implements Initializable{
                 loadedScore.add(new Measure(Instrument.GUITAR, new Rational(4)));
             }
         }
+        
         Pane p = new Pane();
         tablature = new ScoreView(INITIAL_MEASURE_WIDTH, 200, loadedScore);
         p.getChildren().add(tablature);
@@ -326,6 +330,7 @@ public class ScoreEditorController implements Initializable{
             }            
         });
 
+
         noteInserter.setMinSize(BUTTON_SIZE, BUTTON_SIZE);
         noteInserter.setPrefSize(BUTTON_SIZE, BUTTON_SIZE);
         noteInserter.setMaxSize(BUTTON_SIZE, BUTTON_SIZE);
@@ -334,6 +339,31 @@ public class ScoreEditorController implements Initializable{
         // noteInserter.setArcHeight(30);
         // noteInserter.setArcWidth(30);
         // noteInserter.setStrokeWidth(4);
+        
+        try {
+            keytar = new Keytar(loadedScore.getInstrument());
+            contentArea.setOnKeyPressed(
+                new EventHandler<KeyEvent>() {
+                    public void handle(KeyEvent arg0) {
+                        keytar.startNote(arg0);
+                    }
+                    
+                }
+            );
+            contentArea.setOnKeyReleased(
+                new EventHandler<KeyEvent>() {
+                    public void handle(KeyEvent arg0) {
+                        keytar.stopNote(arg0);
+                    }
+                    
+                }
+            );
+
+        } catch (MidiUnavailableException e) {
+            e.printStackTrace();
+        }
+
+        
     }
 
     public void initializeQuaverSelect(){
