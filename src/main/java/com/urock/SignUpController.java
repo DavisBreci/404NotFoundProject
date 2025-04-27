@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import com.model.*;
-
+/**
+ * Controller for the Sign Up screen 
+ */
 public class SignUpController implements Initializable{
 
     @FXML
@@ -50,6 +52,10 @@ public class SignUpController implements Initializable{
     @FXML
     private TextField user;
 
+    /**
+     * Method that switches the root screen to the login screen, going back
+     * @param event
+     */
     @FXML
     void back(MouseEvent event) {
         try {
@@ -59,6 +65,11 @@ public class SignUpController implements Initializable{
         }
     }
 
+    /**
+     * Method that creates an instance of the facade and then uses the input values to create a new user
+     * Also checks whether the person signing up is a teacher or user
+     * @param event
+     */
     @FXML
     void signup(ActionEvent event) {
         MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
