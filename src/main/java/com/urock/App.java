@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 
+import com.model.MusicSystemFACADE;
+
 /**
  * JavaFX App
  */
@@ -19,6 +21,12 @@ public class App extends Application {
         scene = new Scene(loadFXML("login"), 1280, 720);
         stage.setScene(scene);
         stage.show();
+    }
+
+    @Override
+    public void stop(){
+        MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
+        facade.logout();
     }
 
     static void setRoot(String fxml) throws IOException {

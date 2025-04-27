@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -17,8 +19,28 @@
       <AnchorPane fx:id="toolbar" prefHeight="60.0" styleClass="toolbar" stylesheets="@ScoreEditorStyles.css">
          <children>
             <ListView fx:id="quaverSelect" orientation="HORIZONTAL" prefHeight="100.0" prefWidth="294.0" styleClass="quaverSelect" stylesheets="@ScoreEditorStyles.css" />
-            <HBox fx:id="noteInsertionPanel" prefHeight="25.0" prefWidth="293.0" styleClass="noteInsertionPanel">
+            <HBox fx:id="noteInsertionPanel" prefHeight="55.0" prefWidth="392.0" styleClass="noteInsertionPanel">
                <children>
+                  <HBox spacing="10.0">
+                     <children>
+                        <TextField fx:id="timeSignatureInput" prefHeight="25.0" prefWidth="76.0" promptText="Meter" styleClass="noteInsertData" />
+                        <Button fx:id="insertMeasure" mnemonicParsing="false" onAction="#onInsertMeasure" stylesheets="@ScoreEditorStyles.css">
+                           <styleClass>
+                              <String fx:value="noteInserter" />
+                              <String fx:value="measureButton" />
+                           </styleClass>
+                        </Button>
+                        <Button fx:id="deleteMeasure" mnemonicParsing="false" onAction="#onDeleteMeasure" stylesheets="@ScoreEditorStyles.css">
+                           <styleClass>
+                              <String fx:value="noteInserter" />
+                              <String fx:value="measureButton" />
+                           </styleClass>
+                        </Button>
+                     </children>
+                     <padding>
+                        <Insets left="20.0" right="50.0" />
+                     </padding>
+                  </HBox>
                   <TextField fx:id="measureInput" prefHeight="25.0" prefWidth="76.0" promptText="Measure" styleClass="noteInsertData" />
                   <TextField fx:id="offsetInput" prefHeight="25.0" prefWidth="79.0" promptText="Offset" styleClass="noteInsertData" />
                   <TextField fx:id="stringInput" prefHeight="25.0" prefWidth="79.0" promptText="String" styleClass="noteInsertData" />
@@ -38,11 +60,19 @@
       </ScrollPane>
       <AnchorPane fx:id="playbackPanel" prefHeight="60.0" prefWidth="200.0" styleClass="playbackPanel" stylesheets="@ScoreEditorStyles.css">
          <children>
-            <Button fx:id="buttonGoHomeScoreEditor" mnemonicParsing="false" onAction="#goHome" text="Home" />
-            <HBox layoutX="113.0" layoutY="18.0" prefHeight="25.0" prefWidth="477.0">
+            <HBox fx:id="playPauseStop" layoutX="244.0" layoutY="12.0" prefHeight="75.0" prefWidth="267.0" spacing="10.0">
                <children>
-                  <ToggleButton fx:id="playPause" mnemonicParsing="false" onAction="#onPlayPauseToggle" styleClass="playPause" text="Play" />
-                  <Button fx:id="stopButton" mnemonicParsing="false" onAction="#onStop" styleClass="stopButton" text="Stop" />
+                  <ToggleButton fx:id="playPause" mnemonicParsing="false" onAction="#onPlayPauseToggle">
+                     <styleClass>
+                        <String fx:value="playPause" />
+                        <String fx:value="noteInserter" />
+                     </styleClass></ToggleButton>
+                  <Button fx:id="stopButton" mnemonicParsing="false" onAction="#onStop">
+                     <styleClass>
+                        <String fx:value="stopButton" />
+                        <String fx:value="noteInserter" />
+                     </styleClass></Button>
+                  <Button fx:id="buttonGoHomeScoreEditor" mnemonicParsing="false" onAction="#goHome" prefHeight="75.0" prefWidth="114.0" styleClass="home" stylesheets="@ScoreEditorStyles.css" text="Home" />
                </children>
             </HBox>
          </children>
