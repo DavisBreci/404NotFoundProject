@@ -17,6 +17,9 @@ import java.util.ResourceBundle;
 
 import com.model.*;
 
+/**
+ * Controller for the User home Screen
+ */
 public class UserHomeController implements Initializable{
 
     @FXML
@@ -64,6 +67,10 @@ public class UserHomeController implements Initializable{
     @FXML
     private Region region;
 
+    /**
+     * Action that logs the user out of the app and sets the root screen to the login page
+     * @param event
+     */
     @FXML
     void logout(ActionEvent event) {
         try {
@@ -74,6 +81,10 @@ public class UserHomeController implements Initializable{
         }
     }
 
+    /**
+     * Action that sets the root screen to the Search Page
+     * @param event
+     */
     @FXML
     void search(ActionEvent event) {
         try {
@@ -83,6 +94,10 @@ public class UserHomeController implements Initializable{
         }
     }
 
+    /**
+     * Action that sets the root screen to the Copmose Landing Page
+     * @param event
+     */
     @FXML
     void compose(ActionEvent event) {
         try {
@@ -93,6 +108,12 @@ public class UserHomeController implements Initializable{
     }
 
     MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
+
+    /**
+     * Method that initializes the UI componenets and Scaling
+     * @param arg0
+     * @param arg1
+     */
     public void initialize(URL arg0, ResourceBundle arg1) {
         ArrayList<Node> nodes = new ArrayList<Node>();
         nodes.add(region);
@@ -178,6 +199,12 @@ public class UserHomeController implements Initializable{
             e.printStackTrace();
         }
     }
+
+    /**
+     * Method that initializes the playlists and displays them on the screen
+     * On select, sets root screen to Playlist Viewer Screen
+     * @throws IOException
+     */
     public void initializePlaylists() throws IOException {
         Button scrollingPlaylist = null;
             for(Playlist p : facade.getCurrentUser().getPlaylists()){
@@ -200,6 +227,11 @@ public class UserHomeController implements Initializable{
             }
     }
 
+    /**
+     * Method that initializes the lessons and displays them on the screen
+     * On select, sets root screen to Playlist Viewer Screen
+     * @throws IOException
+     */
     public void initializeLessons() throws IOException {
         Button scrollingPlaylist = null;
             for(Lesson l : facade.getCurrentUser().getAssignedLessons()){

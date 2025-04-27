@@ -17,6 +17,9 @@ import java.util.ResourceBundle;
 
 import com.model.*;
 
+/**
+ * Controller for the Teacher Home Screen
+ */
 public class TeacherHomeController implements Initializable{
 
     @FXML
@@ -70,6 +73,10 @@ public class TeacherHomeController implements Initializable{
     @FXML
     private VBox classes;
 
+    /**
+     * Method that logs the teacher out and sets the root screen to the login screen
+     * @param event
+     */
     @FXML
     void logout(ActionEvent event) {
         try {
@@ -80,6 +87,10 @@ public class TeacherHomeController implements Initializable{
         }
     }
 
+    /**
+     * Action that sets the root screen to the Search Page
+     * @param event
+     */
     @FXML
     void search(ActionEvent event) {
         try {
@@ -88,7 +99,10 @@ public class TeacherHomeController implements Initializable{
             e.printStackTrace();
         }
     }
-
+    /**
+     * Action that sets the root screen to the Copmose Landing Page
+     * @param event
+     */
     @FXML
     void compose(ActionEvent event) {
         try {
@@ -99,6 +113,9 @@ public class TeacherHomeController implements Initializable{
     }
 
     MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
+    /**
+     * Method that initializes the UI componenets and Scaling
+     */
     public void initialize(URL arg0, ResourceBundle arg1) {
         ArrayList<Node> nodes = new ArrayList<Node>();
         nodes.add(region);
@@ -191,6 +208,11 @@ public class TeacherHomeController implements Initializable{
             e.printStackTrace();
         }
     }
+    /**
+     * Method that initializes the playlists and displays them on the screen
+     * On select, sets root screen to Playlist Viewer Screen
+     * @throws IOException
+     */
     public void initializePlaylists() throws IOException {
         Button scrollingPlaylist = null;
             for(Playlist p : facade.getCurrentUser().getPlaylists()){
@@ -212,7 +234,11 @@ public class TeacherHomeController implements Initializable{
                 playlists.getChildren().add(scrollingPlaylist);
             }
     }
-
+    /**
+     * Method that initializes the lessons and displays them on the screen
+     * On select, sets root screen to Playlist Viewer Screen
+     * @throws IOException
+     */
     public void initializeLessons() throws IOException {
         Button scrollingPlaylist = null;
             for(Lesson l : facade.getCurrentUser().getAssignedLessons()){
@@ -233,6 +259,12 @@ public class TeacherHomeController implements Initializable{
                 assigned_lessons.getChildren().add(scrollingPlaylist);
             }
     }
+        /**
+     * Method that initializes the classes and displays them on the screen
+     * On select, sets root screen to Class Viewer Screen
+     * @throws IOException
+     */
+
     public void initializeClasses() {
         Button scrollingPlaylist = null;
         final ArrayList<ArrayList<User>> classrooms = ((Teacher)facade.getCurrentUser()).getClasses();
