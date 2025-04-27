@@ -46,4 +46,8 @@ public class SongListViewCell extends ListCell<Song>{
         difficulty.setText(song.getDifficultyLevel().toString());
         measures.setText(song.getScore().getMeasures().size() + " Measures");
     }
+    public void setWithd(double w) {
+        cell.setPrefWidth(w);
+        cell.setSpacing(w/6);
+    }
 }
