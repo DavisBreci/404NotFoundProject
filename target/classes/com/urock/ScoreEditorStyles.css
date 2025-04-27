@@ -23,21 +23,21 @@
 }
 
 
-.homeButton{
-    -fx-background-color: #333333;
-    -fx-border-color: #1F1F1F;
-    -fx-border-width: 5 5 5 5;
-}
-
 .noteInserter {
     -fx-background-color: transparent;
     -fx-border-color: #1F1F1F;
     -fx-border-width: 5 5 5 5;
-    -fx-border-radius: 5;
+    -fx-border-radius: 10;
     -fx-text-fill: white;
     -fx-alignment: center;
     -fx-font-size: 30;
     -fx-font-weight: bold;
+    /*-fx-pref-width: 60;
+    -fx-pref-height: 60;*/
+}
+
+.measureButton{
+    -fx-padding: 4;
 }
 
 .noteInsertionPanel{
@@ -91,4 +91,24 @@
 }
 .combo-box-popup .list-view {
     -fx-background-color: white;
+}
+
+.explainer {
+    -fx-text-fill: white; 
+    -fx-font-size: 10;
+    -fx-font-weight: bold;
+    
+}
+
+.home {
+    -fx-background-color: transparent;
+    -fx-border-color: #1F1F1F;
+    -fx-border-width: 5 5 5 5;
+    -fx-border-radius: 10;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    /*-fx-pref-width: 60;
+    -fx-pref-height: 60;*/
 }

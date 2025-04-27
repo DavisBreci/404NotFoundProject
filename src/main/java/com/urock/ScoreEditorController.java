@@ -2,6 +2,7 @@ package com.urock;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -10,6 +11,7 @@ import java.util.ResourceBundle;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
+import javax.swing.Action;
 
 import org.jfugue.player.ManagedPlayer;
 import org.jfugue.player.Player;
@@ -18,12 +20,17 @@ import com.model.BarObj;
 import com.model.Chord;
 import com.model.DataLoader;
 import com.model.Instrument;
+import com.model.Lesson;
 import com.model.Measure;
 import com.model.Note;
 import com.model.NoteValue;
 import com.model.PitchClass;
+import com.model.Playlist;
 import com.model.Rational;
 import com.model.Score;
+import com.model.Teacher;
+import com.model.User;
+import com.model.User;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ChangeListener;
@@ -45,6 +52,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -104,6 +114,18 @@ public class ScoreEditorController implements Initializable{
     @FXML
     private HBox noteInsertionPanel;
 
+    @FXML
+    private HBox playPauseStop;
+
+    @FXML
+    private Button insertMeasure;
+
+    @FXML
+    private Button deleteMeasure;
+
+    @FXML
+    private TextField timeSignatureInput;
+
     private ObservableList<NoteValue> fill;
     
     private ManagedPlayer managedPlayer;
@@ -120,7 +142,8 @@ public class ScoreEditorController implements Initializable{
 
     private static Score loadedScore;
     private ScoreView tablature;
-
+    private ImageView play;
+    private ImageView pause;
     class FretView extends TextField {
         Note note;
         StaffLine line;
@@ -285,6 +308,15 @@ public class ScoreEditorController implements Initializable{
             getChildren().add(barLineHolder);
         }
         
+        void deleteLastMeasure(){
+            if(getChildren().size() >= 2){
+                source.remove(source.size() - 1);
+                getChildren().removeLast();
+                getChildren().removeLast();
+                source.remove(source.size() - 1);
+                source.remove(source.size() - 1);
+            }
+        }
     }
 
     public static void loadScore(Score score){
@@ -326,7 +358,7 @@ public class ScoreEditorController implements Initializable{
         quaverSelect.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
-                noteInsertionPanel.setLayoutX(900 - noteInsertionPanel.getWidth());
+                noteInsertionPanel.setLayoutX(quaverSelect.getWidth() + quaverSelect.getLayoutX() + 30);
             }            
         });
 
@@ -334,12 +366,7 @@ public class ScoreEditorController implements Initializable{
         noteInserter.setMinSize(BUTTON_SIZE, BUTTON_SIZE);
         noteInserter.setPrefSize(BUTTON_SIZE, BUTTON_SIZE);
         noteInserter.setMaxSize(BUTTON_SIZE, BUTTON_SIZE);
-        // noteInserter.setFill(Color.web("333333"));
-        // noteInserter.setStyle("-fx-stroke:#1F1F1F;");
-        // noteInserter.setArcHeight(30);
-        // noteInserter.setArcWidth(30);
-        // noteInserter.setStrokeWidth(4);
-        
+
         try {
             keytar = new Keytar(loadedScore.getInstrument());
             contentArea.setOnKeyPressed(
@@ -363,7 +390,50 @@ public class ScoreEditorController implements Initializable{
             e.printStackTrace();
         }
 
-        
+        play = new ImageView(new Image(App.class.getResourceAsStream("Images/PlayButton/Play.png")));
+        pause = new ImageView(new Image(App.class.getResourceAsStream("Images/PlayButton/Pause.png")));
+        play.setEffect(new ColorAdjust(0, 0, 1, 0));
+        play.setFitWidth(BUTTON_SIZE *.30);
+        play.setFitHeight(BUTTON_SIZE * .30);
+        pause.setEffect(new ColorAdjust(0, 0, 1, 0));
+        pause.setFitWidth(BUTTON_SIZE *.30);
+        pause.setFitHeight(BUTTON_SIZE * .30);
+
+        playPause.setGraphic(play);
+        playPause.setPrefWidth(BUTTON_SIZE);
+        playPause.setPrefHeight(BUTTON_SIZE);
+        ImageView stop = new ImageView(new Image(App.class.getResourceAsStream("Images/PlayButton/Stop.png")));
+        stop.setFitWidth(BUTTON_SIZE *.30);
+        stop.setFitHeight(BUTTON_SIZE * .30);
+        stop.setEffect(new ColorAdjust(0, 0, 1, 0));
+        stopButton.setGraphic(stop);
+        stopButton.setPrefWidth(BUTTON_SIZE);
+        stopButton.setPrefHeight(BUTTON_SIZE);
+        contentArea.widthProperty().addListener(
+            new ChangeListener<Number>() {
+                @Override
+                public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
+                    playPauseStop.setLayoutX(contentArea.getWidth() / 2.0  - playPauseStop.getPrefWidth() /2.0);
+                }
+                
+            }
+        );
+
+        ImageView measureInsert = new ImageView(new Image(App.class.getResourceAsStream("Images/MeasureButtons/AddMeasure.png")));
+        measureInsert.setFitWidth(BUTTON_SIZE * .70);
+        measureInsert.setFitHeight(BUTTON_SIZE * .70);
+        insertMeasure.setPrefWidth(BUTTON_SIZE );
+        insertMeasure.setPrefHeight(BUTTON_SIZE);
+        insertMeasure.setMaxSize(FRET_WIDTH, BUTTON_SIZE);
+        insertMeasure.setGraphic(measureInsert);
+
+        ImageView measureDelete = new ImageView(new Image(App.class.getResourceAsStream("Images/MeasureButtons/RemoveMeasure.png")));
+        measureDelete.setFitWidth(BUTTON_SIZE * .70);
+        measureDelete.setFitHeight(BUTTON_SIZE * .70);
+        deleteMeasure.setPrefWidth(BUTTON_SIZE );
+        deleteMeasure.setPrefHeight(BUTTON_SIZE);
+        deleteMeasure.setMaxSize(FRET_WIDTH, BUTTON_SIZE);
+        deleteMeasure.setGraphic(measureDelete);
     }
 
     public void initializeQuaverSelect(){
@@ -408,8 +478,11 @@ public class ScoreEditorController implements Initializable{
             } catch(IllegalStateException e){
                 managedPlayer.start(loadedScore.getSequence(0, loadedScore.size(), null, 1));
             }
+            playPause.setGraphic(pause);
         } else{
             managedPlayer.pause();
+            playPause.setGraphic(play);
+
         }
     }
 
@@ -418,6 +491,7 @@ public class ScoreEditorController implements Initializable{
         if(managedPlayer.isPlaying()){
             managedPlayer.pause();
             playPause.setSelected(false);
+            playPause.setGraphic(play);
         }
         managedPlayer.reset();
     }
@@ -447,5 +521,18 @@ public class ScoreEditorController implements Initializable{
         }
     }
 
+    @FXML
+    void onInsertMeasure(ActionEvent event){
+        try{
+            Rational timeSig = new Rational(timeSignatureInput.getText());
+            tablature.appendMeasure(new Measure(loadedScore.getInstrument(), timeSig));
+        } catch(Exception e){
+            
+        }
+    }
 
+    @FXML
+    void onDeleteMeasure(ActionEvent e){
+        tablature.deleteLastMeasure();
+    }
 }
