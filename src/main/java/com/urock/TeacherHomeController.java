@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
@@ -35,6 +36,12 @@ public class TeacherHomeController implements Initializable{
 
     @FXML
     private ImageView logo;
+
+    @FXML
+    private ImageView streak_img;
+
+    @FXML
+    private Text streak_text;
 
     @FXML
     private Button logout;
@@ -105,6 +112,8 @@ public class TeacherHomeController implements Initializable{
         nodes.add(logout);
         nodes.add(classes_label);
         nodes.add(classes);
+
+        streak_text.setText(Integer.toString(facade.getCurrentUser().getStreak()));
 
         root.widthProperty().addListener((observable, oldValue, newValue) -> {
             final double SCALE = newValue.doubleValue()/(oldValue.doubleValue() == 0 ? 600 : oldValue.doubleValue());
