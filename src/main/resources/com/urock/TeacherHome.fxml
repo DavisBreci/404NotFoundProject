@@ -39,8 +39,7 @@
             <Font size="26.0" />
          </font>
       </Label>
-      <HBox fx:id="playlists" layoutX="125.0" layoutY="211.0" prefHeight="71.0" prefWidth="415.0" />
-      <HBox fx:id="assigned_lessons" layoutX="125.0" layoutY="311.0" prefHeight="71.0" prefWidth="415.0" />
+      <HBox fx:id="assigned_lessons" layoutX="125.0" layoutY="311.0" prefHeight="71.0" prefWidth="317.0" />
       <Button id="logout" fx:id="logout" layoutX="530.0" layoutY="359.0" mnemonicParsing="false" onAction="#logout" prefHeight="27.0" prefWidth="56.0" style="-fx-font-size: 12;" stylesheets="@styles.css" text="logout" />
       <VBox fx:id="classes" layoutX="14.0" layoutY="139.0" prefHeight="238.0" prefWidth="82.0" />
       <Label fx:id="classes_label" layoutX="17.0" layoutY="103.0" prefHeight="27.0" prefWidth="82.0" style="-fx-text-fill: #ffffff; -fx-font-size: 20;" text="Classes" />
@@ -54,5 +53,9 @@
             <Font size="24.0" />
          </font>
       </Text>
+      <HBox fx:id="playlists" layoutX="125.0" layoutY="211.0" prefHeight="71.0" prefWidth="415.0" />
+      <HBox fx:id="playlists1" layoutX="135.0" layoutY="221.0" prefHeight="71.0" prefWidth="296.0" />
+      <Label fx:id="addLesson" layoutX="468.0" layoutY="351.0" onMouseClicked="#onAdd" styleClass="playlistAdder" stylesheets="@ScoreEditorStyles.css" text="+" textFill="WHITE" />
+      <Label fx:id="addPlaylist" layoutX="561.0" layoutY="250.0" onMouseClicked="#onAdd" styleClass="playlistAdder" stylesheets="@ScoreEditorStyles.css" text="+" textFill="WHITE" />
    </children>
 </Pane>

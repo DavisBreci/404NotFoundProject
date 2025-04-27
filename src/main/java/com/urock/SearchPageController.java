@@ -13,6 +13,7 @@ import com.model.Song;
 import com.model.Lesson;
 import com.model.LessonList;
 import com.model.SongList;
+import com.model.Teacher;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -63,7 +64,12 @@ public class SearchPageController implements Initializable{
 
     @FXML
     void home(MouseEvent event) throws IOException {
-        App.setRoot("UserHome");
+            try{
+                Teacher t =(Teacher)MusicSystemFACADE.getInstance().getCurrentUser();
+                App.setRoot("TeacherHome");
+            } catch (ClassCastException e){
+                App.setRoot("UserHome");
+            }
     }
 
     @FXML

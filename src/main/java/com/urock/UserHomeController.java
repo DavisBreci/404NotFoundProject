@@ -6,6 +6,7 @@ import javafx.fxml.*;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
@@ -63,6 +64,8 @@ public class UserHomeController implements Initializable{
 
     @FXML
     private Region region;
+
+  
 
     @FXML
     void logout(ActionEvent event) {
@@ -137,7 +140,7 @@ public class UserHomeController implements Initializable{
         root.heightProperty().addListener((observable, oldValue, newValue) -> {
             final double SCALE = newValue.doubleValue()/(oldValue.doubleValue() == 0 ? 400 : oldValue.doubleValue());
 
-            h_line.layoutYProperty().set(root.getHeight()*0.23);
+            h_line.layoutYProperty().set(root.getHeight()*0.23);    
             h_line.setStartY(0);
             h_line.setEndY(0);
 
@@ -212,4 +215,6 @@ public class UserHomeController implements Initializable{
                 assigned_lessons.getChildren().add(scrollingPlaylist);
             }
     }
+
+   
 }

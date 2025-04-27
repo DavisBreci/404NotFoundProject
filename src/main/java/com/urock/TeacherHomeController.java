@@ -6,6 +6,7 @@ import javafx.fxml.*;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
@@ -69,6 +70,12 @@ public class TeacherHomeController implements Initializable{
 
     @FXML
     private VBox classes;
+
+    @FXML
+    private Label addPlaylist;
+
+    @FXML
+    private Label addLesson;
 
     @FXML
     void logout(ActionEvent event) {
@@ -251,4 +258,9 @@ public class TeacherHomeController implements Initializable{
             classes.getChildren().add(scrollingPlaylist);
         }
     }
+
+     @FXML
+    void onAdd(MouseEvent event) throws IOException{
+        App.setRoot("LessonCreator");
+    }   
 }

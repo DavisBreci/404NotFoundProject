@@ -154,3 +154,23 @@
     -fx-background-color:transparent;
 }
 
+.candidates{
+    -fx-border-color: #1F1F1F;
+    -fx-border-width: 5 5 5 5;
+    -fx-border-radius: 10;
+}
+
+.playlistAdder {
+    -fx-background-color: transparent;
+    -fx-border-color: #1F1F1F;
+    -fx-border-width: 5 5 5 5;
+    -fx-border-radius: 10;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+    -fx-pref-width: 20;
+    -fx-pref-height: 20;
+    /*-fx-pref-width: 60;
+    -fx-pref-height: 60;*/
+}
