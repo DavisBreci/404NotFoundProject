@@ -8,7 +8,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Line;
-import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
