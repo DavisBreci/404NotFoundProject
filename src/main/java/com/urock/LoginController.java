@@ -4,8 +4,6 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
-import com.model.MusicSystemFACADE;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -47,9 +45,17 @@ public class LoginController {
         if(facade.login(username, password)){
             try {
                 Teacher test = (Teacher)facade.getCurrentUser();
-                App.setRoot("TeacherHome");
-            } catch(ClassCastException e) {
-                App.setRoot("UserHome");
+                try {
+                    App.setRoot("TeacherHome");
+                } catch(Exception exception){
+                    exception.printStackTrace();
+                }
+            } catch(ClassCastException cce) {
+                try {
+                    App.setRoot("UserHome");
+                } catch(Exception exception) {
+                    exception.printStackTrace();
+                }
             }
         }
     }
