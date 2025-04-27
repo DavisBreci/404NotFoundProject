@@ -23,6 +23,9 @@
     -fx-max-width:0;
     -fx-max-height:0;
 }
+.list-view .list-cell {
+    -fx-background-color:#303030;
+}
 
 .buttonStandard {
     -fx-background-color:#cabf61;
