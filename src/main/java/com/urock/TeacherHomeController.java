@@ -18,6 +18,9 @@ import java.util.ResourceBundle;
 
 import com.model.*;
 
+/**
+ * Controller for the Teacher Home Screen
+ */
 public class TeacherHomeController implements Initializable{
 
     @FXML
@@ -42,7 +45,7 @@ public class TeacherHomeController implements Initializable{
     private ImageView streak_img;
 
     @FXML
-    private Text streak_text;
+    private Label streak_text;
 
     @FXML
     private Button logout;
@@ -71,6 +74,10 @@ public class TeacherHomeController implements Initializable{
     @FXML
     private VBox classes;
 
+    /**
+     * Method that logs the teacher out and sets the root screen to the login screen
+     * @param event
+     */
     @FXML
     private Label addPlaylist;
 
@@ -87,6 +94,10 @@ public class TeacherHomeController implements Initializable{
         }
     }
 
+    /**
+     * Action that sets the root screen to the Search Page
+     * @param event
+     */
     @FXML
     void search(ActionEvent event) {
         try {
@@ -95,7 +106,10 @@ public class TeacherHomeController implements Initializable{
             e.printStackTrace();
         }
     }
-
+    /**
+     * Action that sets the root screen to the Copmose Landing Page
+     * @param event
+     */
     @FXML
     void compose(ActionEvent event) {
         try {
@@ -106,6 +120,9 @@ public class TeacherHomeController implements Initializable{
     }
 
     MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
+    /**
+     * Method that initializes the UI componenets and Scaling
+     */
     public void initialize(URL arg0, ResourceBundle arg1) {
         ArrayList<Node> nodes = new ArrayList<Node>();
         nodes.add(region);
@@ -119,6 +136,8 @@ public class TeacherHomeController implements Initializable{
         nodes.add(logout);
         nodes.add(classes_label);
         nodes.add(classes);
+        nodes.add(streak_img);
+        nodes.add(streak_text);
 
         streak_text.setText(Integer.toString(facade.getCurrentUser().getStreak()));
 
@@ -146,6 +165,9 @@ public class TeacherHomeController implements Initializable{
             logout.setLayoutX((logout.getLayoutX() + logout.getPrefWidth() /4)*SCALE);
             classes_label.setLayoutX((classes_label.getLayoutX() + classes_label.getPrefWidth() /4)*SCALE);
             classes.setLayoutX((classes.getLayoutX() + classes.getPrefWidth() /4)*SCALE);
+            streak_img.setLayoutX((streak_img.getLayoutX() + streak_img.getFitWidth() /4)* SCALE);
+            streak_text.setLayoutX((streak_text.getLayoutX() + streak_text.getPrefWidth() /4)*SCALE);
+
             for (int i = 0; i < nodes.size(); ++i) {
                 // nodes.get(i).setLayoutX(nodes.get(i).getLayoutX() * SCALE);
                 nodes.get(i).setScaleX(SCALE);
@@ -176,6 +198,9 @@ public class TeacherHomeController implements Initializable{
             logout.setLayoutY((logout.getLayoutY() + logout.getPrefHeight() /4)*SCALE);
             classes_label.setLayoutY((classes_label.getLayoutY() + classes_label.getPrefHeight() /4)*SCALE);
             classes.setLayoutY((classes.getLayoutY() + classes.getPrefHeight() /4)*SCALE);
+            streak_img.setLayoutY((streak_img.getLayoutY() + streak_img.getFitHeight() /4)*SCALE);
+            streak_text.setLayoutY((streak_text.getLayoutY() + streak_text.getPrefHeight() /4)*SCALE);
+
             for (int i = 0; i < nodes.size(); ++i) {
                 // nodes.get(i).setLayoutY(nodes.get(i).getLayoutY()* SCALE);
                 nodes.get(i).setScaleY(SCALE);
@@ -190,6 +215,11 @@ public class TeacherHomeController implements Initializable{
             e.printStackTrace();
         }
     }
+    /**
+     * Method that initializes the playlists and displays them on the screen
+     * On select, sets root screen to Playlist Viewer Screen
+     * @throws IOException
+     */
     public void initializePlaylists() throws IOException {
         Button scrollingPlaylist = null;
             for(Playlist p : facade.getCurrentUser().getPlaylists()){
@@ -211,7 +241,11 @@ public class TeacherHomeController implements Initializable{
                 playlists.getChildren().add(scrollingPlaylist);
             }
     }
-
+    /**
+     * Method that initializes the lessons and displays them on the screen
+     * On select, sets root screen to Playlist Viewer Screen
+     * @throws IOException
+     */
     public void initializeLessons() throws IOException {
         Button scrollingPlaylist = null;
             for(Lesson l : facade.getCurrentUser().getAssignedLessons()){
@@ -232,6 +266,12 @@ public class TeacherHomeController implements Initializable{
                 assigned_lessons.getChildren().add(scrollingPlaylist);
             }
     }
+        /**
+     * Method that initializes the classes and displays them on the screen
+     * On select, sets root screen to Class Viewer Screen
+     * @throws IOException
+     */
+
     public void initializeClasses() {
         Button scrollingPlaylist = null;
         final ArrayList<ArrayList<User>> classrooms = ((Teacher)facade.getCurrentUser()).getClasses();

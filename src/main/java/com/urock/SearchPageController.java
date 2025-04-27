@@ -30,6 +30,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
+/**
+ * Contoller for Search Page Controller
+ */
 public class SearchPageController implements Initializable{
 
     @FXML
@@ -62,6 +65,11 @@ public class SearchPageController implements Initializable{
         public abstract void link() throws IOException;
     }
 
+    /**
+     * Method that upon MouseEvent, switches the root screen to User Home screen
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void home(MouseEvent event) throws IOException {
             try{
@@ -72,6 +80,11 @@ public class SearchPageController implements Initializable{
             }
     }
 
+    /**
+     * Method that covers the Search function on the Search Screen
+     * For each case such as Playlists, songs, or lessons, it populates the list with clickable UI Components that will bring the user to that Screen to view the object
+     * @param event
+     */
     @FXML
     void onSearch(ActionEvent event){
         String searchMode = searchSelect.getSelectionModel().getSelectedItem();
@@ -115,6 +128,9 @@ public class SearchPageController implements Initializable{
     }
 
 
+    /**
+     * Method that initializes the UI components and Scaling
+     */
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         searchSelect.getItems().addAll("Songs", "Playlists", "Lessons");
@@ -141,6 +157,9 @@ public class SearchPageController implements Initializable{
         }
         );
 
+        /**
+         *A Mouse click based method that when an item in the searchResults list is clicked tries to go to that Results Screen
+         */
         searchResults.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {

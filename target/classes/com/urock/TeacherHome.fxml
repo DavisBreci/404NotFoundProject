@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <Pane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="UserHome" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.urock.TeacherHomeController">
    <children>
@@ -48,6 +47,7 @@
             <Image url="@Images/TeacherHome/flame.png" />
          </image>
       </ImageView>
+<<<<<<< HEAD
       <Text fx:id="streak_text" fill="WHITE" layoutX="552.0" layoutY="67.0" stroke="BLACK" strokeType="OUTSIDE" text="0">
          <font>
             <Font size="24.0" />
@@ -57,5 +57,8 @@
       <HBox fx:id="playlists1" layoutX="135.0" layoutY="221.0" prefHeight="71.0" prefWidth="296.0" />
       <Label fx:id="addLesson" layoutX="468.0" layoutY="351.0" onMouseClicked="#onAdd" styleClass="playlistAdder" stylesheets="@ScoreEditorStyles.css" text="+" textFill="WHITE" />
       <Label fx:id="addPlaylist" layoutX="561.0" layoutY="250.0" onMouseClicked="#onAdd" styleClass="playlistAdder" stylesheets="@ScoreEditorStyles.css" text="+" textFill="WHITE" />
+=======
+      <Label fx:id="streak_text" layoutX="553.0" layoutY="43.0" style="-fx-alignment: center; -fx-font-size: 20; -fx-text-fill: #000000;" text="0" />
+>>>>>>> 6230995585c4e78399ce570b4320ca324932919b
    </children>
 </Pane>
