@@ -10,7 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
-import model.*;
+import com.model.*;
 
 public class LoginController {
     String username;
@@ -34,9 +34,12 @@ public class LoginController {
         teacher = teacherToggle.isSelected();
         MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
         if(facade.login(username, password)){
-            System.out.println("le epic login complete");
-            App.setRoot("UserHome");
+            try {
+                Teacher test = (Teacher)facade.getCurrentUser();
+                App.setRoot("TeacherHome");
+            } catch(ClassCastException e) {
+                App.setRoot("UserHome");
+            }
         }
     }
-
 }

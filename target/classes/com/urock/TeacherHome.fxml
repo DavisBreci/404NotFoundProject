@@ -1,98 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
-<GridPane accessibleRole="IMAGE_VIEW" nodeOrientation="LEFT_TO_RIGHT" opacity="0.2" prefHeight="490.0" prefWidth="591.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.urock.TeacherHomeController">
-  <columnConstraints>
-      <ColumnConstraints />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-  </rowConstraints>
+<Pane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="UserHome" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.urock.TeacherHomeController">
    <children>
-      <Button fx:id="buttonSearchTeacherHome" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="130.0" text="Search" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="2" />
-      <Button fx:id="buttonComposeTeacherHome" mnemonicParsing="false" onAction="#compose" text="Compose" GridPane.columnIndex="9" GridPane.rowIndex="3" />
-      <Button fx:id="buttonLogOutTeacherHome" mnemonicParsing="false" onAction="#logout" text="Log Out" GridPane.columnIndex="11" GridPane.rowIndex="11" />
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Home" wrappingWidth="48.162109375" GridPane.columnIndex="2" GridPane.rowSpan="2" />
-      <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="299.0" GridPane.columnIndex="3" GridPane.columnSpan="8" GridPane.rowIndex="3" GridPane.rowSpan="8">
-         <content>
-            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="472.0" prefWidth="377.0" spacing="40.0">
-               <children>
-                  <ScrollPane prefHeight="115.0" prefWidth="291.0">
-                     <content>
-                        <HBox prefHeight="113.0" prefWidth="451.0" spacing="30.0">
-                           <children>
-                              <Button mnemonicParsing="false" prefHeight="113.0" prefWidth="141.0" text="Button" />
-                              <Button mnemonicParsing="false" prefHeight="113.0" prefWidth="141.0" text="Button" />
-                              <Button mnemonicParsing="false" prefHeight="113.0" prefWidth="141.0" text="Button" />
-                           </children>
-                        </HBox>
-                     </content>
-                  </ScrollPane>
-                  <ScrollPane prefHeight="115.0" prefWidth="291.0">
-                     <content>
-                        <HBox prefHeight="105.0" prefWidth="480.0" spacing="30.0">
-                           <children>
-                              <Button mnemonicParsing="false" prefHeight="107.0" prefWidth="141.0" text="Button" />
-                              <Button mnemonicParsing="false" prefHeight="107.0" prefWidth="141.0" text="Button" />
-                              <Button mnemonicParsing="false" prefHeight="107.0" prefWidth="141.0" text="Button" />
-                           </children>
-                        </HBox>
-                     </content>
-                  </ScrollPane>
-                  <ScrollPane prefHeight="121.0" prefWidth="291.0">
-                     <content>
-                        <HBox prefHeight="117.0" prefWidth="469.0" spacing="30.0">
-                           <children>
-                              <Button mnemonicParsing="false" prefHeight="115.0" prefWidth="146.0" text="Button" />
-                              <Button mnemonicParsing="false" prefHeight="115.0" prefWidth="146.0" text="Button" />
-                              <Button mnemonicParsing="false" prefHeight="115.0" prefWidth="146.0" text="Button" />
-                           </children>
-                        </HBox>
-                     </content>
-                  </ScrollPane>
-               </children>
-            </VBox>
-         </content>
-      </ScrollPane>
-      <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="153.0" text="Compose" GridPane.columnIndex="8" GridPane.columnSpan="3" GridPane.rowIndex="2" />
-      <ImageView fitHeight="64.0" fitWidth="84.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="11" GridPane.rowIndex="1">
+      <Region fx:id="region" layoutX="123.0" layoutY="73.0" prefHeight="119.0" prefWidth="415.0" />
+      <Button fx:id="search" layoutX="125.0" layoutY="103.0" mnemonicParsing="false" onAction="#search" prefHeight="61.0" prefWidth="176.0" stylesheets="@styles.css" text="Search" />
+      <Button fx:id="compose" layoutX="362.0" layoutY="103.0" mnemonicParsing="false" onAction="#compose" prefHeight="61.0" prefWidth="176.0" stylesheets="@styles.css" text="Compose" />
+      <Line fx:id="h_line" endX="440.0" fill="WHITE" layoutX="130.0" layoutY="92.0" startX="-100.0" styleClass="line" />
+      <Line fx:id="v_line" endX="-100.0" endY="337.0" layoutX="203.0" layoutY="39.0" startX="-100.0" startY="-16.0" styleClass="line" />
+      <Label fx:id="home_label" layoutX="114.0" layoutY="46.0" prefHeight="35.0" prefWidth="123.0" text="Home" textFill="WHITE">
+         <font>
+            <Font size="33.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="logo" fitHeight="71.0" fitWidth="79.0" layoutX="30.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@Images/TeacherHome/flame.gif" />
+            <Image url="@Images/Login/LOGO.2.PNG" />
          </image>
       </ImageView>
+      <Label fx:id="playlists_label" layoutX="114.0" layoutY="173.0" prefHeight="35.0" prefWidth="123.0" text="Playlists" textFill="WHITE">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <Label fx:id="assigned_lessons_label" layoutX="114.0" layoutY="273.0" prefHeight="38.0" prefWidth="212.0" text="Assigned Lessons" textFill="WHITE">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <HBox fx:id="playlists" layoutX="125.0" layoutY="211.0" prefHeight="71.0" prefWidth="415.0" />
+      <HBox fx:id="assigned_lessons" layoutX="125.0" layoutY="311.0" prefHeight="71.0" prefWidth="415.0" />
+      <Button id="logout" fx:id="logout" layoutX="530.0" layoutY="359.0" mnemonicParsing="false" onAction="#logout" prefHeight="27.0" prefWidth="56.0" style="-fx-font-size: 12;" stylesheets="@styles.css" text="logout" />
+      <VBox fx:id="classes" layoutX="14.0" layoutY="139.0" prefHeight="238.0" prefWidth="82.0" />
+      <Label fx:id="classes_label" layoutX="17.0" layoutY="103.0" prefHeight="27.0" prefWidth="82.0" style="-fx-text-fill: #ffffff; -fx-font-size: 20;" text="Classes" />
    </children>
-</GridPane>
+</Pane>

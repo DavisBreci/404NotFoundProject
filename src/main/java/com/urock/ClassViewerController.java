@@ -1,6 +1,7 @@
 package com.urock;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javax.sound.midi.Sequence;
@@ -23,8 +24,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
+import com.model.*;
 
 
 public class ClassViewerController {
-    
+    static ArrayList<User> c = null;
+    public static void setClass(ArrayList<User> classroom) {
+        c = classroom;
+    }    
 }
