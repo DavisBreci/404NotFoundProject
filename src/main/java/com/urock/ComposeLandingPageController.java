@@ -13,6 +13,7 @@ import com.model.MusicSystemFACADE;
 import com.model.Rational;
 import com.model.Score;
 import com.model.Song;
+import com.model.Teacher;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,6 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
+import javafx.scene.shape.Polygon;
 
 public class ComposeLandingPageController implements Initializable {
 
@@ -50,6 +52,12 @@ public class ComposeLandingPageController implements Initializable {
     private TextField titleInput;
 
     @FXML
+    private Label back_label;
+
+    @FXML
+    private Polygon back;
+
+    @FXML
     void onCreate(MouseEvent event) throws IOException {
         String title;
         String genre;
@@ -72,7 +80,25 @@ public class ComposeLandingPageController implements Initializable {
             App.setRoot("ScoreEditor");
         }
     }
-
+    @FXML
+    void back(MouseEvent event) {
+        System.out.println("clicked");
+        MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
+        try {
+            Teacher test = (Teacher)facade.getCurrentUser();
+            try {
+                App.setRoot("TeacherHome");
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        } catch(ClassCastException cce) {
+            try {
+                App.setRoot("UserHome");
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         keySelect.getItems().addAll(Key.values());
