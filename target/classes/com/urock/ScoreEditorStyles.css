@@ -112,3 +112,45 @@
     /*-fx-pref-width: 60;
     -fx-pref-height: 60;*/
 }
+
+.searchResult{
+    -fx-padding: 10;
+    -fx-border-color: #1F1F1F;
+    -fx-border-width: 5;
+    -fx-border-radius: 5;
+    -fx-background-color:#333333;
+    -fx-background-radius:10;
+}
+
+.searchResult .primary{
+    -fx-text-fill: white;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+
+.searchResult .secondary{
+    -fx-text-fill: white;
+    -fx-font-size: 10;
+    -fx-font-weight: bold;
+}
+
+
+.searchResult .tertiary{
+    -fx-text-fill: white;
+    -fx-font-size: 10;
+    -fx-font-weight: bold;
+}
+
+.searchResult .dataContainer{
+    -fx-padding: 5;
+}
+
+.searchResult .button{
+    -fx-padding: 5;
+    -fx-font-weight:bold;
+}
+
+.searchResults {
+    -fx-background-color:transparent;
+}
+
