@@ -9,7 +9,11 @@ import com.model.MusicSystemFACADE;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+
 import com.model.*;
 
 public class LoginController {
@@ -19,7 +23,10 @@ public class LoginController {
     @FXML
     private Button loginButton;
     @FXML
-    private TextField password_txt;
+    private PasswordField password_pw;
+
+    @FXML
+    private Text loginStatus_text;
 
     @FXML
     private ToggleButton teacherToggle;
@@ -42,7 +49,8 @@ public class LoginController {
     @FXML
     void login(ActionEvent event) throws IOException {
         username = username_txt.getText();
-        password = password_txt.getText();
+        password = password_pw.getText();
+        loginStatus_text.setVisible(false);
         MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
         if(facade.login(username, password)){
             try {
@@ -51,6 +59,11 @@ public class LoginController {
             } catch(ClassCastException e) {
                 App.setRoot("UserHome");
             }
+        } else {
+            loginStatus_text.setFill(Color.RED);
+            loginStatus_text.setStroke(Color.RED);
+            loginStatus_text.setText("Invalid username or password.");
+            loginStatus_text.setVisible(true);
         }
     }
 }
