@@ -42,10 +42,11 @@
 }
 
 .login {
+    -fx-text-fill:#808080;
     -fx-background-color:#303030;
 }
 
-.login .username_txt {
+.login .textField {
     -fx-background-radius: 25;
     -fx-border-radius: 15;
     -fx-border-color:black;
@@ -53,19 +54,9 @@
     -fx-padding: 0 10 0 10;
     -fx-background-insets: 0;
     -fx-border-insets: 0;
-
+    -fx-text-fill:#000000;
 }
 
-.login .password_txt {
-    -fx-background-radius: 25;
-    -fx-border-radius: 15;
-    -fx-border-color:black;
-    -fx-border-width:3;
-    -fx-padding: 0 10 0 10;
-    -fx-background-insets: 0;
-    -fx-border-insets: 0;
-
-}
 .login .loginButton {
     -fx-background-color:#cabf61;
     -fx-text-fill: white;

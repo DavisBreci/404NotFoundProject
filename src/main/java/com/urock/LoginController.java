@@ -28,10 +28,21 @@ public class LoginController {
     private TextField username_txt;
 
     @FXML
+    private Button sign_up;
+
+    @FXML
+    void signup(ActionEvent event) throws IOException {
+        try {
+            App.setRoot("SignUp");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     void login(ActionEvent event) throws IOException {
         username = username_txt.getText();
         password = password_txt.getText();
-        teacher = teacherToggle.isSelected();
         MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
         if(facade.login(username, password)){
             try {
