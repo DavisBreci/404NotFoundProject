@@ -41,7 +41,7 @@ public class UserHomeController implements Initializable{
     private ImageView streak_img;
 
     @FXML
-    private Text streak_text;
+    private Label streak_text;
 
     @FXML
     private Button logout;
@@ -104,6 +104,8 @@ public class UserHomeController implements Initializable{
         nodes.add(playlists_label);
         nodes.add(home_label);
         nodes.add(logout);
+        nodes.add(streak_img);
+        nodes.add(streak_text);
 
         streak_text.setText(Integer.toString(facade.getCurrentUser().getStreak()));
 
@@ -129,6 +131,9 @@ public class UserHomeController implements Initializable{
             compose.setLayoutX((compose.getLayoutX() + compose.getPrefWidth() /4)*SCALE);
             search.setLayoutX((search.getLayoutX() + search.getPrefWidth() /4)*SCALE);
             logout.setLayoutX((logout.getLayoutX() + logout.getPrefWidth() /4)*SCALE);
+            streak_img.setLayoutX((streak_img.getLayoutX() + streak_img.getFitWidth() /4)* SCALE);
+            streak_text.setLayoutX((streak_text.getLayoutX() + streak_text.getPrefWidth() /4)*SCALE);
+
             for (int i = 0; i < nodes.size(); ++i) {
                 // nodes.get(i).setLayoutX(nodes.get(i).getLayoutX() * SCALE);
                 nodes.get(i).setScaleX(SCALE);
@@ -157,6 +162,9 @@ public class UserHomeController implements Initializable{
             compose.setLayoutY((compose.getLayoutY() + compose.getPrefHeight() /4)*SCALE);
             search.setLayoutY((search.getLayoutY() + search.getPrefHeight() /4)*SCALE);
             logout.setLayoutY((logout.getLayoutY() + logout.getPrefHeight() /4)*SCALE);
+            streak_img.setLayoutY((streak_img.getLayoutY() + streak_img.getFitHeight() /4)*SCALE);
+            streak_text.setLayoutY((streak_text.getLayoutY() + streak_text.getPrefHeight() /4)*SCALE);
+
             for (int i = 0; i < nodes.size(); ++i) {
                 // nodes.get(i).setLayoutY(nodes.get(i).getLayoutY()* SCALE);
                 nodes.get(i).setScaleY(SCALE);
