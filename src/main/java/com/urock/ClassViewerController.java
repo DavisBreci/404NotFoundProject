@@ -50,6 +50,7 @@ public class ClassViewerController implements Initializable{
         c = classroom;
     }
     public void initialize(URL arg0, ResourceBundle arg1) {
+        MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
         root.widthProperty().addListener((observable, oldValue, newValue) -> {
             final double SCALE = newValue.doubleValue() / (oldValue.doubleValue() != 0 ? oldValue.doubleValue() : 600);
             header_box.setLayoutX((header_box.getLayoutX() + header_box.getPrefWidth() /4)*SCALE);
@@ -88,6 +89,9 @@ public class ClassViewerController implements Initializable{
             back_label.setLayoutY((back_label.getLayoutY() + back_label.getPrefHeight() /4)*SCALE);
             back_label.setScaleY(SCALE);
         });
+        Teacher temp = (Teacher)facade.getCurrentUser();
+        int num = 1 + temp.getClasses().indexOf(c);
+        class_title.setText("Class " + num);
         initializeStudents();
     }
     public void initializeStudents() {
