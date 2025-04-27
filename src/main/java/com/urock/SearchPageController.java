@@ -2,40 +2,152 @@ package com.urock;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import javax.sound.midi.Sequence;
+import com.model.MusicSystemFACADE;
+import com.model.NoteValue;
+import com.model.Playlist;
+import com.model.PlaylistList;
+import com.model.Song;
+import com.model.Lesson;
+import com.model.LessonList;
+import com.model.SongList;
 
-import com.model.Chord;
-import com.model.DataLoader;
-import com.model.Instrument;
-import com.model.Measure;
-import com.model.Note;
-import com.model.PitchClass;
-import com.model.Rational;
-import com.model.Score;
-
-import javafx.beans.property.DoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.scene.Parent;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.shape.Line;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
-public class SearchPageController {
+public class SearchPageController implements Initializable{
 
-    @FXML 
-    private Button buttonGoHome;
+    @FXML
+    private ImageView logo;
 
-    
-    @FXML 
-    void home(ActionEvent event) throws IOException {
-        System.out.println("Go home");
+    @FXML
+    private TextField searchBar;
+
+    @FXML
+    private ComboBox<String> searchSelect;
+
+    @FXML
+    private ListView<SearchResult> searchResults;
+
+    private final String SONGS = "Songs";
+    private final String PLAYLISTS = "Playlists";
+    private final String LESSONS = "Lessons";
+
+    abstract class SearchResult {
+        String primary;
+        String secondary;
+        String tertiary;
+
+        SearchResult(String primary, String secondary, String tertiary){
+            this.primary = primary;
+            this.secondary = secondary; 
+            this.tertiary = tertiary;
+        }
+
+        public abstract void link() throws IOException;
+    }
+
+    @FXML
+    void home(MouseEvent event) throws IOException {
         App.setRoot("UserHome");
     }
+
+    @FXML
+    void onSearch(ActionEvent event){
+        String searchMode = searchSelect.getSelectionModel().getSelectedItem();
+        String searchString = searchBar.getText();
+        if(searchMode == null || searchString == null) return;
+        searchResults.getItems().clear();
+        switch (searchMode) {
+            case PLAYLISTS:
+                Playlist playlist = PlaylistList.getInstance().getPlaylistByTitle(searchString);
+                if(playlist == null) return;
+                searchResults.getItems().add(new SearchResult(playlist.getTitle(), playlist.getAuthor(), playlist.getSongs().size() + " Songs"){
+                    @Override
+                    public void link() throws IOException {
+                        PlaylistViewerController.setPlaylist(playlist);
+                        App.setRoot("PlaylistViewer");
+                    }});
+                break;
+            case SONGS:
+                Song song = SongList.getInstance().getSongByTitle(searchString);
+                if(song == null) return;
+                searchResults.getItems().add(new SearchResult(song.getTitle(), song.getArtist(), ComposeLandingPageController.titleFormat(song.getInstrument().toString())){
+                @Override
+                public void link() throws IOException {
+                    ScoreEditorController.loadScore(song.getScore());
+                    App.setRoot("ScoreEditor");
+                }});
+                break;
+            case LESSONS:
+                Lesson lesson = LessonList.getInstance().getLesson(searchString);
+                if(lesson == null) return;
+                searchResults.getItems().add(new SearchResult(lesson.getTitle(), lesson.getSongs() + " Songs", ""){
+                @Override
+                public void link() throws IOException {
+                    PlaylistViewerController.setLesson(lesson);
+                    App.setRoot("PlaylistViewer");
+                }});
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        searchSelect.getItems().addAll("Songs", "Playlists", "Lessons");
+
+        searchResults.setCellFactory(listView -> new ListCell<>(){
+            @Override
+            public void updateItem(SearchResult value, boolean empty){
+                super.updateItem(value, empty);
+                if(empty || value == null){
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    try{
+                        FXMLLoader loader = new FXMLLoader(App.class.getResource("TemplateSearchResult.fxml"));
+                        Parent cellRoot = loader.load();
+                        SearchResultCell controller = loader.getController();
+                        controller.setLabels(value.primary, value.secondary, value.tertiary);
+                        setGraphic(cellRoot);
+                    } catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        );
+
+        searchResults.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                SearchResult sr = searchResults.getSelectionModel().getSelectedItem();
+                    if(sr != null) 
+                        try {
+                            sr.link();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+            }
+        });
+    }
+
+
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.model.DataLoader;
 import com.model.Instrument;
+import com.model.MusicSystemFACADE;
 import com.model.Score;
 
 import javafx.application.Application;
@@ -18,11 +19,12 @@ public class ChristopherTester extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        MusicSystemFACADE.getInstance().login("dbreci", "404NF!");
         ScoreEditorController.loadScore(Score.midiToScore(DataLoader.loadSequence("Teen_Town.mid"), 0, Instrument.FRETLESS_BASS));
         Parent newRoot = loadFXML("ScoreEditor");
-        ScoreEditorController.loadScore(null);
+        // ScoreEditorController.loadScore(null);
         scene = new Scene(newRoot, 1280, 720);
-        stage.setScene(scene);
+        stage.setScene(scene);  
         stage.show();
     }
 

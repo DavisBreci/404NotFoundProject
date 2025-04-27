@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="50.0" styleClass="searchResult" stylesheets="@ScoreEditorStyles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.urock.SearchResultCell">
+   <children>
+      <VBox styleClass="dataContainer" stylesheets="@ScoreEditorStyles.css" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="primary" maxWidth="200.0" minWidth="200.0" styleClass="primary" stylesheets="@ScoreEditorStyles.css" text="Title" />
+            <Label fx:id="secondary" maxWidth="200.0" minWidth="200.0" styleClass="secondary" stylesheets="@ScoreEditorStyles.css" text="Author" />
+            <Label fx:id="tertiary" maxWidth="200.0" minWidth="200.0" styleClass="tertiary" stylesheets="@ScoreEditorStyles.css" text="Tertiary" />
+         </children>
+      </VBox>
+      <StackPane />
+   </children>
+</HBox>
