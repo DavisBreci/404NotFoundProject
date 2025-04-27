@@ -12,19 +12,19 @@
 
 <Pane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="login" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.urock.SignUpController">
    <children>
-      <TextField fx:id="first" layoutX="161.0" layoutY="120.0" prefHeight="25.0" prefWidth="123.0" promptText="First Name" />
-      <TextField fx:id="last" layoutX="317.0" layoutY="120.0" prefHeight="25.0" prefWidth="123.0" promptText="Last Name" />
-      <TextField fx:id="email" layoutX="161.0" layoutY="166.0" prefHeight="25.0" prefWidth="279.0" promptText="Email" />
-      <TextField fx:id="user" layoutX="161.0" layoutY="213.0" prefHeight="25.0" prefWidth="279.0" promptText="Username" />
-      <TextField fx:id="pass" layoutX="161.0" layoutY="261.0" prefHeight="25.0" prefWidth="279.0" promptText="Password" />
-      <ToggleButton fx:id="teacher" layoutX="253.0" layoutY="303.0" mnemonicParsing="false" text="I am a Teacher" />
+      <TextField fx:id="first" layoutX="161.0" layoutY="120.0" prefHeight="25.0" prefWidth="123.0" promptText="First Name" styleClass="textField" stylesheets="@styles.css" />
+      <TextField fx:id="last" layoutX="317.0" layoutY="120.0" prefHeight="25.0" prefWidth="123.0" promptText="Last Name" styleClass="textField" stylesheets="@styles.css" />
+      <TextField fx:id="email" layoutX="161.0" layoutY="166.0" prefHeight="25.0" prefWidth="279.0" promptText="Email" styleClass="textField" stylesheets="@styles.css" />
+      <TextField fx:id="user" layoutX="161.0" layoutY="213.0" prefHeight="25.0" prefWidth="279.0" promptText="Username" styleClass="textField" stylesheets="@styles.css" />
+      <TextField fx:id="pass" layoutX="161.0" layoutY="261.0" prefHeight="25.0" prefWidth="279.0" promptText="Password" styleClass="textField" stylesheets="@styles.css" />
+      <ToggleButton fx:id="teacher" layoutX="245.0" layoutY="303.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="112.0" styleClass="loginButton" stylesheets="@styles.css" text="I am a Teacher" />
       <ImageView fx:id="logo" fitHeight="103.0" fitWidth="105.0" layoutX="248.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Images/Login/LOGO.2.PNG" />
          </image>
       </ImageView>
-      <Button fx:id="signup" layoutX="221.0" layoutY="345.0" mnemonicParsing="false" onAction="#signup" prefHeight="41.0" prefWidth="159.0" text="SIGN UP" />
+      <Button fx:id="signup" layoutX="221.0" layoutY="345.0" mnemonicParsing="false" onAction="#signup" prefHeight="41.0" prefWidth="159.0" styleClass="loginButton" stylesheets="@styles.css" text="SIGN UP" />
       <Polygon fx:id="back" fill="DODGERBLUE" layoutX="36.0" layoutY="48.0" onMousePressed="#back" points="4.0, 15.0, 4.0, -15.0, -8.0, 0.0" stroke="BLACK" strokeType="INSIDE" styleClass="backButton" />
-      <Label fx:id="back_label" layoutX="51.0" layoutY="40.0" style="-fx-text-fill: #ffffff;" text="Back" />
+      <Label fx:id="back_label" onMousePressed="#back" layoutX="51.0" layoutY="40.0" style="-fx-text-fill: #ffffff;" text="Back" />
    </children>
 </Pane>

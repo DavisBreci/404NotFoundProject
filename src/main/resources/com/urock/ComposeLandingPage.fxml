@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
-
+<?import javafx.scene.shape.Polygon?>
 
 <AnchorPane fx:id="bg" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="bg" stylesheets="@ScoreEditorStyles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.urock.ComposeLandingPageController">
    <children>
@@ -46,5 +46,7 @@
             </VBox>
          </children>
       </HBox>
+      <Polygon fx:id="back" onMouseClicked="#back" fill="DODGERBLUE" layoutX="248.0" layoutY="44.0" points="-20.0, 7.5, -2.0, 30.0, -2.0, -15.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: #cabf61;" />
+      <Label fx:id="back_label" onMouseClicked="#back" layoutX="257.0" layoutY="36.0" prefHeight="26.0" prefWidth="70.0" style="-fx-text-fill: #ffffff; -fx-font-size: 25;" text="Back" />
    </children>
 </AnchorPane>

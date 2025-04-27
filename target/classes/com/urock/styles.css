@@ -25,6 +25,7 @@
 }
 .list-view .list-cell {
     -fx-background-color:#303030;
+    -fx-text-fill:#ffffff;
 }
 
 .buttonStandard {
