@@ -6,6 +6,7 @@ import javafx.fxml.*;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Line;
 
@@ -76,6 +77,12 @@ public class TeacherHomeController implements Initializable{
      * Method that logs the teacher out and sets the root screen to the login screen
      * @param event
      */
+    @FXML
+    private Label addPlaylist;
+
+    @FXML
+    private Label addLesson;
+
     @FXML
     void logout(ActionEvent event) {
         try {
@@ -290,4 +297,9 @@ public class TeacherHomeController implements Initializable{
             classes.getChildren().add(scrollingPlaylist);
         }
     }
+
+     @FXML
+    void onAdd(MouseEvent event) throws IOException{
+        App.setRoot("LessonCreator");
+    }   
 }

@@ -6,6 +6,7 @@ import javafx.fxml.*;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
@@ -17,9 +18,6 @@ import java.util.ResourceBundle;
 
 import com.model.*;
 
-/**
- * Controller for the User home Screen
- */
 public class UserHomeController implements Initializable{
 
     @FXML
@@ -44,7 +42,7 @@ public class UserHomeController implements Initializable{
     private ImageView streak_img;
 
     @FXML
-    private Label streak_text;
+    private Text streak_text;
 
     @FXML
     private Button logout;
@@ -67,10 +65,8 @@ public class UserHomeController implements Initializable{
     @FXML
     private Region region;
 
-    /**
-     * Action that logs the user out of the app and sets the root screen to the login page
-     * @param event
-     */
+  
+
     @FXML
     void logout(ActionEvent event) {
         try {
@@ -81,10 +77,6 @@ public class UserHomeController implements Initializable{
         }
     }
 
-    /**
-     * Action that sets the root screen to the Search Page
-     * @param event
-     */
     @FXML
     void search(ActionEvent event) {
         try {
@@ -94,10 +86,6 @@ public class UserHomeController implements Initializable{
         }
     }
 
-    /**
-     * Action that sets the root screen to the Copmose Landing Page
-     * @param event
-     */
     @FXML
     void compose(ActionEvent event) {
         try {
@@ -108,12 +96,6 @@ public class UserHomeController implements Initializable{
     }
 
     MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
-
-    /**
-     * Method that initializes the UI componenets and Scaling
-     * @param arg0
-     * @param arg1
-     */
     public void initialize(URL arg0, ResourceBundle arg1) {
         ArrayList<Node> nodes = new ArrayList<Node>();
         nodes.add(region);
@@ -125,8 +107,6 @@ public class UserHomeController implements Initializable{
         nodes.add(playlists_label);
         nodes.add(home_label);
         nodes.add(logout);
-        nodes.add(streak_img);
-        nodes.add(streak_text);
 
         streak_text.setText(Integer.toString(facade.getCurrentUser().getStreak()));
 
@@ -152,9 +132,6 @@ public class UserHomeController implements Initializable{
             compose.setLayoutX((compose.getLayoutX() + compose.getPrefWidth() /4)*SCALE);
             search.setLayoutX((search.getLayoutX() + search.getPrefWidth() /4)*SCALE);
             logout.setLayoutX((logout.getLayoutX() + logout.getPrefWidth() /4)*SCALE);
-            streak_img.setLayoutX((streak_img.getLayoutX() + streak_img.getFitWidth() /4)* SCALE);
-            streak_text.setLayoutX((streak_text.getLayoutX() + streak_text.getPrefWidth() /4)*SCALE);
-
             for (int i = 0; i < nodes.size(); ++i) {
                 // nodes.get(i).setLayoutX(nodes.get(i).getLayoutX() * SCALE);
                 nodes.get(i).setScaleX(SCALE);
@@ -163,7 +140,7 @@ public class UserHomeController implements Initializable{
         root.heightProperty().addListener((observable, oldValue, newValue) -> {
             final double SCALE = newValue.doubleValue()/(oldValue.doubleValue() == 0 ? 400 : oldValue.doubleValue());
 
-            h_line.layoutYProperty().set(root.getHeight()*0.23);
+            h_line.layoutYProperty().set(root.getHeight()*0.23);    
             h_line.setStartY(0);
             h_line.setEndY(0);
 
@@ -183,9 +160,6 @@ public class UserHomeController implements Initializable{
             compose.setLayoutY((compose.getLayoutY() + compose.getPrefHeight() /4)*SCALE);
             search.setLayoutY((search.getLayoutY() + search.getPrefHeight() /4)*SCALE);
             logout.setLayoutY((logout.getLayoutY() + logout.getPrefHeight() /4)*SCALE);
-            streak_img.setLayoutY((streak_img.getLayoutY() + streak_img.getFitHeight() /4)*SCALE);
-            streak_text.setLayoutY((streak_text.getLayoutY() + streak_text.getPrefHeight() /4)*SCALE);
-
             for (int i = 0; i < nodes.size(); ++i) {
                 // nodes.get(i).setLayoutY(nodes.get(i).getLayoutY()* SCALE);
                 nodes.get(i).setScaleY(SCALE);
@@ -199,12 +173,6 @@ public class UserHomeController implements Initializable{
             e.printStackTrace();
         }
     }
-
-    /**
-     * Method that initializes the playlists and displays them on the screen
-     * On select, sets root screen to Playlist Viewer Screen
-     * @throws IOException
-     */
     public void initializePlaylists() throws IOException {
         Button scrollingPlaylist = null;
             for(Playlist p : facade.getCurrentUser().getPlaylists()){
@@ -227,11 +195,6 @@ public class UserHomeController implements Initializable{
             }
     }
 
-    /**
-     * Method that initializes the lessons and displays them on the screen
-     * On select, sets root screen to Playlist Viewer Screen
-     * @throws IOException
-     */
     public void initializeLessons() throws IOException {
         Button scrollingPlaylist = null;
             for(Lesson l : facade.getCurrentUser().getAssignedLessons()){
@@ -252,4 +215,6 @@ public class UserHomeController implements Initializable{
                 assigned_lessons.getChildren().add(scrollingPlaylist);
             }
     }
+
+   
 }
