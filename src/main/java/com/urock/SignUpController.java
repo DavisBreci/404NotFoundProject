@@ -96,6 +96,12 @@ public class SignUpController implements Initializable{
             }
         }
     }
+
+    /**
+     * Method that initializes the UI components and Scaling
+     * @param arg0
+     * @param arg1
+     */
     public void initialize(URL arg0, ResourceBundle arg1) {
         ArrayList<TextField> fields = new ArrayList<TextField>();
         fields.add(first);

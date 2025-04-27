@@ -111,6 +111,8 @@ public class UserHomeController implements Initializable{
 
     /**
      * Method that initializes the UI componenets and Scaling
+     * @param arg0
+     * @param arg1
      */
     public void initialize(URL arg0, ResourceBundle arg1) {
         ArrayList<Node> nodes = new ArrayList<Node>();
