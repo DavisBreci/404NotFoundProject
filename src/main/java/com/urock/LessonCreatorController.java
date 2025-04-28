@@ -165,6 +165,7 @@ public class LessonCreatorController implements Initializable{
             try {
                 Teacher test = (Teacher)facade.getCurrentUser();
                 try {
+                    
                     App.setRoot("TeacherHome");
                 } catch(Exception e) {
                     e.printStackTrace();
@@ -177,6 +178,13 @@ public class LessonCreatorController implements Initializable{
                 }
             }
         }else{
+            facade.getCurrentUser().getAssignedLessons().add(lesson);
+            try{
+                facade.assignLesson(((Teacher)facade.getCurrentUser()).getClasses().size(), lesson);
+                facade.assignLesson(0, lesson);
+            } catch (Exception e ){
+
+            }
             PlaylistViewerController.setLesson(lesson);
             App.setRoot("PlaylistViewer");
         }
@@ -190,6 +198,7 @@ public class LessonCreatorController implements Initializable{
         if(playlist == null){
             System.out.println("clicked");
             MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
+            
             try {
                 Teacher test = (Teacher)facade.getCurrentUser();
                 try {
@@ -207,6 +216,7 @@ public class LessonCreatorController implements Initializable{
         } else{
             for(Song song : addedSongs.getItems())
                 playlist.addSong(song);
+            facade.getCurrentUser().getPlaylists().add(playlist);
             PlaylistViewerController.setPlaylist(playlist);
             App.setRoot("PlaylistViewer");
         }
