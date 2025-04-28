@@ -22,6 +22,7 @@ import com.model.DataLoader;
 import com.model.Instrument;
 import com.model.Lesson;
 import com.model.Measure;
+import com.model.MusicSystemFACADE;
 import com.model.Note;
 import com.model.NoteValue;
 import com.model.PitchClass;
@@ -467,7 +468,21 @@ public class ScoreEditorController implements Initializable{
     
     @FXML
     void goHome(ActionEvent event) throws IOException {
-        App.setRoot("UserHome");
+        MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
+            try {
+                Teacher test = (Teacher)facade.getCurrentUser();
+                try {
+                    App.setRoot("TeacherHome");
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            } catch(ClassCastException cce) {
+                try {
+                    App.setRoot("UserHome");
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
     }
 
     @FXML

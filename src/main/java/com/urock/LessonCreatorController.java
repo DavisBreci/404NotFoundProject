@@ -72,7 +72,21 @@ public class LessonCreatorController implements Initializable{
 
     @FXML
     void home(MouseEvent event) throws IOException {
-        App.setRoot("UserHome");
+        MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
+            try {
+                Teacher test = (Teacher)facade.getCurrentUser();
+                try {
+                    App.setRoot("TeacherHome");
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            } catch(ClassCastException cce) {
+                try {
+                    App.setRoot("UserHome");
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
     }
 
     @FXML
@@ -147,11 +161,20 @@ public class LessonCreatorController implements Initializable{
         if(titleInput.getText() == null) return;
         Lesson lesson = LessonList.getInstance().createLesson(toSongArrayList(addedSongs.getItems()), titleInput.getText());
         if(lesson == null){
-            try{
-                Teacher t =(Teacher)facade.getCurrentUser();
-                App.setRoot("TeacherHome");
-            } catch (ClassCastException e){
-                App.setRoot("UserHome");
+            MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
+            try {
+                Teacher test = (Teacher)facade.getCurrentUser();
+                try {
+                    App.setRoot("TeacherHome");
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            } catch(ClassCastException cce) {
+                try {
+                    App.setRoot("UserHome");
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
             }
         }else{
             PlaylistViewerController.setLesson(lesson);
@@ -165,7 +188,22 @@ public class LessonCreatorController implements Initializable{
         if(titleInput.getText() == null) return;
         Playlist playlist = PlaylistList.getInstance().createPlaylist(titleInput.getText(), facade.getCurrentUser().getUsername(), "");
         if(playlist == null){
-            App.setRoot("UserHome");
+            System.out.println("clicked");
+            MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
+            try {
+                Teacher test = (Teacher)facade.getCurrentUser();
+                try {
+                    App.setRoot("TeacherHome");
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            } catch(ClassCastException cce) {
+                try {
+                    App.setRoot("UserHome");
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
         } else{
             for(Song song : addedSongs.getItems())
                 playlist.addSong(song);
