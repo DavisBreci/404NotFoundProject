@@ -468,6 +468,7 @@ public class ScoreEditorController implements Initializable{
     
     @FXML
     void goHome(ActionEvent event) throws IOException {
+        onStop(event);
         MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
             try {
                 Teacher test = (Teacher)facade.getCurrentUser();
