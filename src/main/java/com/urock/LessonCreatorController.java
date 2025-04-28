@@ -56,20 +56,35 @@ public class LessonCreatorController implements Initializable{
     private ListView<Song> searchResults;
     MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
 
+/**
+ * class governing the displayed search results
+ */
     abstract class SearchResult {
         String primary;
         String secondary;
         String tertiary;
-
+/**
+ * constructor; initializes instance variables
+ * @param primary first result
+ * @param secondary second result
+ * @param tertiary third result
+ */
         SearchResult(String primary, String secondary, String tertiary){
             this.primary = primary;
             this.secondary = secondary; 
             this.tertiary = tertiary;
         }
-
+/**
+ * method will be overwritten
+ * @throws IOException
+ */
         public abstract void link() throws IOException;
     }
-
+/**
+ * sets root to either teacher or student home depending on the classification of the user
+ * @param event mouse is clicked
+ * @throws IOException root doesn't exist
+ */
     @FXML
     void home(MouseEvent event) throws IOException {
         MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
@@ -88,7 +103,10 @@ public class LessonCreatorController implements Initializable{
                 }
             }
     }
-
+/**
+ * checks user's search and adds all matching songs to the LIstView of Songs
+ * @param event enter key
+ */
     @FXML
     void onSearch(ActionEvent event){
         String searchString = searchBar.getText();
@@ -99,9 +117,12 @@ public class LessonCreatorController implements Initializable{
         searchResults.getItems().add(song);
     }
 
-
+/**
+ * initializes the scene
+ */
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+// custom result styling in the ListView
         searchResults.setCellFactory(listView -> new ListCell<>(){
             @Override
             public void updateItem(Song song, boolean empty){
@@ -123,7 +144,7 @@ public class LessonCreatorController implements Initializable{
             }
         }
         );
-
+// custom styling for added songs
         addedSongs.setCellFactory(listView -> new ListCell<>(){
             @Override
             public void updateItem(Song song, boolean empty){
@@ -145,7 +166,9 @@ public class LessonCreatorController implements Initializable{
             }
         }
         );
-
+/**
+ * adds song to the added songs ListView
+ */
         searchResults.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -155,7 +178,12 @@ public class LessonCreatorController implements Initializable{
             }
         });
     }
-
+/**
+ * creates a new lesson from the songs, adds it to the teachers' assigned lessons, and her students'
+ * assigned lessons
+ * @param event mouse click
+ * @throws IOException invalid root set
+ */
     @FXML
     void onCreateLesson(MouseEvent event) throws IOException {
         if(titleInput.getText() == null) return;
@@ -193,7 +221,11 @@ public class LessonCreatorController implements Initializable{
         }
        
     }
-
+/**
+ * creates a playlist from the songs, adds playlist to user's playlists
+ * @param event mouse click
+ * @throws IOException invalid root set
+ */
     @FXML
     void onCreatePlaylist(MouseEvent event) throws IOException {
         if(titleInput.getText() == null) return;
@@ -225,7 +257,11 @@ public class LessonCreatorController implements Initializable{
         }
         
     }
-
+/**
+ * converts an observable list to an arraylist
+ * @param ol the observable list
+ * @return the new arraylist
+ */
     private static ArrayList<Song> toSongArrayList(ObservableList<Song> ol){
         ArrayList<Song> songs = new ArrayList<Song>();
         for(Song song : ol)

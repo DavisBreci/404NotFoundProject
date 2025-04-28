@@ -19,7 +19,7 @@ import com.model.*;
 
 /**
  * Controller for the ClassViewer screen. Displays the students in a class.
- * @author
+ * @author Davis Breci
  */
 public class ClassViewerController implements Initializable{
 
