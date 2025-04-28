@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 import com.model.*;
 /**
  * Controller for the Sign Up screen 
+ * @author
  */
 public class SignUpController implements Initializable{
 
@@ -68,7 +69,7 @@ public class SignUpController implements Initializable{
     /**
      * Method that creates an instance of the facade and then uses the input values to create a new user
      * Also checks whether the person signing up is a teacher or user
-     * @param event
+     * @param event 
      */
     @FXML
     void signup(ActionEvent event) {

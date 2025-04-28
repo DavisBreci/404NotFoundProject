@@ -31,7 +31,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 /**
- * Contoller for Search Page Controller
+ * Contoller for Search Page
+ * @author bsk
  */
 public class SearchPageController implements Initializable{
 

@@ -10,6 +10,7 @@ public class SecondaryController {
 
     /** 
      * Method to switch the root screen from secondary to primary
+     * @throws IOException If the FXML file cannot be loaded.
      */
     @FXML
     private void switchToPrimary() throws IOException {

@@ -21,14 +21,30 @@ import com.model.Rest;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.SVGPath;
 
+/**
+ * 
+ * 
+ */
 public class RestView extends ImageView{
     Rest rest;
 
+    /**
+     * 
+     * @param url
+     * @param rest
+     */
     public RestView(String url, Rest rest){
         this.rest = rest;
     }
     
-    
+    /**
+     * 
+     * @param args
+     * @throws SAXException
+     * @throws IOException
+     * @throws ParserConfigurationException
+     * @throws XPathExpressionException
+     */
     public static void main(String [] args) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException{
         RestView rv = new RestView(null, null);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -49,6 +65,11 @@ public class RestView extends ImageView{
         
     }
 
+    /**
+     * 
+     * @param filename
+     * @return
+     */
     public static SVGPath loadSVG(String filename){
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         XPathFactory xpf = XPathFactory.newInstance();

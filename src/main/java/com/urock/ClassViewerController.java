@@ -17,6 +17,10 @@ import java.util.ResourceBundle;
 
 import com.model.*;
 
+/**
+ * Controller for the ClassViewer screen. Displays the students in a class.
+ * @author
+ */
 public class ClassViewerController implements Initializable{
 
     @FXML
@@ -37,6 +41,10 @@ public class ClassViewerController implements Initializable{
     @FXML
     private ListView<User> roster;
 
+    /**
+     * Handles the back button event. Navigates to the TeacherHome screen.
+     * @param event The event triggered by clicking the back button.
+     */
     @FXML
     void back(MouseEvent event) {
         try {
@@ -45,10 +53,21 @@ public class ClassViewerController implements Initializable{
             e.printStackTrace();
         }
     }
+
+    /**
+     * Sets the class to be displayed in the ClassViewer.
+     * @param classroom The class to be displayed.
+     */
     static ArrayList<User> c = null;
     public static void setClass(ArrayList<User> classroom) {
         c = classroom;
     }
+
+    /**
+     * Initializes the scene. Sets the scale of the UI elements based on the window size.
+     * @param arg0
+     * @param arg1
+     */
     public void initialize(URL arg0, ResourceBundle arg1) {
         MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
         root.widthProperty().addListener((observable, oldValue, newValue) -> {
@@ -94,6 +113,10 @@ public class ClassViewerController implements Initializable{
         class_title.setText("Class " + num);
         initializeStudents();
     }
+
+    /**
+     * Initializes the students in the class and sets them in the list.
+     */
     public void initializeStudents() {
         ObservableList<User> fill = FXCollections.observableArrayList(c);
         roster.setItems(fill);

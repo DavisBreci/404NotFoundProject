@@ -18,6 +18,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * 
+ * @author 
+ */
 public class QuaverListViewCell extends ListCell<NoteValue> implements Initializable{
     static final double STROKE_WIDTH = 4;
     static final double ARC = 30;
@@ -30,7 +34,11 @@ public class QuaverListViewCell extends ListCell<NoteValue> implements Initializ
     @FXML
     private StackPane quaverFrame;
 
-
+    /**
+     * 
+     * @param arg0
+     * @param arg1
+     */
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         quaverImage.fitWidthProperty().bind(bgPanel.widthProperty().multiply(.8));
@@ -43,6 +51,11 @@ public class QuaverListViewCell extends ListCell<NoteValue> implements Initializ
         bgPanel.setStrokeWidth(STROKE_WIDTH);
     }
 
+    /**
+     * 
+     * @param width
+     * @param height
+     */
     public void setDimensions(double width, double height){
         quaverFrame.setPrefWidth(height);
         quaverFrame.setPrefHeight(height);
@@ -50,6 +63,10 @@ public class QuaverListViewCell extends ListCell<NoteValue> implements Initializ
         bgPanel.setHeight(height);
     }
 
+    /**
+     * 
+     * @param noteValue
+     */
     public void setNoteValue(NoteValue noteValue){
         if(noteValue != null){
             this.noteValue = noteValue;

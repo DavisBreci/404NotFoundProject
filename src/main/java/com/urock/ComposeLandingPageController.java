@@ -25,6 +25,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
 import javafx.scene.shape.Polygon;
 
+/**
+ * Controller for the ComposeLandingPage screen. Allows users to set parameters for a new song.
+ * @author
+ */
 public class ComposeLandingPageController implements Initializable {
 
     @FXML
@@ -57,6 +61,11 @@ public class ComposeLandingPageController implements Initializable {
     @FXML
     private Polygon back;
 
+    /**
+     * Initializes landing page controls
+     * @param event The event triggered by clicking the create button.
+     * @throws IOException If the FXML file cannot be loaded.
+     */
     @FXML
     void onCreate(MouseEvent event) throws IOException {
         String title;
@@ -80,6 +89,11 @@ public class ComposeLandingPageController implements Initializable {
             App.setRoot("ScoreEditor");
         }
     }
+
+    /**
+     * Handles the back button event. Navigates to either the TecherHome or UserHome screen.
+     * @param event The event triggered by clicking the back button.
+     */
     @FXML
     void back(MouseEvent event) {
         System.out.println("clicked");
@@ -99,6 +113,10 @@ public class ComposeLandingPageController implements Initializable {
             }
         }
     }
+
+    /**
+     * Initializes the scene. Sets the scale of the UI elements based on the window size.
+     */
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         keySelect.getItems().addAll(Key.values());
@@ -150,6 +168,11 @@ public class ComposeLandingPageController implements Initializable {
         );
     }
 
+    /**
+     * 
+     * @param text
+     * @return
+     */
     public static String titleFormat(String text){
         if(text == null) return null;
         StringBuilder formatted;
@@ -162,6 +185,11 @@ public class ComposeLandingPageController implements Initializable {
         return String.join(" ", words);
     }
 
+    /**
+     * 
+     * @param text
+     * @return
+     */
     public static String titleFormatKey(String text){
         if(text == null) return null;
         StringBuilder formatted;

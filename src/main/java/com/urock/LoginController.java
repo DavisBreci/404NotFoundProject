@@ -14,6 +14,10 @@ import javafx.scene.text.Text;
 
 import com.model.*;
 
+/**
+ * Controller for the Login screen. Handles user login and navigation to the appropriate home screen.
+ * @author brenskrz and ryanMazz
+ */
 public class LoginController {
     String username;
     String password;
@@ -35,6 +39,11 @@ public class LoginController {
     @FXML
     private Button sign_up;
 
+    /**
+     * Redirects to the SignUp screen when the sign-up button is clicked.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void signup(ActionEvent event) throws IOException {
         try {
@@ -44,6 +53,11 @@ public class LoginController {
         }
     }
 
+    /**
+     * Handles the login button event. Validates user credentials and navigates to the appropriate home screen.
+     * @param event The event triggered by clicking the login button.
+     * @throws IOException If the FXML file cannot be loaded.
+     */
     @FXML
     void login(ActionEvent event) throws IOException {
         username = username_txt.getText();

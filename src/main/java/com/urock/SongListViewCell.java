@@ -12,6 +12,7 @@ import java.io.IOException;
 import com.model.*;
 /**
  * Controller for the Song List View Cell
+ * @author
  */
 public class SongListViewCell extends ListCell<Song>{
 
@@ -34,7 +35,7 @@ public class SongListViewCell extends ListCell<Song>{
     private Label title;
 
     /** 
-     *  Method that swicthes the root screen to the User Home Screen upon clicking
+     * Method that swicthes the root screen to the User Home Screen upon clicking
      */
     @FXML
     void onMouseClick(MouseEvent event) {
