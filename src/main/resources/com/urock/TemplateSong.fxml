@@ -33,12 +33,12 @@
       </AnchorPane>
       <AnchorPane prefHeight="116.0" prefWidth="113.0">
          <children>
-            <ImageView fitHeight="29.0" fitWidth="30.0" layoutX="41.0" layoutY="14.0" onMousePressed="#onMouseClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="29.0" fitWidth="30.0" layoutX="41.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@Images/PlaylistViewer/play-256.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="29.0" fitWidth="36.0" layoutX="41.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="29.0" fitWidth="36.0" layoutX="41.0" layoutY="73.0" onMousePressed="#onMouseClick" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@Images/PlaylistViewer/edit-icon-transparent-background-10.png" />
                </image>

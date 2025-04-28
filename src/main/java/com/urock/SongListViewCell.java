@@ -33,14 +33,16 @@ public class SongListViewCell extends ListCell<Song>{
 
     @FXML
     private Label title;
-
+    
+    static Song s = null;
     /** 
      * Method that swicthes the root screen to the User Home Screen upon clicking
      */
     @FXML
     void onMouseClick(MouseEvent event) {
         try{
-            App.setRoot("UserHome");
+            ScoreEditorController.loadScore(s.getScore());
+            App.setRoot("ScoreEditor");
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -55,6 +57,7 @@ public class SongListViewCell extends ListCell<Song>{
         instrument.setText(song.getInstrument().toString());
         difficulty.setText(song.getDifficultyLevel().toString());
         measures.setText(song.getScore().getMeasures().size() + " Measures");
+        s = song;
     }
     /**
      * Setter for the width of the cell
