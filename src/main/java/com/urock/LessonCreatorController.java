@@ -180,8 +180,10 @@ public class LessonCreatorController implements Initializable{
         }else{
             facade.getCurrentUser().getAssignedLessons().add(lesson);
             try{
-                facade.assignLesson(((Teacher)facade.getCurrentUser()).getClasses().size(), lesson);
-                facade.assignLesson(0, lesson);
+                for(int i = 0; i < ((Teacher)facade.getCurrentUser()).getClasses().size(); i++){
+                    facade.assignLesson(i, lesson);
+                }
+                
             } catch (Exception e ){
 
             }
