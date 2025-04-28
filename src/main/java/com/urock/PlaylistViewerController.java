@@ -53,10 +53,20 @@ public class PlaylistViewerController implements Initializable{
      */
     @FXML
     void back(MouseEvent event) {
-        try{
-            App.setRoot("UserHome");
-        }catch(Exception e){
-            e.printStackTrace();
+        try {
+            Teacher test = (Teacher)facade.getCurrentUser();
+            try {
+                
+                App.setRoot("TeacherHome");
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        } catch(ClassCastException cce) {
+            try {
+                App.setRoot("UserHome");
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
         }
     }
     

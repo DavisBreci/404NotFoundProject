@@ -32,7 +32,7 @@ import javafx.scene.input.MouseEvent;
 
 /**
  * Contoller for Search Page
- * @author bsk
+ * @author Christopher Ferguson
  */
 public class SearchPageController implements Initializable{
 

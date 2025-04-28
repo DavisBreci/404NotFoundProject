@@ -212,8 +212,9 @@ public class LessonCreatorController implements Initializable{
                     facade.assignLesson(i, lesson);
                 }
                 
-            } catch (Exception e ){
-
+            } catch     (Exception e ){
+                System.out.println("Error!");
+                e.printStackTrace();
             }
             PlaylistViewerController.setLesson(lesson);
             App.setRoot("PlaylistViewer");

@@ -7,7 +7,7 @@ import javafx.scene.control.ListCell;
 
 /**
  * Controller for Search Result Cell
- * @author
+ * @author Christopher Ferguson
  */
 public class SearchResultCell extends ListCell{
     @FXML

@@ -70,6 +70,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * Controls the score editing screen
+ * @author Christopher Ferguson
+ */
 public class ScoreEditorController implements Initializable{
     @FXML
     private VBox contentArea;
@@ -145,11 +149,21 @@ public class ScoreEditorController implements Initializable{
     private ScoreView tablature;
     private ImageView play;
     private ImageView pause;
+    
+    /**
+     * Visual representation of fret
+     */
     class FretView extends TextField {
         Note note;
         StaffLine line;
         Rational offset;
         
+        /**
+         * Creates a visual fret
+         * @param line visual staffline that it belongs to
+         * @param offset its rational offset
+         * @param note the raw note
+         */
         public FretView(StaffLine line, Rational offset, Note note){
             super();
             this.note = note;
@@ -157,7 +171,6 @@ public class ScoreEditorController implements Initializable{
             this.offset = offset;
             promptTextProperty().set(note.getFret() + "");
             setMaxHeight(getHeight());
-            // setText(getPromptText());
             setPrefColumnCount(2);
             setStyle("""
                     -fx-background-color: white; 
@@ -195,12 +208,22 @@ public class ScoreEditorController implements Initializable{
         
     }
 
+    /**
+     * Visual representation of a staffline
+     */
     class StaffLine extends Pane{
         DoubleProperty cumulativeNoteWidth;
         Measure measure;
         int string;
         Line line;
         Pane notes;
+
+        /**
+         * Creates a visual representation of a staffline
+         * @param width the line's preferred width
+         * @param measure the measure it belongs to
+         * @param string which string of the instrument it represents
+         */
         StaffLine(double width, Measure measure, int string){
             super();
             this.measure = measure;
@@ -221,10 +244,18 @@ public class ScoreEditorController implements Initializable{
             getChildren().add(notes);
         }
         
+        /**
+         * Adds a visual note to the staffline
+         * @param offset the rational offset
+         * @param n the note to be added
+         */
         void addNote(Rational offset, Note n){
             notes.getChildren().add(new FretView(this, offset, n));
         }
 
+        /**
+         * Recalculates the relative positioning of frets on the line
+         */
         void updateSpacing(){
             for(Node node : notes.getChildren()){
                 FretView fn = (FretView)node;
@@ -233,8 +264,17 @@ public class ScoreEditorController implements Initializable{
         }
     }
     
+    /**
+     * Visual representation of a measure
+     */
     class MeasureView extends VBox{
         Measure measure;
+        /**
+         * Creates a visual representation of the measure
+         * @param width the measure's preferred width
+         * @param height the measure's preferred height
+         * @param measure the measure it represents
+         */
         MeasureView(double width, double height, Measure measure){
             this.measure = measure;
             StaffLine sl = null;
@@ -265,6 +305,10 @@ public class ScoreEditorController implements Initializable{
             } 
         }
 
+        /**
+         * Attempts to add a note to the measure
+         * @return whether the addition was successful
+         */
         boolean addNote(Rational offset, Note note, int string){
             boolean expand = measure.get(offset) == null;
             if(measure.put(offset, note, string)){
@@ -280,12 +324,21 @@ public class ScoreEditorController implements Initializable{
         }
     }
     
+    /**
+     * Visual representation of a tabular score
+     */
     class ScoreView extends HBox {
         Score source;
         double measureWidth;
         double measureHeight;
         double barLineHeight;
         
+        /**
+         * Creates a visual representation of a tabular score
+         * @param measureWidth the preferred width of measures
+         * @param measureHeight the preferred height of measures
+         * @param source the score to be represented
+         */
         ScoreView(double measureWidth, double measureHeight, Score source){
             this.measureWidth = measureWidth;
             this.measureHeight = measureHeight;
@@ -296,6 +349,10 @@ public class ScoreEditorController implements Initializable{
             }
         }
 
+        /**
+         * Appends a measure to the score
+         * @param newMeasure
+         */
         void appendMeasure(Measure newMeasure){
             Line barLine = null;
             Pane barLineHolder = null;
@@ -309,6 +366,10 @@ public class ScoreEditorController implements Initializable{
             getChildren().add(barLineHolder);
         }
         
+         /**
+         * Deletes the last measure from the score
+         * @param newMeasure
+         */
         void deleteLastMeasure(){
             if(getChildren().size() >= 2){
                 source.remove(source.size() - 1);
@@ -320,11 +381,18 @@ public class ScoreEditorController implements Initializable{
         }
     }
 
+    /**
+     * Loads a score into the editor. This is to be called before switching the root to the score editor
+     * @param score
+     */
     public static void loadScore(Score score){
         if(score == null) return;
         loadedScore = score;
     }
     
+    /**
+     * Configures the score editor
+     */
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) { 
        
@@ -437,6 +505,9 @@ public class ScoreEditorController implements Initializable{
         deleteMeasure.setGraphic(measureDelete);
     }
 
+    /**
+     * Configures the note value selector
+     */
     public void initializeQuaverSelect(){
         fill = FXCollections.observableArrayList(NoteValue.values());
         quaverSelect.setPrefWidth(QUAVER_SELECT_WIDTH);
@@ -466,8 +537,12 @@ public class ScoreEditorController implements Initializable{
         );
     }
     
+    /**
+     * Returns to the home screen
+     */
     @FXML
     void goHome(ActionEvent event) throws IOException {
+        onStop(event);
         MusicSystemFACADE facade = MusicSystemFACADE.getInstance();
             try {
                 Teacher test = (Teacher)facade.getCurrentUser();
@@ -485,6 +560,12 @@ public class ScoreEditorController implements Initializable{
             }
     }
 
+    /**
+     * Toggles the play/pause button
+     * @param event the default action event
+     * @throws InvalidMidiDataException whether a midi file can be generated from the score
+     * @throws MidiUnavailableException
+     */
     @FXML
     void onPlayPauseToggle(ActionEvent event) throws InvalidMidiDataException, MidiUnavailableException{
         if(playPause.isSelected()){
@@ -501,6 +582,10 @@ public class ScoreEditorController implements Initializable{
         }
     }
 
+    /**
+     * Stops plackback
+     * @param event the default action event
+     */
     @FXML
     void onStop(ActionEvent event){
         if(managedPlayer.isPlaying()){
@@ -511,6 +596,10 @@ public class ScoreEditorController implements Initializable{
         managedPlayer.reset();
     }
 
+    /**
+     * Inserts a note given the properties
+     * @param event the default action event
+     */
     @FXML
     void onInsertNote(MouseEvent event){
         NoteValue selected = null;
@@ -536,6 +625,9 @@ public class ScoreEditorController implements Initializable{
         }
     }
 
+    /**
+     * Inserts a measure
+     */
     @FXML
     void onInsertMeasure(ActionEvent event){
         try{
@@ -546,6 +638,9 @@ public class ScoreEditorController implements Initializable{
         }
     }
 
+    /**
+     * Deletes a measure
+     */
     @FXML
     void onDeleteMeasure(ActionEvent e){
         tablature.deleteLastMeasure();
