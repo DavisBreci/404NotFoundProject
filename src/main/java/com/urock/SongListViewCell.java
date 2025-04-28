@@ -12,7 +12,7 @@ import java.io.IOException;
 import com.model.*;
 /**
  * Controller for the Song List View Cell
- * @author
+ * @author Davis Breci
  */
 public class SongListViewCell extends ListCell<Song>{
 

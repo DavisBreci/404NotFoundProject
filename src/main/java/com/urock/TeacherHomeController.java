@@ -19,7 +19,7 @@ import com.model.*;
 
 /**
  * Controller for the Teacher Home Screen
- * @author ryanMazz
+ * @author Davis Breci
  */
 public class TeacherHomeController implements Initializable{
 

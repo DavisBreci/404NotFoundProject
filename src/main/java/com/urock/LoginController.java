@@ -16,7 +16,7 @@ import com.model.*;
 
 /**
  * Controller for the Login screen. Handles user login and navigation to the appropriate home screen.
- * @author brenskrz and ryanMazz
+ * @author brenskrz, ryanMazz, Davis Breci
  */
 public class LoginController {
     String username;

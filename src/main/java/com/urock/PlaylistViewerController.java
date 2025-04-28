@@ -25,7 +25,7 @@ import javafx.util.Callback;
 
 /**
  * Controller for the PlaylistViewer screen. Displays the songs in a playlist.
- * @author
+ * @author Davis Breci
  */
 public class PlaylistViewerController implements Initializable{
     

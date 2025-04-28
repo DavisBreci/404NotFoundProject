@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 import com.model.*;
 /**
  * Controller for the Sign Up screen 
- * @author
+ * @author Davis Breci
  */
 public class SignUpController implements Initializable{
 

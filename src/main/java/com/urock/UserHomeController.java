@@ -20,6 +20,7 @@ import com.model.*;
 
 /**
  * Controller for the User home Screen
+ * @author Davis Breci
  */
 public class UserHomeController implements Initializable{
 
