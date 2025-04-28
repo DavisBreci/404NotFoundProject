@@ -78,10 +78,10 @@ public class TeacherHomeController implements Initializable{
      * @param event
      */
     @FXML
-    private Label addPlaylist;
+    private Label add_playlist;
 
     @FXML
-    private Label addLesson;
+    private Label add_lesson;
 
     @FXML
     void logout(ActionEvent event) {
@@ -137,6 +137,8 @@ public class TeacherHomeController implements Initializable{
         nodes.add(classes);
         nodes.add(streak_img);
         nodes.add(streak_text);
+        nodes.add(add_playlist);
+        nodes.add(add_lesson);
 
         streak_text.setText(Integer.toString(facade.getCurrentUser().getStreak()));
 
@@ -166,6 +168,9 @@ public class TeacherHomeController implements Initializable{
             classes.setLayoutX((classes.getLayoutX() + classes.getPrefWidth() /4)*SCALE);
             streak_img.setLayoutX((streak_img.getLayoutX() + streak_img.getFitWidth() /4)* SCALE);
             streak_text.setLayoutX((streak_text.getLayoutX() + streak_text.getPrefWidth() /4)*SCALE);
+            add_playlist.setLayoutX((add_playlist.getLayoutX() + add_playlist.getPrefWidth() /4)*SCALE);
+            add_lesson.setLayoutX((add_lesson.getLayoutX() + add_lesson.getPrefWidth() /4)*SCALE);
+
 
             for (int i = 0; i < nodes.size(); ++i) {
                 // nodes.get(i).setLayoutX(nodes.get(i).getLayoutX() * SCALE);
@@ -199,6 +204,8 @@ public class TeacherHomeController implements Initializable{
             classes.setLayoutY((classes.getLayoutY() + classes.getPrefHeight() /4)*SCALE);
             streak_img.setLayoutY((streak_img.getLayoutY() + streak_img.getFitHeight() /4)*SCALE);
             streak_text.setLayoutY((streak_text.getLayoutY() + streak_text.getPrefHeight() /4)*SCALE);
+            add_playlist.setLayoutY((add_playlist.getLayoutY() + add_playlist.getPrefHeight() /4)*SCALE);
+            add_lesson.setLayoutY((add_lesson.getLayoutY() + add_lesson.getPrefHeight() /4)*SCALE);
 
             for (int i = 0; i < nodes.size(); ++i) {
                 // nodes.get(i).setLayoutY(nodes.get(i).getLayoutY()* SCALE);
