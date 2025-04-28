@@ -27,7 +27,7 @@ import javafx.scene.shape.Polygon;
 
 /**
  * Controller for the ComposeLandingPage screen. Allows users to set parameters for a new song.
- * @author
+ * @author Christopher Ferguson
  */
 public class ComposeLandingPageController implements Initializable {
 

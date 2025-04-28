@@ -13,6 +13,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Pair;
 
+/**
+ * Class that allows you to play the guitar with your keyboard
+ */
 public class Keytar extends RealtimePlayer {
 
     public static final String [][] ROWS = {
@@ -24,6 +27,12 @@ public class Keytar extends RealtimePlayer {
     private Map<String, Pair<Integer, Integer>> keyboard;
     private Instrument instrument;
     boolean [][] busyNotes;
+
+    /**
+     * Creates a keytar instance
+     * @param instrument the fretted instrument to be played
+     * @throws MidiUnavailableException triggers if the instrument is unrecognized
+     */
     public Keytar(Instrument instrument) throws MidiUnavailableException{
         super();
         this.instrument = instrument != null ? instrument : Instrument.GUITAR;
@@ -37,36 +46,25 @@ public class Keytar extends RealtimePlayer {
 
         busyNotes = new boolean[instrument.tuning.length][instrument.frets];
     }
-    public static void main(String [] args) throws MidiUnavailableException{
-        for(String [] row : ROWS)
-            for(String item: row)
-                System.out.println(KeyCode.valueOf(item));
-        
-        RealtimePlayer p = new RealtimePlayer();
-        p.startNote(new org.jfugue.theory.Note("C4q"));
-        
-        // System.out.println(String.join("\", \"", "zxcvbnm".toUpperCase().split("")));
-    }
 
+    /**
+     * Generates a JFugue note from the given string and fret
+     * @param string string location of note
+     * @param fret fret location of note
+     * @return JFugue note representation
+     */
     public Note resolveNote(int string, int fret){
         if(string < 0 || string > instrument.tuning.length || fret < 0 || fret > instrument.frets)
             return null;
         com.model.Note n = instrument.tuning[string].deepCopy();
         n.transpose(fret + 12);
         return new org.jfugue.theory.Note(n.toString());
-    //     Pair<Integer, Integer> mapping = keyboard.get(event.getCode().toString());
-    //     if(mapping == null)
-    //         return null;
-    //     int string = event.isShiftDown() ? instrument.tuning.length - 4 + mapping.getKey().intValue() : mapping.getKey().intValue();
-    //     if(string < 0 || string > instrument.tuning.length)
-    //         return null;
-    //     com.model.Note n = instrument.tuning[string].deepCopy();
-    //     int fret = mapping.getValue().intValue();
-    //     n.transpose(fret + 12);
-    //     busyNotes[string][fret] = true;
-    //     return new org.jfugue.theory.Note(n.toString());
     }
 
+    /**
+     * Attempts to start a note based on a key event. Does nothing if key isn't mapped to a note.
+     * @param event keyEvent to be processed
+     */
     public void startNote(KeyEvent event){
         Note note;
         Pair<Integer, Integer> mapping = keyboard.get(event.getCode().toString());
@@ -80,6 +78,10 @@ public class Keytar extends RealtimePlayer {
         }
     }
 
+    /**
+     * Attempts to stop a note based on a key event. Does nothing if key isn't mapped to a note.
+     * @param event keyEvent to be processed
+     */
     public void stopNote(KeyEvent event){
         Note note;
         Pair<Integer, Integer> mapping = keyboard.get(event.getCode().toString());

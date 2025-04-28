@@ -19,8 +19,8 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 /**
- * 
- * @author 
+ * Represents a note value selector cell
+ *  @author Christopher Ferguson
  */
 public class QuaverListViewCell extends ListCell<NoteValue> implements Initializable{
     static final double STROKE_WIDTH = 4;
@@ -35,7 +35,7 @@ public class QuaverListViewCell extends ListCell<NoteValue> implements Initializ
     private StackPane quaverFrame;
 
     /**
-     * 
+     * Configures the cell
      * @param arg0
      * @param arg1
      */
@@ -52,9 +52,9 @@ public class QuaverListViewCell extends ListCell<NoteValue> implements Initializ
     }
 
     /**
-     * 
-     * @param width
-     * @param height
+     * Attempts to set the dimensions of the cell
+     * @param width the new width
+     * @param height the new height
      */
     public void setDimensions(double width, double height){
         quaverFrame.setPrefWidth(height);
@@ -64,8 +64,8 @@ public class QuaverListViewCell extends ListCell<NoteValue> implements Initializ
     }
 
     /**
-     * 
-     * @param noteValue
+     * Attempts to change the note value
+     * @param noteValue the new note value
      */
     public void setNoteValue(NoteValue noteValue){
         if(noteValue != null){
