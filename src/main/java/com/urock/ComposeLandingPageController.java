@@ -169,9 +169,9 @@ public class ComposeLandingPageController implements Initializable {
     }
 
     /**
-     * 
-     * @param text
-     * @return
+     * Neatly formats a STRING_LIKE_THIS
+     * @param text text to be formatted
+     * @return formatted test
      */
     public static String titleFormat(String text){
         if(text == null) return null;
@@ -186,9 +186,9 @@ public class ComposeLandingPageController implements Initializable {
     }
 
     /**
-     * 
-     * @param text
-     * @return
+     * Neatly formats a STRING_LIKE_THIS that represents a musical key
+     * @param text text to be formatted
+     * @return formatted test
      */
     public static String titleFormatKey(String text){
         if(text == null) return null;
